@@ -1,4 +1,5 @@
 import { MainScene } from "./scene/main-scene/main-scene";
+import { TestScene } from "./scene/test-scene/test-scene";
 import { useGameUseCase } from "./use-case/game-use-case/game-use-case";
 
 export function startGame() {
@@ -14,7 +15,7 @@ export function startGame() {
         gravity: { y: 200 },
       },
     },
-    scene: MainScene,
+    scene: [MainScene, TestScene],
   };
   new Phaser.Game(config);
 }

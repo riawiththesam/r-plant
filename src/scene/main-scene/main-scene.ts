@@ -4,7 +4,7 @@ import { createButton } from "../../components/button/button";
 
 export class MainScene extends Phaser.Scene {
   constructor() {
-    super({ key: MainScene.constructor.name });
+    super({ key: "MainScene" });
   }
 
   preload() {
@@ -23,6 +23,7 @@ export class MainScene extends Phaser.Scene {
       height: 50,
       onClick: () => {
         console.log("onClick");
+        this.scene.start("TestScene");
       },
     });
   }
