@@ -1,10 +1,13 @@
 import { MainScene } from "./scene/main-scene/main-scene";
 import "./style.css";
+import { useGameUseCase } from "./use-case/game-use-case/game-use-case";
+
+const { gameConfig } = useGameUseCase();
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: gameConfig.width,
+  height: gameConfig.height,
   physics: {
     default: "arcade",
     arcade: {
