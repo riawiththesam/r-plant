@@ -1,30 +1,20 @@
-import Phaser from "phaser";
-import { createButton } from "../../components/button/button";
-import { TestScene } from "../test-scene/test-scene";
+import * as PIXI from "pixi.js";
+import { Button } from "../../components/button/button";
 
-export class MainScene extends Phaser.Scene {
+export class MainScene extends PIXI.Container {
   constructor() {
-    super({ key: MainScene.name });
-  }
-
-  preload() {
-    this.load.image("bg-grass", "assets/background/bg-grass.png");
-  }
-
-  create() {
-    //    setSceneBackgroundImage(this, "bg-grass");
-
-    createButton({
-      scene: this,
-      x: 200,
-      y: 200,
-      text: "スタート",
-      width: 100,
-      height: 50,
-      onClick: () => {
-        console.log("onClick");
-        this.scene.launch(TestScene.name);
-      },
-    });
+    super();
+    this.addChild(
+      new Button({
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 200,
+        text: "text",
+        onClick: () => {
+          console.log("onClick");
+        },
+      }),
+    );
   }
 }
