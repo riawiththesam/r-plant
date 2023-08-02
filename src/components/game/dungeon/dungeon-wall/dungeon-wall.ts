@@ -1,27 +1,5 @@
 import * as PIXI from "pixi.js";
 
-const chipSize = 10;
-const lineWidth = 2;
-
-export type DungeonWallDirection = "west" | "east" | "north" | "south";
-export type DungeonWallProps = {
-  direction: DungeonWallDirection;
-};
-
-export class DungeonWall extends PIXI.Container {
-  constructor(props: DungeonWallProps) {
-    super();
-
-    const wallRect = wallDirectionToRect(props.direction);
-
-    const rect = new PIXI.Graphics();
-    rect.beginFill(0x00ff00);
-    rect.drawRect(wallRect.x, wallRect.y, wallRect.width, wallRect.height);
-
-    this.addChild(rect);
-  }
-}
-
 type Rect = {
   x: number;
   y: number;
@@ -29,57 +7,70 @@ type Rect = {
   height: number;
 };
 
-const portraitWall: Rect = {
-  x: -lineWidth / 2,
-  y: -chipSize / 2,
-  width: lineWidth,
-  height: chipSize,
+export type DungeonWallDirection = "west" | "east" | "north" | "south";
+
+export type DungeonWallProps = {
+  direction: DungeonWallDirection;
+  chipSize: number;
+  lineWidth: number;
 };
 
-const landscapeWall: Rect = {
-  x: -chipSize / 2,
-  y: -lineWidth / 2,
-  width: chipSize,
-  height: lineWidth,
-};
+export class DungeonWall extends PIXI.Container {
+  constructor(props: DungeonWallProps) {
+    super();
+    const { direction, chipSize, lineWidth } = props;
 
-function wallDirectionToRect(direction: DungeonWallDirection): Rect {
+    const center = getCenterByDirection(direction, chipSize);
+    const wallRect = getWallRectByDirection(direction, chipSize, lineWidth);
+
+    const rect = new PIXI.Graphics();
+    rect.beginFill(0x00ff00);
+    rect.drawRect(center.x + wallRect.x, center.y + wallRect.y, wallRect.width, wallRect.height);
+
+    this.addChild(rect);
+  }
+}
+
+function getCenterByDirection(direction: DungeonWallDirection, chipSize: number) {
   switch (direction) {
     case "west": {
-      const center = { x: -chipSize / 2, y: 0 };
-      return {
-        x: center.x + portraitWall.x,
-        y: center.y + portraitWall.y,
-        width: portraitWall.width,
-        height: portraitWall.height,
-      };
+      return { x: -chipSize / 2, y: 0 };
     }
     case "east": {
-      const center = { x: chipSize / 2, y: 0 };
-      return {
-        x: center.x + portraitWall.x,
-        y: center.y + portraitWall.y,
-        width: portraitWall.width,
-        height: portraitWall.height,
-      };
+      return { x: chipSize / 2, y: 0 };
     }
     case "north": {
-      const center = { x: 0, y: -chipSize / 2 };
-      return {
-        x: center.x + landscapeWall.x,
-        y: center.y + landscapeWall.y,
-        width: landscapeWall.width,
-        height: landscapeWall.height,
-      };
+      return { x: 0, y: -chipSize / 2 };
     }
     case "south": {
-      const center = { x: 0, y: chipSize / 2 };
-      return {
-        x: center.x + landscapeWall.x,
-        y: center.y + landscapeWall.y,
-        width: landscapeWall.width,
-        height: landscapeWall.height,
-      };
+      return { x: 0, y: chipSize / 2 };
     }
+  }
+}
+
+function getWallRectByDirection(direction: DungeonWallDirection, chipSize: number, lineWidth: number): Rect {
+  const portraitWall: Rect = {
+    x: -lineWidth / 2,
+    y: -chipSize / 2,
+    width: lineWidth,
+    height: chipSize,
+  };
+
+  const landscapeWall: Rect = {
+    x: -chipSize / 2,
+    y: -lineWidth / 2,
+    width: chipSize,
+    height: lineWidth,
+  };
+
+  switch (direction) {
+    case "west":
+      return portraitWall;
+    case "east":
+      return portraitWall;
+    case "north":
+      return landscapeWall;
+    case "south":
+      return landscapeWall;
   }
 }
