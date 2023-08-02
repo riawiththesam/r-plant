@@ -1,39 +1,21 @@
-import * as THREE from "three";
+import * as PIXI from "pixi.js";
+import { Button } from "../../components/button/button";
 
-export class TestScene extends Phaser.Scene {
+export class TestScene extends PIXI.Container {
   constructor() {
-    super({ key: TestScene.name });
-  }
+    super();
 
-  preload() {
-    //    this.load.image("floor", "assets/dungeon/floor/fl-grass.png");
-  }
-
-  create() {
-    const threeCanvas = document.querySelector("#three");
-    if (threeCanvas == null) return;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas });
-
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    camera.position.z = 5;
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
+    this.addChild(
+      new Button({
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 50,
+        text: "TestScene",
+        onClick: () => {
+          console.log("onClick");
+        },
+      }),
+    );
   }
 }
