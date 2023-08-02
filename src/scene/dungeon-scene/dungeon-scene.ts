@@ -1,24 +1,13 @@
 import * as PIXI from "pixi.js";
-import { Button } from "../../components/button/button";
 import { DungeonBackgroundScene } from "../dungeon-background-scene/DungeonBackgroundScene";
+import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 
 export class DungeonScene extends PIXI.Container {
   constructor() {
     super();
 
-    this.addChild(
-      new Button({
-        x: 100,
-        y: 100,
-        width: 200,
-        height: 50,
-        text: "Dungeon",
-        onClick: () => {
-          console.log("onClick");
-        },
-      }),
-    );
-
     this.addChild(new DungeonBackgroundScene());
+
+    this.addChild(new DungeonMap());
   }
 }
