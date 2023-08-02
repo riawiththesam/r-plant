@@ -1,4 +1,4 @@
-import { DungeonBackgroundThreeScene } from "./DungeonBackgroundThreeScene";
+import { DungeonBackgroundThreeScene } from "./dungeon-background-three-scene";
 import * as PIXI from "pixi.js";
 
 export class DungeonBackgroundScene extends PIXI.Container {
