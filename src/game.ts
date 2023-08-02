@@ -5,8 +5,11 @@ import { useGameUseCase } from "./use-case/game-use-case/game-use-case";
 export function startGame() {
   const { gameConfig } = useGameUseCase();
 
+  const canvas = document.querySelector("#phaser") as HTMLCanvasElement;
+  if (canvas == null) return;
+
   const config: Phaser.Types.Core.GameConfig = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: gameConfig.width,
     height: gameConfig.height,
     physics: {
@@ -16,6 +19,10 @@ export function startGame() {
       },
     },
     scene: [MainScene, TestScene],
+    canvas: canvas,
+    render: {
+      transparent: true,
+    },
   };
   new Phaser.Game(config);
 }

@@ -1,67 +1,39 @@
-export class TestScene extends Phaser.Scene {
-  private debug: Phaser.GameObjects.Graphics | undefined;
+import * as THREE from "three";
 
+export class TestScene extends Phaser.Scene {
   constructor() {
     super({ key: "TestScene" });
   }
 
   preload() {
-    this.load.image("floor", "assets/dungeon/floor/fl-grass.png");
+    //    this.load.image("floor", "assets/dungeon/floor/fl-grass.png");
   }
 
   create() {
-    //    this.add.image(400, 300, "bg").setFlip(false, true);
+    const threeCanvas = document.querySelector("#three");
+    if (threeCanvas == null) return;
 
-    const vertices = [-1, 1, 1, 1, -1, -1, 1, -1];
-    const uvs = [0, 0, 1, 0, 0, 1, 1, 1];
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    const indicies = [0, 2, 1, 2, 3, 1];
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas });
 
-    const mesh = this.add.mesh(400, 300, "floor");
-    mesh.addVertices(vertices, uvs, indicies);
-    mesh.panZ(7);
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 
-    //    this.debug = this.add.graphics();
-    //    mesh.setDebug(this.debug);
-    /*
-    this.input.keyboard.on("keydown-D", () => {
-      if (mesh.debugCallback) {
-        mesh.setDebug();
-      } else {
-        mesh.setDebug(this.debug);
-      }
-    });
-    */
+    camera.position.z = 5;
 
-    const rotateRate = 1;
-    const panRate = 1;
-    const zoomRate = 4;
+    function animate() {
+      requestAnimationFrame(animate);
 
-    this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-      if (!pointer.isDown) {
-        return;
-      }
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
 
-      if (!pointer.event.shiftKey) {
-        mesh.modelRotation.y += pointer.velocity.x * (rotateRate / 800);
-        mesh.modelRotation.x += pointer.velocity.y * (rotateRate / 600);
-      } else {
-        mesh.panX(pointer.velocity.x * (panRate / 800));
-        mesh.panY(pointer.velocity.y * (panRate / 600));
-      }
-    });
+      renderer.render(scene, camera);
+    }
 
-    this.input.on(
-      "wheel",
-      (
-        pointer: Phaser.Input.Pointer,
-        over: Array<Phaser.GameObjects.GameObject>,
-        deltaX: number,
-        deltaY: number,
-        deltaZ: number,
-      ) => {
-        mesh.panZ(deltaY * (zoomRate / 600));
-      },
-    );
+    animate();
   }
 }

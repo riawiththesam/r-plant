@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { setSceneBackgroundImage } from "../../util/phaser/scene/scene-extensions";
 import { createButton } from "../../components/button/button";
 
 export class MainScene extends Phaser.Scene {
@@ -12,7 +11,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    setSceneBackgroundImage(this, "bg-grass");
+    //    setSceneBackgroundImage(this, "bg-grass");
 
     createButton({
       scene: this,
@@ -23,7 +22,7 @@ export class MainScene extends Phaser.Scene {
       height: 50,
       onClick: () => {
         console.log("onClick");
-        this.scene.start("TestScene");
+        this.scene.launch("TestScene");
       },
     });
   }
