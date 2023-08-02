@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 import { createButton } from "../../components/button/button";
+import { TestScene } from "../test-scene/test-scene";
 
 export class MainScene extends Phaser.Scene {
   constructor() {
-    super({ key: "MainScene" });
+    super({ key: MainScene.name });
   }
 
   preload() {
@@ -22,7 +23,7 @@ export class MainScene extends Phaser.Scene {
       height: 50,
       onClick: () => {
         console.log("onClick");
-        this.scene.launch("TestScene");
+        this.scene.launch(TestScene.name);
       },
     });
   }

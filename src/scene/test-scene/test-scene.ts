@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export class TestScene extends Phaser.Scene {
   constructor() {
-    super({ key: "TestScene" });
+    super({ key: TestScene.name });
   }
 
   preload() {
