@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { Button } from "../../components/button/button";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
-import { TestScene } from "../test-scene/test-scene";
+import { DungeonScene } from "../dungeon-scene/dungeon-scene";
 
 export class MainScene extends PIXI.Container {
   constructor() {
@@ -17,7 +17,7 @@ export class MainScene extends PIXI.Container {
         height: 50,
         text: "text",
         onClick: () => {
-          setScene(TestScene.name);
+          setScene(DungeonScene.name);
         },
       }),
     );
