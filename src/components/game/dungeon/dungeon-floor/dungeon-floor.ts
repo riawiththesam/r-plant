@@ -1,10 +1,13 @@
 import * as PIXI from "pixi.js";
 
-const chipSize = 10;
+export type DungeonFloorProps = {
+  chipSize: number;
+};
 
 export class DungeonFloor extends PIXI.Container {
-  constructor() {
+  constructor(props: DungeonFloorProps) {
     super();
+    const { chipSize } = props;
 
     const rect = new PIXI.Graphics();
     rect.beginFill(0x0000ff);

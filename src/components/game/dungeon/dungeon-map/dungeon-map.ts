@@ -1,7 +1,8 @@
 import * as PIXI from "pixi.js";
 import { DungeonMapChip } from "../dungeon-map-chip/dungeon-map-chip";
 
-const chipSize = 10;
+const chipSize = 20;
+const wallLineWidth = 4;
 
 export class DungeonMap extends PIXI.Container {
   constructor() {
@@ -17,6 +18,7 @@ export class DungeonMap extends PIXI.Container {
 
     this.addChild(createMapChip(0, 0));
     this.addChild(createMapChip(2, 0));
+    this.addChild(createMapChip(1, 1));
   }
 }
 
@@ -29,5 +31,5 @@ export class DungeonMap extends PIXI.Container {
 function createMapChip(xIndex: number, yIndex: number) {
   const chipPosX = xIndex * chipSize + chipSize / 2;
   const chipPosY = yIndex * chipSize + chipSize / 2;
-  return new DungeonMapChip({ x: chipPosX, y: chipPosY });
+  return new DungeonMapChip({ x: chipPosX, y: chipPosY, chipSize: chipSize, lineWidth: wallLineWidth });
 }
