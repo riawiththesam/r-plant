@@ -1,10 +1,13 @@
 import * as PIXI from "pixi.js";
 import { DungeonMapChip } from "../dungeon-map-chip/dungeon-map-chip";
+import { MapChipType, MapStateType } from "../../../../types/map-state-types/map-state-types";
 
 const chipSize = 20;
 const wallLineWidth = 4;
 
 export class DungeonMap extends PIXI.Container {
+  private mapChipContainer: PIXI.Container;
+
   constructor() {
     super();
 
@@ -16,9 +19,18 @@ export class DungeonMap extends PIXI.Container {
     mapBase.drawRect(0, 0, chipSize * 20, chipSize * 20);
     this.addChild(mapBase);
 
-    this.addChild(createMapChip(0, 0));
-    this.addChild(createMapChip(2, 0));
-    this.addChild(createMapChip(1, 1));
+    this.mapChipContainer = new PIXI.Container();
+    this.addChild(this.mapChipContainer);
+  }
+
+  setMap(state: MapStateType) {
+    this.mapChipContainer.removeChildren();
+
+    state.mapChipList.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        this.mapChipContainer.addChild(createMapChip(col, colIndex, rowIndex));
+      });
+    });
   }
 }
 
@@ -28,8 +40,8 @@ export class DungeonMap extends PIXI.Container {
  * @param yIndex
  * @returns
  */
-function createMapChip(xIndex: number, yIndex: number) {
+function createMapChip(chip: MapChipType, xIndex: number, yIndex: number) {
   const chipPosX = xIndex * chipSize + chipSize / 2;
   const chipPosY = yIndex * chipSize + chipSize / 2;
-  return new DungeonMapChip({ x: chipPosX, y: chipPosY, chipSize: chipSize, lineWidth: wallLineWidth });
+  return new DungeonMapChip({ x: chipPosX, y: chipPosY, chipSize: chipSize, lineWidth: wallLineWidth, chip: chip });
 }

@@ -2,12 +2,14 @@ import * as PIXI from "pixi.js";
 
 export type DungeonFloorProps = {
   chipSize: number;
+  visible: boolean;
 };
 
 export class DungeonFloor extends PIXI.Container {
   constructor(props: DungeonFloorProps) {
     super();
-    const { chipSize } = props;
+    const { chipSize, visible } = props;
+    this.visible = visible;
 
     const rect = new PIXI.Graphics();
     rect.beginFill(0x0000ff);

@@ -13,12 +13,14 @@ export type DungeonWallProps = {
   direction: DungeonWallDirection;
   chipSize: number;
   lineWidth: number;
+  visible: boolean;
 };
 
 export class DungeonWall extends PIXI.Container {
   constructor(props: DungeonWallProps) {
     super();
-    const { direction, chipSize, lineWidth } = props;
+    const { direction, chipSize, lineWidth, visible } = props;
+    this.visible = visible;
 
     const center = getCenterByDirection(direction, chipSize);
     const wallRect = getWallRectByDirection(direction, chipSize, lineWidth);
