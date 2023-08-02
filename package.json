@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/three": "^0.155.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^8.9.0",
@@ -21,6 +22,7 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
-    "phaser": "^3.60.0"
+    "phaser": "^3.60.0",
+    "three": "^0.155.0"
   }
 }
