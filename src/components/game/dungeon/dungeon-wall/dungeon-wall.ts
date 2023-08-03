@@ -23,11 +23,28 @@ export class DungeonWall extends PIXI.Container {
     rect.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
     this.addChild(rect);
 
-    this.eventMode = "dynamic";
-    this.on("pointerenter", onPointerEnter);
+    // タップ判定用エリア
+    const pointerArea = getPointerAreaByDirection(direction, chipSize);
+    const pointerRect = new PIXI.Graphics();
+    pointerRect.beginFill(0xff0000);
+    // alphaを変更することでタップエリアを確認できる
+    pointerRect.alpha = 0;
+    pointerRect.drawRect(pointerArea.x, pointerArea.y, pointerArea.width, pointerArea.height);
+    this.addChild(pointerRect);
+
+    pointerRect.eventMode = "dynamic";
+    pointerRect.on("pointerenter", onPointerEnter);
   }
 }
 
+/**
+ * 壁の描画エリア取得
+ *
+ * @param direction
+ * @param chipSize
+ * @param lineWidth
+ * @returns
+ */
 function getRectByDirection(direction: DungeonWallDirection, chipSize: number, lineWidth: number) {
   switch (direction) {
     case "west": {
@@ -41,6 +58,38 @@ function getRectByDirection(direction: DungeonWallDirection, chipSize: number, l
     }
     case "south": {
       return { x: -chipSize / 2, y: chipSize / 2 - lineWidth / 2, width: chipSize, height: lineWidth / 2 };
+    }
+  }
+}
+
+/**
+ * 壁の編集時のクリックエリア取得
+ *
+ * @param direction
+ * @param chipSize
+ * @returns
+ */
+function getPointerAreaByDirection(direction: DungeonWallDirection, chipSize: number) {
+  switch (direction) {
+    case "west": {
+      const centerX = -chipSize / 2;
+      const centerY = 0;
+      return { x: centerX - chipSize / 4, y: centerY - chipSize / 4, width: chipSize / 2, height: chipSize / 2 };
+    }
+    case "east": {
+      const centerX = chipSize / 2;
+      const centerY = 0;
+      return { x: centerX - chipSize / 4, y: centerY - chipSize / 4, width: chipSize / 2, height: chipSize / 2 };
+    }
+    case "north": {
+      const centerX = 0;
+      const centerY = -chipSize / 2;
+      return { x: centerX - chipSize / 4, y: centerY - chipSize / 4, width: chipSize / 2, height: chipSize / 2 };
+    }
+    case "south": {
+      const centerX = 0;
+      const centerY = chipSize / 2;
+      return { x: centerX - chipSize / 4, y: centerY - chipSize / 4, width: chipSize / 2, height: chipSize / 2 };
     }
   }
 }
