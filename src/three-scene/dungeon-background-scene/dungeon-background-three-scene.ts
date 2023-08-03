@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 
 export class DungeonBackgroundThreeScene extends THREE.Scene {
   private renderer: THREE.WebGLRenderer;
@@ -7,8 +8,10 @@ export class DungeonBackgroundThreeScene extends THREE.Scene {
 
   constructor(canvas: HTMLCanvasElement) {
     super();
+    const { gameConfig } = useGameUseCase();
+
     this.renderer = new THREE.WebGLRenderer({ canvas: canvas });
-    this.camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(75, gameConfig.width / gameConfig.height, 0.1, 1000);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -23,5 +26,11 @@ export class DungeonBackgroundThreeScene extends THREE.Scene {
     this.cube.rotation.y += 0.01;
 
     this.renderer.render(this, this.camera);
+  }
+
+  resize(width: number, height: number) {
+    // レンダラーのサイズを調整する
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(width, height);
   }
 }

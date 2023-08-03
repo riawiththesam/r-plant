@@ -1,16 +1,24 @@
 import { DungeonBackgroundThreeScene } from "../../three-scene/dungeon-background-scene/dungeon-background-three-scene";
 
 export class ThreeGameRoot {
-  run() {
+  private threeScene: DungeonBackgroundThreeScene | undefined;
+
+  constructor() {
     const threeCanvas = document.querySelector("#three") as HTMLCanvasElement;
     if (threeCanvas == null) return;
 
-    const threeScene = new DungeonBackgroundThreeScene(threeCanvas);
+    this.threeScene = new DungeonBackgroundThreeScene(threeCanvas);
+  }
 
-    function animation() {
+  run() {
+    const animation = () => {
       requestAnimationFrame(animation);
-      threeScene.animate();
-    }
+      this.threeScene?.animate();
+    };
     animation();
+  }
+
+  resize(width: number, height: number) {
+    this.threeScene?.resize(width, height);
   }
 }

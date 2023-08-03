@@ -30,6 +30,7 @@ export function startGame() {
       const resizeWidth = canvasContainer.clientWidth;
       const resizeHeight = resizeWidth / gameDisplayRatio;
       app.renderer.resize(resizeWidth, resizeHeight);
+      threeGamrRoot.resize(resizeWidth, resizeHeight);
 
       const scaleX = resizeWidth / gameConfig.width;
       const scaleY = resizeHeight / gameConfig.height;
@@ -38,6 +39,7 @@ export function startGame() {
       const resizeHeight = canvasContainer.clientHeight;
       const resizeWidth = resizeHeight * gameDisplayRatio;
       app.renderer.resize(resizeWidth, resizeHeight);
+      threeGamrRoot.resize(resizeWidth, resizeHeight);
 
       const scaleX = resizeWidth / gameConfig.width;
       const scaleY = resizeHeight / gameConfig.height;
