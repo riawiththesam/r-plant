@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import { DungeonBackgroundScene } from "../dungeon-background-scene/dungeon-background-scene";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useDungeonMapUseCase } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
@@ -22,8 +21,6 @@ export class DungeonScene extends PIXI.Container {
     currentMapObservable.subscribe((state) => {
       dungeonMap.setMap(state);
     });
-
-    this.addChild(new DungeonBackgroundScene());
 
     this.addChild(dungeonMap);
   }

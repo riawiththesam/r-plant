@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import { useGameUseCase } from "./use-case/game-use-case/game-use-case";
 import { GameRoot } from "./components/game-root/game-root";
+import { ThreeGameRoot } from "./three-components/three-game-root/three-game-root";
 
 export function startGame() {
   const { gameConfig } = useGameUseCase();
@@ -17,6 +18,9 @@ export function startGame() {
   };
   const app = new PIXI.Application(options);
   app.stage.addChild(new GameRoot());
+
+  const threeGamrRoot = new ThreeGameRoot();
+  threeGamrRoot.run();
 
   const resizeCanvas = () => {
     const gameDisplayRatio = gameConfig.width / gameConfig.height;

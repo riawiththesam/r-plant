@@ -1,10 +1,7 @@
-import { DungeonBackgroundThreeScene } from "./dungeon-background-three-scene";
-import * as PIXI from "pixi.js";
+import { DungeonBackgroundThreeScene } from "../../scene/dungeon-background-scene/dungeon-background-three-scene";
 
-export class DungeonBackgroundScene extends PIXI.Container {
-  constructor() {
-    super();
-
+export class ThreeGameRoot {
+  run() {
     const threeCanvas = document.querySelector("#three") as HTMLCanvasElement;
     if (threeCanvas == null) return;
 
