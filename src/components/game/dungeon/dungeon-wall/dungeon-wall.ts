@@ -7,21 +7,24 @@ export type DungeonWallProps = {
   chipSize: number;
   lineWidth: number;
   visible: boolean;
+  onPointerEnter: () => void;
 };
 
 export class DungeonWall extends PIXI.Container {
   constructor(props: DungeonWallProps) {
     super();
-    const { direction, chipSize, lineWidth, visible } = props;
-    this.visible = visible;
+    const { direction, chipSize, lineWidth, visible, onPointerEnter } = props;
 
     const drawRect = getRectByDirection(direction, chipSize, lineWidth);
 
     const rect = new PIXI.Graphics();
     rect.beginFill(0x00ff00);
+    rect.alpha = visible ? 1 : 0;
     rect.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
-
     this.addChild(rect);
+
+    this.eventMode = "dynamic";
+    this.on("pointerenter", onPointerEnter);
   }
 }
 

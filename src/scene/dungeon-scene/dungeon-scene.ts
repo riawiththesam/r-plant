@@ -8,7 +8,11 @@ export class DungeonScene extends PIXI.Container {
     super();
     const { currentMapObservable } = useDungeonMapUseCase();
 
-    const dungeonMap = new DungeonMap();
+    const dungeonMap = new DungeonMap({
+        console.log(`${xIndex} ${yIndex} ${direction}`);
+      onWallPointerEnter: (xIndex, yIndex, direction) => {
+      },
+    });
 
     currentMapObservable.subscribe((state) => {
       dungeonMap.setMap(state);
