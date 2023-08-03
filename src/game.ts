@@ -1,15 +1,13 @@
 import * as PIXI from "pixi.js";
 import { useGameUseCase } from "./use-case/game-use-case/game-use-case";
-import { MainScene } from "./scene/main-scene/main-scene";
-import { SceneSwitcher } from "./util/pixi/scene-switcher/scene-switcher";
-import { TestScene } from "./scene/test-scene/test-scene";
-import { DungeonScene } from "./scene/dungeon-scene/dungeon-scene";
+import { GameRoot } from "./components/game-root/game-root";
 
 export function startGame() {
-  const { gameConfig, sceneObservable, setMouseState } = useGameUseCase();
+  const { gameConfig } = useGameUseCase();
 
+  const canvasContainer = document.querySelector("#canvasContainer");
   const canvas = document.querySelector("#pixi") as HTMLCanvasElement;
-  if (canvas == null) return;
+  if (canvasContainer == null || canvas == null) return;
 
   const options: Partial<PIXI.IApplicationOptions> = {
     width: gameConfig.width,
@@ -18,24 +16,30 @@ export function startGame() {
     backgroundAlpha: 0,
   };
   const app = new PIXI.Application(options);
+  app.stage.addChild(new GameRoot());
 
-  const sceneSwitcher = new SceneSwitcher({
-    sceneList: [
-      [MainScene.name, () => new MainScene()],
-      [DungeonScene.name, () => new DungeonScene()],
-      [TestScene.name, () => new TestScene()],
-    ],
-  });
+  const resizeCanvas = () => {
+    const gameDisplayRatio = gameConfig.width / gameConfig.height;
+    const containerRatio = canvasContainer.clientWidth / canvasContainer.clientHeight;
 
-  sceneObservable.subscribe((next) => {
-    sceneSwitcher.startScene(next);
-  });
-  app.stage.addChild(sceneSwitcher);
+    if (gameDisplayRatio > containerRatio) {
+      const resizeWidth = canvasContainer.clientWidth;
+      const resizeHeight = resizeWidth / gameDisplayRatio;
+      app.renderer.resize(resizeWidth, resizeHeight);
 
-  document.addEventListener("pointerdown", () => {
-    setMouseState(true);
-  });
-  document.addEventListener("pointerup", () => {
-    setMouseState(false);
-  });
+      const scaleX = resizeWidth / gameConfig.width;
+      const scaleY = resizeHeight / gameConfig.height;
+      app.stage.setTransform(0, 0, scaleX, scaleY);
+    } else {
+      const resizeHeight = canvasContainer.clientHeight;
+      const resizeWidth = resizeHeight * gameDisplayRatio;
+      app.renderer.resize(resizeWidth, resizeHeight);
+
+      const scaleX = resizeWidth / gameConfig.width;
+      const scaleY = resizeHeight / gameConfig.height;
+      app.stage.setTransform(0, 0, scaleX, scaleY);
+    }
+  };
+  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener("DOMContentLoaded", resizeCanvas);
 }
