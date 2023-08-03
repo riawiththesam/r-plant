@@ -1,4 +1,4 @@
-import { DungeonBackgroundThreeScene } from "../../scene/dungeon-background-scene/dungeon-background-three-scene";
+import { DungeonBackgroundThreeScene } from "../../three-scene/dungeon-background-scene/dungeon-background-three-scene";
 
 export class ThreeGameRoot {
   run() {
