@@ -6,7 +6,7 @@ import { TestScene } from "./scene/test-scene/test-scene";
 import { DungeonScene } from "./scene/dungeon-scene/dungeon-scene";
 
 export function startGame() {
-  const { gameConfig, sceneObservable } = useGameUseCase();
+  const { gameConfig, sceneObservable, setMouseState } = useGameUseCase();
 
   const canvas = document.querySelector("#pixi") as HTMLCanvasElement;
   if (canvas == null) return;
@@ -30,6 +30,12 @@ export function startGame() {
   sceneObservable.subscribe((next) => {
     sceneSwitcher.startScene(next);
   });
-
   app.stage.addChild(sceneSwitcher);
+
+  document.addEventListener("pointerdown", () => {
+    setMouseState(true);
+  });
+  document.addEventListener("pointerup", () => {
+    setMouseState(false);
+  });
 }
