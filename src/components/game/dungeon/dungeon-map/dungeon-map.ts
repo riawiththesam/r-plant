@@ -7,17 +7,20 @@ const chipSize = 20;
 const wallLineWidth = 4;
 
 export type DungeonMapProps = {
+  x: number;
+  y: number;
   onWallPointerEnter: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void;
 };
 
 export class DungeonMap extends PIXI.Container {
   private mapChipContainer: PIXI.Container;
 
-  constructor(private props: DungeonMapProps) {
+  constructor(private readonly props: DungeonMapProps) {
     super();
+    const { x, y } = props;
 
-    this.x = 100;
-    this.y = 100;
+    this.x = x;
+    this.y = y;
 
     const mapBase = new PIXI.Graphics();
     mapBase.beginFill(0xffff00);

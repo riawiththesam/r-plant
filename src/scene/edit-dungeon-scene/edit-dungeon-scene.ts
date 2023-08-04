@@ -10,6 +10,8 @@ export class EditDungeonScene extends PIXI.Container {
     const { getMouse } = useGameUseCase();
 
     const dungeonMap = new DungeonMap({
+      x: 50,
+      y: 50,
       onWallPointerEnter: (xIndex, yIndex, direction) => {
         console.log(`${xIndex} ${yIndex} ${direction} ${getMouse().mouseDown}`);
         if (getMouse().mouseDown) {
