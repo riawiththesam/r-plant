@@ -1,7 +1,6 @@
 import { BehaviorSubject } from "rxjs";
-import { MainScene } from "../../scene/main-scene/main-scene";
 
-const sceneState = new BehaviorSubject(MainScene.name);
+const sceneState = new BehaviorSubject("");
 const sceneObservable = sceneState.asObservable();
 
 const mouseState = new BehaviorSubject({ mouseDown: false });

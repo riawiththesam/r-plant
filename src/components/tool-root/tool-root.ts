@@ -1,19 +1,23 @@
 import * as PIXI from "pixi.js";
-import { MainScene } from "../../scene/main-scene/main-scene";
 import { DungeonScene } from "../../scene/dungeon-scene/dungeon-scene";
 import { TestScene } from "../../scene/test-scene/test-scene";
 import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
+import { EditDungeonScene } from "../../scene/edit-dungeon-scene/edit-dungeon-scene";
+import { ToolMainScene } from "../../scene/tool-main-scene/tool-main-scene";
 
 export class ToolRoot extends PIXI.Container {
   constructor() {
     super();
-    const { sceneObservable, setMouseState } = useGameUseCase();
+    const { sceneObservable, setMouseState, setScene } = useGameUseCase();
+
+    setScene(ToolMainScene.name);
 
     const sceneSwitcher = new SceneSwitcher({
       sceneList: [
-        [MainScene.name, () => new MainScene()],
+        [ToolMainScene.name, () => new ToolMainScene()],
         [DungeonScene.name, () => new DungeonScene()],
+        [EditDungeonScene.name, () => new EditDungeonScene()],
         [TestScene.name, () => new TestScene()],
       ],
     });

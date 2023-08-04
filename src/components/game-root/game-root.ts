@@ -8,7 +8,9 @@ import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 export class GameRoot extends PIXI.Container {
   constructor() {
     super();
-    const { sceneObservable, setMouseState } = useGameUseCase();
+    const { sceneObservable, setMouseState, setScene } = useGameUseCase();
+
+    setScene(MainScene.name);
 
     const sceneSwitcher = new SceneSwitcher({
       sceneList: [
