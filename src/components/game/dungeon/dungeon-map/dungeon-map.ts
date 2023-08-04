@@ -9,7 +9,7 @@ const wallLineWidth = 4;
 export type DungeonMapProps = {
   x: number;
   y: number;
-  onWallPointerEnter: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void;
+  onWallPointerEnter?: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void;
 };
 
 export class DungeonMap extends PIXI.Container {
@@ -52,7 +52,7 @@ function createMapChip(
   chip: MapChipType,
   xIndex: number,
   yIndex: number,
-  onWallPointerEnter: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void,
+  onWallPointerEnter?: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void,
 ) {
   const chipPosX = xIndex * chipSize + chipSize / 2;
   const chipPosY = yIndex * chipSize + chipSize / 2;
@@ -62,6 +62,6 @@ function createMapChip(
     chipSize: chipSize,
     lineWidth: wallLineWidth,
     chip: chip,
-    onWallPointerEnter: (direction) => onWallPointerEnter(xIndex, yIndex, direction),
+    onWallPointerEnter: (direction) => onWallPointerEnter && onWallPointerEnter(xIndex, yIndex, direction),
   });
 }

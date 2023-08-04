@@ -1,23 +1,15 @@
 import * as PIXI from "pixi.js";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useDungeonMapUseCase } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
-import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 
 export class DungeonScene extends PIXI.Container {
   constructor() {
     super();
-    const { currentMapObservable, setWall } = useDungeonMapUseCase();
-    const { getMouse } = useGameUseCase();
+    const { currentMapObservable, loadMap } = useDungeonMapUseCase();
 
     const dungeonMap = new DungeonMap({
       x: 50,
       y: 50,
-      onWallPointerEnter: (xIndex, yIndex, direction) => {
-        console.log(`${xIndex} ${yIndex} ${direction} ${getMouse().mouseDown}`);
-        if (getMouse().mouseDown) {
-          setWall(xIndex, yIndex, direction);
-        }
-      },
     });
 
     currentMapObservable.subscribe((state) => {
@@ -25,5 +17,7 @@ export class DungeonScene extends PIXI.Container {
     });
 
     this.addChild(dungeonMap);
+
+    loadMap();
   }
 }
