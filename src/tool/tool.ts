@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { useGameUseCase } from "../use-case/game-use-case/game-use-case";
-import { GameRoot } from "../components/game-root/game-root";
 import { ThreeGameRoot } from "../three-components/three-game-root/three-game-root";
+import { ToolRoot } from "../components/tool-root/tool-root";
 
 export function startGame() {
   const { gameConfig } = useGameUseCase();
@@ -17,7 +17,7 @@ export function startGame() {
     backgroundAlpha: 0,
   };
   const app = new PIXI.Application(options);
-  app.stage.addChild(new GameRoot());
+  app.stage.addChild(new ToolRoot());
 
   const threeGamrRoot = new ThreeGameRoot();
   threeGamrRoot.run();
