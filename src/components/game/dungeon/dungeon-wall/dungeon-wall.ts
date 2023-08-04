@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Color, Container, Graphics } from "pixi.js";
 import { MapChipWallType } from "../../../../types/map-state-types/map-state.types";
 
 export type DungeonWallDirection = "west" | "east" | "north" | "south";
@@ -19,7 +19,7 @@ export class DungeonWall extends Container {
     const drawRect = getRectByDirection(direction, chipSize, lineWidth);
 
     const rect = new Graphics();
-    rect.beginFill(0x00ff00);
+    rect.beginFill(getColorByType(type));
     rect.alpha = type == "none" ? 0 : 1;
     rect.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
     this.addChild(rect);
@@ -35,6 +35,17 @@ export class DungeonWall extends Container {
 
     pointerRect.eventMode = "dynamic";
     pointerRect.on("pointerenter", onPointerEnter);
+  }
+}
+
+function getColorByType(type: MapChipWallType) {
+  switch (type) {
+    case "wall":
+      return new Color({ r: 0, g: 255, b: 0 });
+    case "door":
+      return new Color({ r: 60, g: 140, b: 180 });
+    case "none":
+      return new Color({ r: 255, g: 0, b: 0 });
   }
 }
 

@@ -1,28 +1,42 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useEditDungeonMapUseCase } from "../../use-case/edit-dungeon-map-use-case/edit-dungeon-map-use-case";
 import { Button } from "../../components/button/button";
 
-export class EditDungeonScene extends PIXI.Container {
+export class EditDungeonScene extends Container {
   constructor() {
     super();
-    const { currentMapObservable, setWall, getEditWallState, setSetWall, setRemoveWall, exportJSON, loadJSON } =
-      useEditDungeonMapUseCase();
+    const {
+      currentMapObservable,
+      setWall,
+      getEditWallState,
+      setSetWall,
+      setSetDoor,
+      setRemoveWall,
+      exportJSON,
+      loadJSON,
+    } = useEditDungeonMapUseCase();
     const { getMouse } = useGameUseCase();
 
     const dungeonMap = new DungeonMap({
       x: 50,
       y: 50,
       onWallPointerEnter: (xIndex, yIndex, direction) => {
-        if (getEditWallState() == "setWall") {
+        const editWallType = getEditWallState();
+        if (editWallType == "setWall") {
           if (getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "wall");
           }
         }
-        if (getEditWallState() == "removeWall") {
+        if (editWallType == "removeWall") {
           if (getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "none");
+          }
+        }
+        if (editWallType == "setDoor") {
+          if (getMouse().mouseDown) {
+            setWall(xIndex, yIndex, direction, "door");
           }
         }
       },
@@ -39,17 +53,27 @@ export class EditDungeonScene extends PIXI.Container {
       y: 50,
       width: 100,
       height: 20,
-      text: "setWall",
+      text: "Set Wall",
       onClick: setSetWall,
     });
     this.addChild(buttonSetWallMode);
 
-    const buttonRemoveWallMode = new Button({
+    const buttonSetDoorMode = new Button({
       x: 500,
       y: 80,
       width: 100,
       height: 20,
-      text: "removeWall",
+      text: "Set Door",
+      onClick: setSetDoor,
+    });
+    this.addChild(buttonSetDoorMode);
+
+    const buttonRemoveWallMode = new Button({
+      x: 500,
+      y: 110,
+      width: 100,
+      height: 20,
+      text: "Remove Wall",
       onClick: setRemoveWall,
     });
     this.addChild(buttonRemoveWallMode);

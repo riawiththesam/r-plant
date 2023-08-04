@@ -5,7 +5,7 @@ import { DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall
 import { loadFile, saveFile } from "../../util/file/files/files";
 import { validateMapStateType } from "../../types/map-state-types/map-state.types.validator";
 
-type EditWallStateType = "setWall" | "removeWall";
+type EditWallStateType = "setWall" | "setDoor" | "removeWall";
 const editWallState = new BehaviorSubject<EditWallStateType>("setWall");
 //const editWallObservable = editWallState.asObservable();
 
@@ -29,6 +29,10 @@ export function useEditDungeonMapUseCase() {
 
   function setRemoveWall() {
     editWallState.next("removeWall");
+  }
+
+  function setSetDoor() {
+    editWallState.next("setDoor");
   }
 
   function getEditWallState() {
@@ -86,6 +90,7 @@ export function useEditDungeonMapUseCase() {
     currentMapObservable,
     setSetWall,
     setRemoveWall,
+    setSetDoor,
     getEditWallState,
     setWall,
     exportJSON,
