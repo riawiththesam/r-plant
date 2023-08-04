@@ -6,7 +6,7 @@ export type ButtonProps = {
   text: string;
   width: number;
   height: number;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const defaultStyle: Partial<PIXI.TextStyle> = {

@@ -65,12 +65,24 @@ export function useEditDungeonMapUseCase() {
     currentMapState.next({ ...currentMapState.value, mapChipList: nextList });
   }
 
+  function exportJSON() {
+    const value = currentMapState.value;
+    const json = JSON.stringify(value, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+
+    const aTag = document.createElement("a");
+    aTag.download = "map.json";
+    aTag.href = URL.createObjectURL(blob);
+    aTag.click();
+  }
+
   return {
     currentMapObservable,
     setSetWall,
     setRemoveWall,
     getEditWallState,
     setWall,
+    exportJSON,
   };
 }
 

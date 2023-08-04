@@ -7,7 +7,8 @@ import { Button } from "../../components/button/button";
 export class EditDungeonScene extends PIXI.Container {
   constructor() {
     super();
-    const { currentMapObservable, setWall, getEditWallState, setSetWall, setRemoveWall } = useEditDungeonMapUseCase();
+    const { currentMapObservable, setWall, getEditWallState, setSetWall, setRemoveWall, exportJSON } =
+      useEditDungeonMapUseCase();
     const { getMouse } = useGameUseCase();
 
     const dungeonMap = new DungeonMap({
@@ -52,5 +53,15 @@ export class EditDungeonScene extends PIXI.Container {
       onClick: setRemoveWall,
     });
     this.addChild(buttonRemoveWallMode);
+
+    const buttonExportJSON = new Button({
+      x: 650,
+      y: 50,
+      width: 100,
+      height: 20,
+      text: "Export JSON",
+      onClick: exportJSON,
+    });
+    this.addChild(buttonExportJSON);
   }
 }
