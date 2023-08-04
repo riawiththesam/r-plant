@@ -18,6 +18,7 @@ export const SCHEMA = {
             "type": "string",
             "enum": [
                 "wall",
+                "door",
                 "none"
             ]
         },

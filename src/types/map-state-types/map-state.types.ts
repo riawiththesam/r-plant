@@ -1,5 +1,5 @@
 export type MapChipFloorType = "floor" | "none";
-export type MapChipWallType = "wall" | "none";
+export type MapChipWallType = "wall" | "door" | "none";
 
 export type MapChipType = {
   floor: MapChipFloorType;

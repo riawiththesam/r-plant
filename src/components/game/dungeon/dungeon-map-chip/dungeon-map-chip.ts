@@ -27,7 +27,7 @@ export class DungeonMapChip extends PIXI.Container {
       direction: "west",
       chipSize: chipSize,
       lineWidth: lineWidth,
-      visible: chip.walls.west != "none",
+      type: chip.walls["west"],
       onPointerEnter: () => onWallPointerEnter("west"),
     });
     this.addChild(wallWest);
@@ -36,7 +36,7 @@ export class DungeonMapChip extends PIXI.Container {
       direction: "east",
       chipSize: chipSize,
       lineWidth: lineWidth,
-      visible: chip.walls.east != "none",
+      type: chip.walls["east"],
       onPointerEnter: () => onWallPointerEnter("east"),
     });
     this.addChild(wallEast);
@@ -45,7 +45,7 @@ export class DungeonMapChip extends PIXI.Container {
       direction: "north",
       chipSize: chipSize,
       lineWidth: lineWidth,
-      visible: chip.walls.north != "none",
+      type: chip.walls["north"],
       onPointerEnter: () => onWallPointerEnter("north"),
     });
     this.addChild(wallNorth);
@@ -54,7 +54,7 @@ export class DungeonMapChip extends PIXI.Container {
       direction: "south",
       chipSize: chipSize,
       lineWidth: lineWidth,
-      visible: chip.walls.south != "none",
+      type: chip.walls["south"],
       onPointerEnter: () => onWallPointerEnter("south"),
     });
     this.addChild(wallSouth);

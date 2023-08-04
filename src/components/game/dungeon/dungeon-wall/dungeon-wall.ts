@@ -1,4 +1,5 @@
-import * as PIXI from "pixi.js";
+import { Container, Graphics } from "pixi.js";
+import { MapChipWallType } from "../../../../types/map-state-types/map-state.types";
 
 export type DungeonWallDirection = "west" | "east" | "north" | "south";
 
@@ -6,26 +7,26 @@ export type DungeonWallProps = {
   direction: DungeonWallDirection;
   chipSize: number;
   lineWidth: number;
-  visible: boolean;
+  type: MapChipWallType;
   onPointerEnter: () => void;
 };
 
-export class DungeonWall extends PIXI.Container {
+export class DungeonWall extends Container {
   constructor(props: DungeonWallProps) {
     super();
-    const { direction, chipSize, lineWidth, visible, onPointerEnter } = props;
+    const { direction, chipSize, lineWidth, type, onPointerEnter } = props;
 
     const drawRect = getRectByDirection(direction, chipSize, lineWidth);
 
-    const rect = new PIXI.Graphics();
+    const rect = new Graphics();
     rect.beginFill(0x00ff00);
-    rect.alpha = visible ? 1 : 0;
+    rect.alpha = type == "none" ? 0 : 1;
     rect.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
     this.addChild(rect);
 
     // タップ判定用エリア
     const pointerArea = getPointerAreaByDirection(direction, chipSize);
-    const pointerRect = new PIXI.Graphics();
+    const pointerRect = new Graphics();
     pointerRect.beginFill(0xff0000);
     // alphaを変更することでタップエリアを確認できる
     pointerRect.alpha = 0;
