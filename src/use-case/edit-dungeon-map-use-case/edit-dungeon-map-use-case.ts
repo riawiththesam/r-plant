@@ -2,7 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import range from "lodash/range";
 import { MapChipType, MapChipWallType, MapStateType } from "../../types/map-state-types/map-state-types";
 import { DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
-import { saveFile } from "../../util/file/html-anchor-elements/html-anchor-elements";
+import { loadFile, saveFile } from "../../util/file/files/files";
 
 type EditWallStateType = "setWall" | "removeWall";
 const editWallState = new BehaviorSubject<EditWallStateType>("setWall");
@@ -68,7 +68,15 @@ export function useEditDungeonMapUseCase() {
 
   function exportJSON() {
     const json = JSON.stringify(currentMapState.value, null, 2);
-    saveFile("map", json);
+    saveFile("map", json).then(() => {
+      console.log("saved");
+    });
+  }
+
+  function loadJSON() {
+    loadFile().then(() => {
+      console.log("loaded");
+    });
   }
 
   return {
@@ -78,6 +86,7 @@ export function useEditDungeonMapUseCase() {
     getEditWallState,
     setWall,
     exportJSON,
+    loadJSON,
   };
 }
 

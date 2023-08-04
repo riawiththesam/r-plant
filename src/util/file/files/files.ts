@@ -13,3 +13,11 @@ export async function saveFile(name: string, value: string) {
   await writable.write(value);
   await writable.close();
 }
+
+export async function loadFile() {
+  const fileHandleList = await window.showOpenFilePicker();
+  const handle = fileHandleList[0];
+  const file = await handle.getFile();
+  const text = await file.text();
+  console.log(text);
+}
