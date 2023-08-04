@@ -1,16 +1,17 @@
 import { BehaviorSubject } from "rxjs";
 import range from "lodash/range";
-import { MapChipType, MapStateType } from "../../types/map-state-types/map-state-types";
+import { MapChipType, MapChipWallType, MapStateType } from "../../types/map-state-types/map-state-types";
 import { DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
+
+type EditWallStateType = "setWall" | "removeWall";
+const editWallState = new BehaviorSubject<EditWallStateType>("setWall");
+//const editWallObservable = editWallState.asObservable();
 
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
 const currentMapObservable = currentMapState.asObservable();
 
-const sample: ReadonlyArray<ReadonlyArray<MapChipType>> = range(0, 20).map((row) => {
-  return range(0, 20).map((col) => {
-    if (row == 0 && col == 0) {
-      return { floor: "floor", walls: { west: "wall", east: "wall", north: "wall", south: "wall" } };
-    }
+const sample: ReadonlyArray<ReadonlyArray<MapChipType>> = range(0, 20).map((_row) => {
+  return range(0, 20).map((_col) => {
     return { floor: "floor", walls: { west: "none", east: "none", north: "none", south: "none" } };
   });
 });
@@ -20,14 +21,27 @@ currentMapState.next({
 });
 
 export function useEditDungeonMapUseCase() {
+  function setSetWall() {
+    editWallState.next("setWall");
+  }
+
+  function setRemoveWall() {
+    editWallState.next("removeWall");
+  }
+
+  function getEditWallState() {
+    return editWallState.value;
+  }
+
   /**
    * マップの対応する座標に全壁(どちらから見ても壁となる壁)
    *
    * @param xIndex
    * @param yIndex
    * @param direction
+   * @param type
    */
-  function setWall(xIndex: number, yIndex: number, direction: DungeonWallDirection) {
+  function setWall(xIndex: number, yIndex: number, direction: DungeonWallDirection, type: MapChipWallType) {
     const backSide = getBackSideWall(xIndex, yIndex, direction);
 
     const nextList = currentMapState.value.mapChipList.map((row, rowIndex) => {
@@ -35,13 +49,13 @@ export function useEditDungeonMapUseCase() {
         // 指定した座標の壁
         if (colIndex == xIndex && rowIndex == yIndex) {
           const nextWalls = { ...col.walls };
-          nextWalls[direction] = "wall";
+          nextWalls[direction] = type;
           return { ...col, walls: nextWalls };
         }
         // 指定した座標の裏側の壁
         if (colIndex == backSide.xIndex && rowIndex == backSide.yIndex) {
           const nextWalls = { ...col.walls };
-          nextWalls[backSide.direction] = "wall";
+          nextWalls[backSide.direction] = type;
           return { ...col, walls: nextWalls };
         }
         return col;
@@ -53,6 +67,9 @@ export function useEditDungeonMapUseCase() {
 
   return {
     currentMapObservable,
+    setSetWall,
+    setRemoveWall,
+    getEditWallState,
     setWall,
   };
 }
