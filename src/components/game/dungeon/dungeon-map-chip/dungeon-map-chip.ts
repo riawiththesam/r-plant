@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { DungeonWall, DungeonWallDirection } from "../dungeon-wall/dungeon-wall";
 import { DungeonFloor } from "../dungeon-floor/dungeon-floor";
-import { MapChipType } from "../../../../types/map-state-types/map-state-types";
+import { MapChipType } from "../../../../types/map-state-types/map-state.types";
 
 export type DungeonMapChipProps = {
   x: number;

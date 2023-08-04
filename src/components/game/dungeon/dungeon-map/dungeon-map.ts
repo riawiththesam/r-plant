@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { DungeonMapChip } from "../dungeon-map-chip/dungeon-map-chip";
-import { MapChipType, MapStateType } from "../../../../types/map-state-types/map-state-types";
+import { MapChipType, MapStateType } from "../../../../types/map-state-types/map-state.types";
 import { DungeonWallDirection } from "../dungeon-wall/dungeon-wall";
 
 const chipSize = 20;

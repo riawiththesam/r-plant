@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import range from "lodash/range";
-import { MapChipType, MapStateType } from "../../types/map-state-types/map-state-types";
+import { MapChipType, MapStateType } from "../../types/map-state-types/map-state.types";
 import { DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
 
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });

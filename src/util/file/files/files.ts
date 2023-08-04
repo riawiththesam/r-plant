@@ -19,5 +19,5 @@ export async function loadFile() {
   const handle = fileHandleList[0];
   const file = await handle.getFile();
   const text = await file.text();
-  console.log(text);
+  return text;
 }
