@@ -1,9 +1,9 @@
-import * as PIXI from "pixi.js";
 import { Button } from "../../components/button/button";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { DungeonScene } from "../dungeon-scene/dungeon-scene";
+import { Scene } from "../../util/pixi/scene/scene";
 
-export class MainScene extends PIXI.Container {
+export class MainScene extends Scene {
   constructor() {
     super();
 

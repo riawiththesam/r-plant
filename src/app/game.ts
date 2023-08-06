@@ -17,7 +17,7 @@ export function startGame() {
     backgroundAlpha: 0,
   };
   const app = new Application(options);
-  app.stage.addChild(new GameRoot());
+  app.stage.addChild(new GameRoot({ app }));
 
   const threeGamrRoot = new ThreeGameRoot();
   threeGamrRoot.run();

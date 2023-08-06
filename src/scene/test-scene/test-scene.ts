@@ -1,7 +1,7 @@
-import * as PIXI from "pixi.js";
 import { Button } from "../../components/button/button";
+import { Scene } from "../../util/pixi/scene/scene";
 
-export class TestScene extends PIXI.Container {
+export class TestScene extends Scene {
   constructor() {
     super();
 

@@ -1,10 +1,10 @@
-import { Container } from "pixi.js";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useEditDungeonMapUseCase } from "../../use-case/edit-dungeon-map-use-case/edit-dungeon-map-use-case";
 import { Button } from "../../components/button/button";
+import { Scene } from "../../util/pixi/scene/scene";
 
-export class EditDungeonScene extends Container {
+export class EditDungeonScene extends Scene {
   constructor() {
     super();
     const {

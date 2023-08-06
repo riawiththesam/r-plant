@@ -1,8 +1,8 @@
-import { Container } from "pixi.js";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useDungeonMapUseCase } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
+import { Scene } from "../../util/pixi/scene/scene";
 
-export class DungeonScene extends Container {
+export class DungeonScene extends Scene {
   constructor() {
     super();
     const { currentMapObservable, loadMap, playerPositionObservable } = useDungeonMapUseCase();
