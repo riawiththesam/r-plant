@@ -6,6 +6,19 @@ import { validateMapStateType } from "../../types/map-state-types/map-state.type
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
 const currentMapObservable = currentMapState.asObservable();
 
+export type PositionInDungeon = {
+  x: number;
+  y: number;
+  direction: "west" | "east" | "north" | "south";
+};
+
+const playerPositionState = new BehaviorSubject<PositionInDungeon>({
+  x: 0,
+  y: 0,
+  direction: "east",
+});
+const playerPositionObservable = playerPositionState.asObservable();
+
 export function useDungeonMapUseCase() {
   async function loadMap() {
     const textJson = await loadFile();
@@ -17,5 +30,6 @@ export function useDungeonMapUseCase() {
   return {
     loadMap,
     currentMapObservable,
+    playerPositionObservable,
   };
 }
