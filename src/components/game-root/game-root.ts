@@ -13,7 +13,8 @@ export class GameRoot extends Container {
   constructor(props: GameRootProps) {
     super();
     const { app } = props;
-    const { sceneObservable, setMouseState, setScene } = useGameUseCase();
+    const { sceneObservable, initializeGame, setScene } = useGameUseCase();
+    initializeGame();
 
     setScene(MainScene.name);
 
@@ -30,12 +31,5 @@ export class GameRoot extends Container {
       sceneSwitcher.startScene(next);
     });
     this.addChild(sceneSwitcher);
-
-    document.addEventListener("pointerdown", () => {
-      setMouseState(true);
-    });
-    document.addEventListener("pointerup", () => {
-      setMouseState(false);
-    });
   }
 }

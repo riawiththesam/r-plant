@@ -7,7 +7,8 @@ export class ToolMainScene extends Scene {
   constructor() {
     super();
 
-    const { setScene } = useGameUseCase();
+    const { initializeGame, setScene } = useGameUseCase();
+    initializeGame();
 
     this.addChild(
       new Button({

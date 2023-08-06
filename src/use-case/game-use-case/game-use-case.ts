@@ -12,6 +12,19 @@ export function useGameUseCase() {
     height: 600,
   };
 
+  function initializeGame() {
+    function setMouseState(mouseDown: boolean) {
+      const current = mouseState.value;
+      mouseState.next({ ...current, mouseDown });
+    }
+    document.addEventListener("pointerdown", () => {
+      setMouseState(true);
+    });
+    document.addEventListener("pointerup", () => {
+      setMouseState(false);
+    });
+  }
+
   function getMouse() {
     return mouseState.value;
   }
@@ -20,17 +33,11 @@ export function useGameUseCase() {
     sceneState.next(name);
   }
 
-  function setMouseState(mouseDown: boolean) {
-    const current = mouseState.value;
-    mouseState.next({ ...current, mouseDown });
-  }
-
   return {
     gameConfig,
     sceneObservable,
     mouseObservable,
-    getMouse,
+    initializeGame,
     setScene,
-    setMouseState,
   };
 }
