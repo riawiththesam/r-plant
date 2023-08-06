@@ -1,13 +1,13 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 
-export type SceneFactory = () => PIXI.Container;
+export type SceneFactory = () => Container;
 
 export type SceneSwitcherProps = {
   sceneList: ReadonlyArray<[string, SceneFactory]>;
 };
 
-export class SceneSwitcher extends PIXI.Container {
-  private currentScene: PIXI.Container | undefined;
+export class SceneSwitcher extends Container {
+  private currentScene: Container | undefined;
   private sceneMap: ReadonlyMap<string, SceneFactory>;
 
   constructor(props: SceneSwitcherProps) {
