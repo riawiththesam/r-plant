@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
 import { MainScene } from "../../scene/main-scene/main-scene";
 import { DungeonScene } from "../../scene/dungeon-scene/dungeon-scene";
 import { TestScene } from "../../scene/test-scene/test-scene";
 import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
+import { Container } from "pixi.js";
 
-export class GameRoot extends PIXI.Container {
+export class GameRoot extends Container {
   constructor() {
     super();
     const { sceneObservable, setMouseState, setScene } = useGameUseCase();

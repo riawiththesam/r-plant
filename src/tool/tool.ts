@@ -1,7 +1,7 @@
-import * as PIXI from "pixi.js";
 import { useGameUseCase } from "../use-case/game-use-case/game-use-case";
 import { ThreeGameRoot } from "../three-components/three-game-root/three-game-root";
 import { ToolRoot } from "../components/tool-root/tool-root";
+import { Application, IApplicationOptions } from "pixi.js";
 
 export function startGame() {
   const { gameConfig } = useGameUseCase();
@@ -10,13 +10,13 @@ export function startGame() {
   const canvas = document.querySelector("#pixi") as HTMLCanvasElement;
   if (canvasContainer == null || canvas == null) return;
 
-  const options: Partial<PIXI.IApplicationOptions> = {
+  const options: Partial<IApplicationOptions> = {
     width: gameConfig.width,
     height: gameConfig.height,
     view: canvas,
     backgroundAlpha: 0,
   };
-  const app = new PIXI.Application(options);
+  const app = new Application(options);
   app.stage.addChild(new ToolRoot());
 
   const threeGamrRoot = new ThreeGameRoot();
