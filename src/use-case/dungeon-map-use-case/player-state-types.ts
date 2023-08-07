@@ -1,6 +1,7 @@
 import { PositionInDungeon, moveForwardPositionInDungeon, turnPositionInDungeon } from "./position-in-dungeon-types";
 
-type PlayerMoveType = "stop" | "move";
+const playerMoveTypes = ["stop", "moveForward", "turnLeft", "turnRight"];
+type PlayerMoveType = (typeof playerMoveTypes)[number];
 
 export type PlayerStateType = {
   moveState: {
@@ -22,11 +23,16 @@ export const defaultPlayerStateType: PlayerStateType = {
   },
 };
 
+const movingType = ["moveForward", "turnLeft", "turnRight"] as const;
+export function playerIsMoving(playerState: PlayerStateType): boolean {
+  return movingType.some((value) => value == playerState.moveState.state);
+}
+
 export function startMoveForwardPlayer(playerState: PlayerStateType): PlayerStateType {
   const nextPosition = moveForwardPositionInDungeon(playerState.position);
   return {
     moveState: {
-      state: "move",
+      state: "moveForward",
       delta: 0,
     },
     position: nextPosition,
@@ -37,7 +43,7 @@ export function startTurnPlayer(playerState: PlayerStateType, turn: "right" | "l
   const nextPosition = turnPositionInDungeon(turn, playerState.position);
   return {
     moveState: {
-      state: "move",
+      state: turn == "right" ? "turnRight" : "turnLeft",
       delta: 0,
     },
     position: nextPosition,

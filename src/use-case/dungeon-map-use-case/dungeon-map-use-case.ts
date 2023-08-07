@@ -6,6 +6,7 @@ import { useGameUseCase } from "../game-use-case/game-use-case";
 import {
   PlayerStateType,
   defaultPlayerStateType,
+  playerIsMoving,
   startMoveForwardPlayer,
   startTurnPlayer,
   updatePlayerMoveState,
@@ -31,7 +32,7 @@ export function useDungeonMapUseCase() {
     const keyBoard = gameUseCase.getKeyBoard();
 
     // 移動中
-    if (playerStateSubject.value.moveState.state == "move") {
+    if (playerIsMoving(playerStateSubject.value)) {
       playerStateSubject.next(updatePlayerMoveState(playerStateSubject.value, delta));
       return;
     }
