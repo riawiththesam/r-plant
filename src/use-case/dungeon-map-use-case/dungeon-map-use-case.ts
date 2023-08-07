@@ -2,26 +2,27 @@ import { BehaviorSubject } from "rxjs";
 import { MapStateType } from "../../types/map-state-types/map-state.types";
 import { loadFile } from "../../util/file/files/files";
 import { validateMapStateType } from "../../types/map-state-types/map-state.types.validator";
-import { KeyboardStateType } from "../game-use-case/game-use-case";
+import { useGameUseCase } from "../game-use-case/game-use-case";
+import { PositionInDungeon, moveForwardPositionInDungeon } from "./position-in-dungeon-types";
 
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
 const currentMapObservable = currentMapState.asObservable();
 
-export type PositionInDungeon = {
-  x: number;
-  y: number;
-  direction: "west" | "east" | "north" | "south";
-};
-
-type PlayerMoveStateType = "stop" | "move";
+type PlayerMoveType = "stop" | "move";
 
 type PlayerStateType = {
-  moveState: PlayerMoveStateType;
+  moveState: {
+    state: PlayerMoveType;
+    delta: number;
+  };
   position: PositionInDungeon;
 };
 
 const playerStateSubject = new BehaviorSubject<PlayerStateType>({
-  moveState: "stop",
+  moveState: {
+    state: "stop",
+    delta: 0,
+  },
   position: {
     x: 0,
     y: 0,
@@ -31,6 +32,8 @@ const playerStateSubject = new BehaviorSubject<PlayerStateType>({
 const playerStateObservable = playerStateSubject.asObservable();
 
 export function useDungeonMapUseCase() {
+  const gameUseCase = useGameUseCase();
+
   async function loadMap() {
     const textJson = await loadFile();
     const json = JSON.parse(textJson);
@@ -38,13 +41,47 @@ export function useDungeonMapUseCase() {
     currentMapState.next(next);
   }
 
-  function updatePlayer(keyBoard: KeyboardStateType) {
-    const current = playerStateSubject.value.position;
+  function updatePlayer(delta: number) {
+    const keyBoard = gameUseCase.getKeyBoard();
+
+    const currentMoveStateDelta = playerStateSubject.value.moveState.delta + delta;
+
+    // 移動中
+    if (playerStateSubject.value.moveState.state == "move") {
+      if (currentMoveStateDelta < 20) {
+        // 20フレーム(1/3秒)まではdeltaだけを更新
+        const current = playerStateSubject.value;
+        playerStateSubject.next({
+          ...current,
+          moveState: {
+            ...current.moveState,
+            delta: currentMoveStateDelta,
+          },
+        });
+      } else {
+        // 移動完了
+        const current = playerStateSubject.value;
+        playerStateSubject.next({
+          ...current,
+          moveState: {
+            ...current.moveState,
+            state: "stop",
+            delta: 0,
+          },
+        });
+      }
+      return;
+    }
+
     if (keyBoard.w) {
-      const next = moveForwardPositionInDungeon(current);
+      const current = playerStateSubject.value;
+      const nextPosition = moveForwardPositionInDungeon(current.position);
       playerStateSubject.next({
-        moveState: "stop",
-        position: next,
+        moveState: {
+          state: "move",
+          delta: 0,
+        },
+        position: nextPosition,
       });
     }
   }
@@ -55,33 +92,4 @@ export function useDungeonMapUseCase() {
     playerStateObservable,
     updatePlayer,
   };
-}
-
-function moveForwardPositionInDungeon(posision: PositionInDungeon): PositionInDungeon {
-  switch (posision.direction) {
-    case "west": {
-      return {
-        ...posision,
-        x: posision.x - 1,
-      };
-    }
-    case "east": {
-      return {
-        ...posision,
-        x: posision.x + 1,
-      };
-    }
-    case "north": {
-      return {
-        ...posision,
-        x: posision.x - 1,
-      };
-    }
-    case "south": {
-      return {
-        ...posision,
-        x: posision.x + 1,
-      };
-    }
-  }
 }
