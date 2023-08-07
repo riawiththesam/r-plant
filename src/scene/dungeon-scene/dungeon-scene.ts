@@ -16,7 +16,7 @@ export class DungeonScene extends Scene {
       dungeonMap.setMap(state);
     });
     playerStateObservable.subscribe((state) => {
-      dungeonMap.setPlayerState(state.position);
+      dungeonMap.setPlayerState(state);
     });
 
     this.updateEvent.subscribe((event) => {

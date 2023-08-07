@@ -14,7 +14,8 @@ export class ToolRoot extends Container {
   constructor(props: ToolRootProps) {
     super();
     const { app } = props;
-    const { sceneObservable, setMouseState, setScene } = useGameUseCase();
+    const { initializeGame, sceneObservable, setScene } = useGameUseCase();
+    initializeGame();
 
     setScene(ToolMainScene.name);
 
@@ -32,12 +33,5 @@ export class ToolRoot extends Container {
       sceneSwitcher.startScene(next);
     });
     this.addChild(sceneSwitcher);
-
-    document.addEventListener("pointerdown", () => {
-      setMouseState(true);
-    });
-    document.addEventListener("pointerup", () => {
-      setMouseState(false);
-    });
   }
 }

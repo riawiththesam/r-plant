@@ -71,6 +71,7 @@ export function useGameUseCase() {
     mouseObservable,
     initializeGame,
     getKeyBoard,
+    getMouse,
     setScene,
   };
 }

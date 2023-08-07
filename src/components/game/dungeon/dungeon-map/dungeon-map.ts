@@ -3,7 +3,7 @@ import { MapChipType, MapStateType } from "../../../../types/map-state-types/map
 import { DungeonWallDirection } from "../dungeon-wall/dungeon-wall";
 import { DungeonPlayerIcon } from "../../../../scene/dungeon-scene/dungeon-player-icon";
 import { Container, Graphics } from "pixi.js";
-import { PositionInDungeon } from "../../../../use-case/dungeon-map-use-case/dungeon-map-use-case";
+import { PlayerStateType } from "../../../../use-case/dungeon-map-use-case/player-state-types";
 
 const chipSize = 20;
 const wallLineWidth = 4;
@@ -47,8 +47,8 @@ export class DungeonMap extends Container {
     });
   }
 
-  setPlayerState(position: PositionInDungeon) {
-    this.playerIcon.setState(position);
+  setPlayerState(state: PlayerStateType) {
+    this.playerIcon.setState(state);
   }
 }
 
