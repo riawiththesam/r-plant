@@ -29,20 +29,20 @@ export class DungeonPlayerIcon extends Container {
   }
 
   setState(state: PlayerStateType) {
-    const animated = getAnimatedRate(state);
+    const animated = getAnimatedGraphicsState(state, this.props.chipSize);
 
-    this.x = this.props.chipSize * state.position.x + this.props.chipSize * animated.x;
-    this.y = this.props.chipSize * state.position.y + this.props.chipSize * animated.y;
+    this.x = this.props.chipSize * state.position.x + animated.x;
+    this.y = this.props.chipSize * state.position.y + animated.y;
     this.graphics.rotation = animated.rotation;
   }
 }
 
-type GetAnimatedRateResult = {
+type GetAnimatedGraphicsState = {
   x: number;
   y: number;
   rotation: number;
 };
-function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
+function getAnimatedGraphicsState(state: PlayerStateType, chipSize: number): GetAnimatedGraphicsState {
   // state.moveState.deltaの値から導かれたアニメーションの状態 1-0
   // アニメーションが始まった直後ほど値が大きくなる
   const animationRate = (20 - state.moveState.delta) / 20;
@@ -54,7 +54,7 @@ function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
       switch (state.position.direction) {
         case "east": {
           return {
-            x: -animationRate,
+            x: -animationRate * chipSize,
             y: 0,
             rotation: directionRadianMap[state.position.direction],
           };
@@ -62,13 +62,13 @@ function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
         case "south": {
           return {
             x: 0,
-            y: -animationRate,
+            y: -animationRate * chipSize,
             rotation: directionRadianMap[state.position.direction],
           };
         }
         case "west": {
           return {
-            x: animationRate,
+            x: animationRate * chipSize,
             y: 0,
             rotation: directionRadianMap[state.position.direction],
           };
@@ -76,7 +76,7 @@ function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
         case "north": {
           return {
             x: 0,
-            y: animationRate,
+            y: animationRate * chipSize,
             rotation: directionRadianMap[state.position.direction],
           };
         }
