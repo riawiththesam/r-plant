@@ -43,3 +43,28 @@ export function startTurnPlayer(playerState: PlayerStateType, turn: "right" | "l
     position: nextPosition,
   };
 }
+
+export function updatePlayerMoveState(playerState: PlayerStateType, delta: number): PlayerStateType {
+  const currentMoveStateDelta = playerState.moveState.delta + delta;
+
+  if (currentMoveStateDelta < 20) {
+    // 20フレーム(1/3秒)まではdeltaだけを更新
+    return {
+      ...playerState,
+      moveState: {
+        ...playerState.moveState,
+        delta: currentMoveStateDelta,
+      },
+    };
+  } else {
+    // 移動完了
+    return {
+      ...playerState,
+      moveState: {
+        ...playerState.moveState,
+        state: "stop",
+        delta: 0,
+      },
+    };
+  }
+}
