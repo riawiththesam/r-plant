@@ -24,7 +24,7 @@ export class DungeonPlayerIcon extends Container {
     this.graphics.x = this.props.chipSize / 2;
     this.graphics.y = this.props.chipSize / 2;
     this.graphics.beginFill(new Color({ r: 0, g: 255, b: 255 }));
-    this.graphics.drawPolygon([0, -chipSize / 2, chipSize / 2, chipSize / 2, -chipSize / 2, chipSize / 2]);
+    this.graphics.drawPolygon([0, -chipSize / 2, chipSize / 3, chipSize / 2, -chipSize / 3, chipSize / 2]);
     this.addChild(this.graphics);
   }
 
@@ -33,41 +33,69 @@ export class DungeonPlayerIcon extends Container {
 
     this.x = this.props.chipSize * state.position.x + this.props.chipSize * animated.x;
     this.y = this.props.chipSize * state.position.y + this.props.chipSize * animated.y;
-    this.graphics.rotation = directionRadianMap[state.position.direction];
+    this.graphics.rotation = animated.rotation;
   }
 }
 
 type GetAnimatedRateResult = {
   x: number;
   y: number;
+  rotation: number;
 };
 function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
-  if (state.moveState.state != "moveForward") return { x: 0, y: 0 };
-
+  // state.moveState.deltaの値から導かれたアニメーションの状態 1-0
+  // アニメーションが始まった直後ほど値が大きくなる
   const animationRate = (20 - state.moveState.delta) / 20;
-  switch (state.position.direction) {
-    case "east": {
-      return {
-        x: -animationRate,
-        y: 0,
-      };
+  switch (state.moveState.state) {
+    case "stop": {
+      return { x: 0, y: 0, rotation: directionRadianMap[state.position.direction] };
     }
-    case "south": {
+    case "moveForward": {
+      switch (state.position.direction) {
+        case "east": {
+          return {
+            x: -animationRate,
+            y: 0,
+            rotation: directionRadianMap[state.position.direction],
+          };
+        }
+        case "south": {
+          return {
+            x: 0,
+            y: -animationRate,
+            rotation: directionRadianMap[state.position.direction],
+          };
+        }
+        case "west": {
+          return {
+            x: animationRate,
+            y: 0,
+            rotation: directionRadianMap[state.position.direction],
+          };
+        }
+        case "north": {
+          return {
+            x: 0,
+            y: animationRate,
+            rotation: directionRadianMap[state.position.direction],
+          };
+        }
+      }
+    }
+    case "turnLeft": {
+      const targetRadian = directionRadianMap[state.position.direction];
       return {
         x: 0,
-        y: -animationRate,
-      };
-    }
-    case "west": {
-      return {
-        x: animationRate,
         y: 0,
+        rotation: targetRadian + (animationRate * Math.PI) / 2,
       };
     }
-    case "north": {
+    case "turnRight": {
+      const targetRadian = directionRadianMap[state.position.direction];
       return {
         x: 0,
-        y: animationRate,
+        y: 0,
+        rotation: targetRadian - (animationRate * Math.PI) / 2,
       };
     }
   }
