@@ -21,16 +21,16 @@ export class DungeonPlayerIcon extends Container {
     super();
     const { chipSize } = props;
     this.graphics = new Graphics();
+    this.graphics.x = this.props.chipSize / 2;
+    this.graphics.y = this.props.chipSize / 2;
     this.graphics.beginFill(new Color({ r: 0, g: 255, b: 255 }));
     this.graphics.drawPolygon([0, -chipSize / 2, chipSize / 2, chipSize / 2, -chipSize / 2, chipSize / 2]);
     this.addChild(this.graphics);
   }
 
   setState(state: PlayerStateType) {
-    const xCenter = this.props.chipSize / 2;
-    const yCenter = this.props.chipSize / 2;
-    this.x = this.props.chipSize * state.position.x + xCenter;
-    this.y = this.props.chipSize * state.position.y + yCenter;
+    this.x = this.props.chipSize * state.position.x;
+    this.y = this.props.chipSize * state.position.y;
     this.graphics.rotation = directionRadianMap[state.position.direction];
   }
 }
