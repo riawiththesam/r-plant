@@ -1,4 +1,5 @@
 import { Color, Container, Graphics } from "pixi.js";
+import { PositionInDungeon } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
 
 export type Direction = "west" | "east" | "north" | "south";
 
@@ -25,11 +26,11 @@ export class DungeonPlayerIcon extends Container {
     this.addChild(this.graphics);
   }
 
-  setState(xIndex: number, yIndex: number, direction: Direction) {
+  setState(position: PositionInDungeon) {
     const xCenter = this.props.chipSize / 2;
     const yCenter = this.props.chipSize / 2;
-    this.x = this.props.chipSize * xIndex + xCenter;
-    this.y = this.props.chipSize * yIndex + yCenter;
-    this.graphics.rotation = directionRadianMap[direction];
+    this.x = this.props.chipSize * position.x + xCenter;
+    this.y = this.props.chipSize * position.y + yCenter;
+    this.graphics.rotation = directionRadianMap[position.direction];
   }
 }

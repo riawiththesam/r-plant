@@ -17,7 +17,7 @@ export class DungeonScene extends Scene {
       dungeonMap.setMap(state);
     });
     playerPositionObservable.subscribe((state) => {
-      dungeonMap.setPlayerState(0, 0, "west");
+      dungeonMap.setPlayerState(state);
     });
 
     loadMap();
@@ -25,6 +25,8 @@ export class DungeonScene extends Scene {
 
   override onUpdate(_delta: number): void {
     const { getKeyBoard } = useGameUseCase();
-    getKeyBoard();
+    const { updatePlayer } = useDungeonMapUseCase();
+
+    updatePlayer(getKeyBoard());
   }
 }

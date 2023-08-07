@@ -8,10 +8,10 @@ const mouseObservable = mouseState.asObservable();
 
 const gameKeyTypes = ["w", "a", "s", "d"] as const;
 type GameKeyType = (typeof gameKeyTypes)[number];
-type KeyBoardStateType = {
+export type KeyboardStateType = {
   [key in GameKeyType]: boolean;
 };
-const keyBoardState = new BehaviorSubject<KeyBoardStateType>({
+const keyBoardState = new BehaviorSubject<KeyboardStateType>({
   w: false,
   a: false,
   s: false,
