@@ -1,6 +1,6 @@
 import { PositionInDungeon, moveForwardPositionInDungeon, turnPositionInDungeon } from "./position-in-dungeon-types";
 
-const playerMoveTypes = ["stop", "moveForward", "turnLeft", "turnRight"];
+const playerMoveTypes = ["stop", "moveForward", "turnLeft", "turnRight"] as const;
 type PlayerMoveType = (typeof playerMoveTypes)[number];
 
 export type PlayerStateType = {

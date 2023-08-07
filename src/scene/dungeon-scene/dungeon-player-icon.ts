@@ -29,8 +29,46 @@ export class DungeonPlayerIcon extends Container {
   }
 
   setState(state: PlayerStateType) {
-    this.x = this.props.chipSize * state.position.x;
-    this.y = this.props.chipSize * state.position.y;
+    const animated = getAnimatedRate(state);
+
+    this.x = this.props.chipSize * state.position.x + this.props.chipSize * animated.x;
+    this.y = this.props.chipSize * state.position.y + this.props.chipSize * animated.y;
     this.graphics.rotation = directionRadianMap[state.position.direction];
+  }
+}
+
+type GetAnimatedRateResult = {
+  x: number;
+  y: number;
+};
+function getAnimatedRate(state: PlayerStateType): GetAnimatedRateResult {
+  if (state.moveState.state != "moveForward") return { x: 0, y: 0 };
+
+  const animationRate = (20 - state.moveState.delta) / 20;
+  switch (state.position.direction) {
+    case "east": {
+      return {
+        x: -animationRate,
+        y: 0,
+      };
+    }
+    case "south": {
+      return {
+        x: 0,
+        y: -animationRate,
+      };
+    }
+    case "west": {
+      return {
+        x: animationRate,
+        y: 0,
+      };
+    }
+    case "north": {
+      return {
+        x: 0,
+        y: animationRate,
+      };
+    }
   }
 }
