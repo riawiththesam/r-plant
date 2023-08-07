@@ -13,12 +13,22 @@ export type PositionInDungeon = {
   direction: "west" | "east" | "north" | "south";
 };
 
-const playerPositionState = new BehaviorSubject<PositionInDungeon>({
-  x: 0,
-  y: 0,
-  direction: "east",
+type PlayerMoveStateType = "stop" | "move";
+
+type PlayerStateType = {
+  moveState: PlayerMoveStateType;
+  position: PositionInDungeon;
+};
+
+const playerStateSubject = new BehaviorSubject<PlayerStateType>({
+  moveState: "stop",
+  position: {
+    x: 0,
+    y: 0,
+    direction: "east",
+  },
 });
-const playerPositionObservable = playerPositionState.asObservable();
+const playerStateObservable = playerStateSubject.asObservable();
 
 export function useDungeonMapUseCase() {
   async function loadMap() {
@@ -29,17 +39,20 @@ export function useDungeonMapUseCase() {
   }
 
   function updatePlayer(keyBoard: KeyboardStateType) {
-    const current = playerPositionState.value;
+    const current = playerStateSubject.value.position;
     if (keyBoard.w) {
       const next = moveForwardPositionInDungeon(current);
-      playerPositionState.next(next);
+      playerStateSubject.next({
+        moveState: "stop",
+        position: next,
+      });
     }
   }
 
   return {
     loadMap,
     currentMapObservable,
-    playerPositionObservable,
+    playerStateObservable,
     updatePlayer,
   };
 }

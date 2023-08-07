@@ -6,7 +6,7 @@ import { Scene } from "../../util/pixi/scene/scene";
 export class DungeonScene extends Scene {
   constructor() {
     super();
-    const { currentMapObservable, loadMap, playerPositionObservable, updatePlayer } = useDungeonMapUseCase();
+    const { currentMapObservable, loadMap, playerStateObservable, updatePlayer } = useDungeonMapUseCase();
     const { getKeyBoard } = useGameUseCase();
 
     const dungeonMap = new DungeonMap({
@@ -17,8 +17,8 @@ export class DungeonScene extends Scene {
     currentMapObservable.subscribe((state) => {
       dungeonMap.setMap(state);
     });
-    playerPositionObservable.subscribe((state) => {
-      dungeonMap.setPlayerState(state);
+    playerStateObservable.subscribe((state) => {
+      dungeonMap.setPlayerState(state.position);
     });
 
     this.updateEvent.subscribe((_) => {
