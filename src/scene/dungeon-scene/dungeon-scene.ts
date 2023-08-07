@@ -1,5 +1,6 @@
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useDungeonMapUseCase } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
+import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { Scene } from "../../util/pixi/scene/scene";
 
 export class DungeonScene extends Scene {
@@ -20,5 +21,10 @@ export class DungeonScene extends Scene {
     });
 
     loadMap();
+  }
+
+  override onUpdate(_delta: number): void {
+    const { getKeyBoard } = useGameUseCase();
+    getKeyBoard();
   }
 }

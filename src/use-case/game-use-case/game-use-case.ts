@@ -6,6 +6,18 @@ const sceneObservable = sceneState.asObservable();
 const mouseState = new BehaviorSubject({ mouseDown: false });
 const mouseObservable = mouseState.asObservable();
 
+const gameKeyTypes = ["w", "a", "s", "d"] as const;
+type GameKeyType = (typeof gameKeyTypes)[number];
+type KeyBoardStateType = {
+  [key in GameKeyType]: boolean;
+};
+const keyBoardState = new BehaviorSubject<KeyBoardStateType>({
+  w: false,
+  a: false,
+  s: false,
+  d: false,
+});
+
 export function useGameUseCase() {
   const gameConfig = {
     width: 800,
@@ -23,6 +35,26 @@ export function useGameUseCase() {
     document.addEventListener("pointerup", () => {
       setMouseState(false);
     });
+    document.addEventListener("keydown", (ev) => {
+      const next = {
+        ...keyBoardState.value,
+        [ev.key]: true,
+      };
+
+      keyBoardState.next(next);
+    });
+    document.addEventListener("keyup", (ev) => {
+      const next = {
+        ...keyBoardState.value,
+        [ev.key]: false,
+      };
+
+      keyBoardState.next(next);
+    });
+  }
+
+  function getKeyBoard() {
+    return keyBoardState.value;
   }
 
   function getMouse() {
@@ -38,6 +70,7 @@ export function useGameUseCase() {
     sceneObservable,
     mouseObservable,
     initializeGame,
+    getKeyBoard,
     setScene,
   };
 }
