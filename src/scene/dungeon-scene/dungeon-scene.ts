@@ -5,7 +5,8 @@ import { Scene } from "../../util/pixi/scene/scene";
 export class DungeonScene extends Scene {
   constructor() {
     super();
-    const { currentMapObservable, loadMap, playerStateObservable, updatePlayer } = useDungeonMapUseCase();
+    const { currentMapObservable, loadMap, playerStateObservable, eventOnEncountEnemyObservable, updatePlayer } =
+      useDungeonMapUseCase();
 
     const dungeonMap = new DungeonMap({
       x: 50,
@@ -17,6 +18,9 @@ export class DungeonScene extends Scene {
     });
     playerStateObservable.subscribe((state) => {
       dungeonMap.setPlayerState(state);
+    });
+    eventOnEncountEnemyObservable.subscribe((event) => {
+      console.log("encount");
     });
 
     this.updateEvent.subscribe((event) => {
