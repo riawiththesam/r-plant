@@ -11,6 +11,7 @@ import {
   startTurnPlayer,
   updatePlayerMoveState,
 } from "./player-state-types";
+import { canMoveForward } from "../../types/map-state-types/map-state-type-extensions";
 
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
 const currentMapObservable = currentMapState.asObservable();
@@ -38,7 +39,8 @@ export function useDungeonMapUseCase() {
     }
 
     if (keyBoard.w) {
-      playerStateSubject.next(startMoveForwardPlayer(playerStateSubject.value));
+      if (canMoveForward(playerStateSubject.value.position, currentMapState.value))
+        playerStateSubject.next(startMoveForwardPlayer(playerStateSubject.value));
       return;
     }
 

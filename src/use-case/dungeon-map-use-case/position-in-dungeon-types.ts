@@ -38,7 +38,8 @@ export function moveForwardPositionInDungeon(position: PositionInDungeon): Posit
 
 export function turnPositionInDungeon(turn: "right" | "left", position: PositionInDungeon): PositionInDungeon {
   const directionIndex = directionInDungeonTypes.findIndex((value) => value == position.direction);
-  const nextIndex = directionIndex + (turn == "right" ? 1 : -1);
+  // 右のときは1を足す、左のときは1回転して1減らすので+4-1で3足す
+  const nextIndex = (directionIndex + (turn == "right" ? 1 : 3)) % directionInDungeonTypes.length;
   const nextDirection = directionInDungeonTypes[nextIndex] || "east";
 
   return {
