@@ -16,15 +16,24 @@ export abstract class Scene extends Container {
   private updateEventSubject = new BehaviorSubject<UpdateEventType>({ type: "update", delta: 0 });
   updateEvent = this.updateEventSubject.asObservable();
 
-  onUpdate(delta: number) {
+  __update(delta: number) {
     this.updateEventSubject.next({ type: "update", delta });
+    this.onUpdate(delta);
   }
 
-  onCreate() {
+  onUpdate(_delta: number) {}
+
+  __craete() {
     this.unsubscribeOnDestroy = new Subscription();
+    this.onCreate();
   }
 
-  onDestroy() {
+  onCreate() {}
+
+  __destroy() {
     this.unsubscribeOnDestroy?.unsubscribe();
+    this.onDestroy();
   }
+
+  onDestroy() {}
 }

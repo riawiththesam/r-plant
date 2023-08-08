@@ -18,21 +18,21 @@ export class SceneSwitcher extends Container {
     this.sceneMap = new Map(Object.values(sceneList));
 
     app.ticker.add((delta) => {
-      this.currentScene && this.currentScene.onUpdate(delta);
+      this.currentScene && this.currentScene.__update(delta);
     });
   }
 
   startScene(name: string) {
     if (this.currentScene != null) {
       this.removeChild(this.currentScene);
-      this.currentScene.onDestroy();
+      this.currentScene.__destroy();
       this.currentScene = undefined;
     }
 
     const factory = this.sceneMap.get(name);
     if (factory == null) return;
     this.currentScene = factory();
-    this.currentScene.onCreate();
+    this.currentScene.__craete();
     this.addChild(this.currentScene);
   }
 }
