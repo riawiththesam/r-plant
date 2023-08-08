@@ -1,5 +1,9 @@
 import { MapStateType } from "../../types/map-state-types/map-state.types";
-import { EnemyListState } from "./dungeon-map-use-case";
+import { PositionInDungeon } from "./position-in-dungeon-types";
+
+type EnemyListState = {
+  list: ReadonlyArray<PositionInDungeon>;
+};
 
 export const enemyListSample: EnemyListState = {
   list: [

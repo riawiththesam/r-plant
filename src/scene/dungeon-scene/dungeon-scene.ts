@@ -1,32 +1,31 @@
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
-import { useDungeonMapUseCase } from "../../use-case/dungeon-map-use-case/dungeon-map-use-case";
 import { Scene } from "../../util/pixi/scene/scene";
+import { DungeonSceneViewModel } from "./dungeon-scene-view-model";
 
 export class DungeonScene extends Scene {
   constructor() {
     super();
-    const { currentMapObservable, loadMap, playerStateObservable, eventOnEncountEnemyObservable, updatePlayer } =
-      useDungeonMapUseCase();
+    const viewModel = new DungeonSceneViewModel();
 
     const dungeonMap = new DungeonMap({
       x: 50,
       y: 50,
     });
     this.addChild(dungeonMap);
-    currentMapObservable.subscribe((state) => {
+    viewModel.currentMapObservable.subscribe((state) => {
       dungeonMap.setMap(state);
     });
-    playerStateObservable.subscribe((state) => {
+    viewModel.playerStateObservable.subscribe((state) => {
       dungeonMap.setPlayerState(state);
     });
-    eventOnEncountEnemyObservable.subscribe((event) => {
+    viewModel.eventOnEncountEnemyObservable.subscribe((_event) => {
       console.log("encount");
     });
 
     this.updateEvent.subscribe((event) => {
-      updatePlayer(event.delta);
+      viewModel.updatePlayer(event.delta);
     });
 
-    loadMap();
+    viewModel.loadMap();
   }
 }
