@@ -7,9 +7,9 @@ import {
   startMoveForwardPlayer,
   startTurnPlayer,
   updatePlayerMoveState,
-} from "../../use-case/dungeon-map-use-case/player-state-types";
-import { PositionInDungeon } from "../../use-case/dungeon-map-use-case/position-in-dungeon-types";
-import { enemyListSample, mapSample } from "../../use-case/dungeon-map-use-case/dungeon-map-sample";
+} from "../../types/player-state-types/player-state-types";
+import { PositionInDungeon } from "../../types/position-in-dungeon-types/position-in-dungeon-types";
+import { enemyListSample, mapSample } from "./dungeon-map-sample";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { canMoveForward } from "../../types/map-state-types/map-state-type-extensions";
 

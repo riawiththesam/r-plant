@@ -1,5 +1,5 @@
 import { MapStateType } from "../../types/map-state-types/map-state.types";
-import { PositionInDungeon } from "./position-in-dungeon-types";
+import { PositionInDungeon } from "../../types/position-in-dungeon-types/position-in-dungeon-types";
 
 type EnemyListState = {
   list: ReadonlyArray<PositionInDungeon>;

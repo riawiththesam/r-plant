@@ -1,5 +1,5 @@
 import { Color, Container, Graphics } from "pixi.js";
-import { PlayerStateType } from "../../use-case/dungeon-map-use-case/player-state-types";
+import { PlayerStateType } from "../../types/player-state-types/player-state-types";
 
 export type Direction = "west" | "east" | "north" | "south";
 
