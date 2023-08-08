@@ -1,13 +1,11 @@
 import { Button } from "../../components/button/button";
-import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { DungeonScene } from "../dungeon-scene/dungeon-scene";
 import { Scene } from "../../util/pixi/scene/scene";
+import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export class MainScene extends Scene {
-  constructor() {
+  constructor(gameRootViewModel: GameRootViewModel) {
     super();
-
-    const { setScene } = useGameUseCase();
 
     this.addChild(
       new Button({
@@ -17,7 +15,7 @@ export class MainScene extends Scene {
         height: 50,
         text: "text",
         onClick: () => {
-          setScene(DungeonScene.name);
+          gameRootViewModel.setScene(DungeonScene.name);
         },
       }),
     );

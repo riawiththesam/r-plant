@@ -10,9 +10,9 @@ import {
 } from "../../types/player-state-types/player-state-types";
 import { PositionInDungeon } from "../../types/position-in-dungeon-types/position-in-dungeon-types";
 import { enemyListSample, mapSample } from "./dungeon-map-sample";
-import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { canMoveForward } from "../../types/map-state-types/map-state-type-extensions";
 import { BattleScene } from "../battle-scene/battle-scene";
+import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export type EnemyListState = {
   list: ReadonlyArray<PositionInDungeon>;
@@ -32,7 +32,7 @@ export class DungeonSceneViewModel {
   private eventOnEncountEnemySubject = new Subject<EventEncountEnemyType>();
   eventOnEncountEnemyObservable = this.eventOnEncountEnemySubject.asObservable();
 
-  private gameUseCase = useGameUseCase();
+  constructor(private gameRootViewModel: GameRootViewModel) {}
 
   async loadMap() {
     /*
@@ -47,7 +47,7 @@ export class DungeonSceneViewModel {
   }
 
   updatePlayer(delta: number) {
-    const keyBoard = this.gameUseCase.getKeyBoard();
+    const keyBoard = this.gameRootViewModel.getKeyBoard();
 
     // 移動中
     if (playerIsMoving(this.playerStateSubject.value)) {
@@ -62,7 +62,7 @@ export class DungeonSceneViewModel {
         );
         if (encountedEnemy != null) {
           this.eventOnEncountEnemySubject.next({});
-          this.gameUseCase.setScene(BattleScene.name);
+          this.gameRootViewModel.setScene(BattleScene.name);
         }
       }
 

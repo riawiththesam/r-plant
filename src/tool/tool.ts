@@ -1,11 +1,9 @@
-import { useGameUseCase } from "../use-case/game-use-case/game-use-case";
 import { ThreeGameRoot } from "../three-components/three-game-root/three-game-root";
 import { ToolRoot } from "../components/tool-root/tool-root";
 import { Application, IApplicationOptions } from "pixi.js";
+import { gameConfig } from "../common/game-config";
 
 export function startGame() {
-  const { gameConfig } = useGameUseCase();
-
   const canvasContainer = document.querySelector("#canvasContainer");
   const canvas = document.querySelector("#pixi") as HTMLCanvasElement;
   if (canvasContainer == null || canvas == null) return;

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
+import { gameConfig } from "../../common/game-config";
 
 export class DungeonBackgroundThreeScene extends THREE.Scene {
   private renderer: THREE.WebGLRenderer;
@@ -8,7 +8,6 @@ export class DungeonBackgroundThreeScene extends THREE.Scene {
 
   constructor(canvas: HTMLCanvasElement) {
     super();
-    const { gameConfig } = useGameUseCase();
 
     this.renderer = new THREE.WebGLRenderer({ canvas: canvas });
     this.camera = new THREE.PerspectiveCamera(75, gameConfig.width / gameConfig.height, 0.1, 1000);

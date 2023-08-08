@@ -1,11 +1,11 @@
-import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { useEditDungeonMapUseCase } from "../../use-case/edit-dungeon-map-use-case/edit-dungeon-map-use-case";
 import { Button } from "../../components/button/button";
 import { Scene } from "../../util/pixi/scene/scene";
+import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export class EditDungeonScene extends Scene {
-  constructor() {
+  constructor(gameRootViewModel: GameRootViewModel) {
     super();
     const {
       currentMapObservable,
@@ -17,7 +17,6 @@ export class EditDungeonScene extends Scene {
       exportJSON,
       loadJSON,
     } = useEditDungeonMapUseCase();
-    const { getMouse } = useGameUseCase();
 
     const dungeonMap = new DungeonMap({
       x: 50,
@@ -25,17 +24,17 @@ export class EditDungeonScene extends Scene {
       onWallPointerEnter: (xIndex, yIndex, direction) => {
         const editWallType = getEditWallState();
         if (editWallType == "setWall") {
-          if (getMouse().mouseDown) {
+          if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "wall");
           }
         }
         if (editWallType == "removeWall") {
-          if (getMouse().mouseDown) {
+          if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "none");
           }
         }
         if (editWallType == "setDoor") {
-          if (getMouse().mouseDown) {
+          if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "door");
           }
         }
