@@ -25,12 +25,14 @@ export class SceneSwitcher extends Container {
   startScene(name: string) {
     if (this.currentScene != null) {
       this.removeChild(this.currentScene);
+      this.currentScene.onDestroy();
       this.currentScene = undefined;
     }
 
     const factory = this.sceneMap.get(name);
     if (factory == null) return;
     this.currentScene = factory();
+    this.currentScene.onCreate();
     this.addChild(this.currentScene);
   }
 }
