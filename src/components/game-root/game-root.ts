@@ -4,6 +4,7 @@ import { TestScene } from "../../scene/test-scene/test-scene";
 import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { Application, Container } from "pixi.js";
+import { BattleScene } from "../../scene/battle-scene/battle-scene";
 
 export type GameRootProps = {
   app: Application;
@@ -23,6 +24,7 @@ export class GameRoot extends Container {
       sceneList: [
         [MainScene.name, () => new MainScene()],
         [DungeonScene.name, () => new DungeonScene()],
+        [BattleScene.name, () => new BattleScene()],
         [TestScene.name, () => new TestScene()],
       ],
     });

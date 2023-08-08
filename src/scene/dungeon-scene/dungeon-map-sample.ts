@@ -9,7 +9,7 @@ export const enemyListSample: EnemyListState = {
   list: [
     {
       x: 0,
-      y: 2,
+      y: 1,
       direction: "east",
     },
   ],

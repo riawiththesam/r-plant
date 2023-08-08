@@ -12,6 +12,7 @@ import { PositionInDungeon } from "../../types/position-in-dungeon-types/positio
 import { enemyListSample, mapSample } from "./dungeon-map-sample";
 import { useGameUseCase } from "../../use-case/game-use-case/game-use-case";
 import { canMoveForward } from "../../types/map-state-types/map-state-type-extensions";
+import { BattleScene } from "../battle-scene/battle-scene";
 
 export type EnemyListState = {
   list: ReadonlyArray<PositionInDungeon>;
@@ -61,6 +62,7 @@ export class DungeonSceneViewModel {
         );
         if (encountedEnemy != null) {
           this.eventOnEncountEnemySubject.next({});
+          this.gameUseCase.setScene(BattleScene.name);
         }
       }
 
