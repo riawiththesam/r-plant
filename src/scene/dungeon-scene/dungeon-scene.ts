@@ -3,8 +3,7 @@ import { Scene } from "../../util/pixi/scene/scene";
 import { DungeonSceneViewModel } from "./dungeon-scene-view-model";
 
 export class DungeonScene extends Scene {
-  constructor() {
-    super();
+  override onCreate(): void {
     const viewModel = new DungeonSceneViewModel();
 
     const dungeonMap = new DungeonMap({
@@ -12,19 +11,24 @@ export class DungeonScene extends Scene {
       y: 50,
     });
     this.addChild(dungeonMap);
-    viewModel.currentMapObservable.subscribe((state) => {
-      dungeonMap.setMap(state);
-    });
-    viewModel.playerStateObservable.subscribe((state) => {
-      dungeonMap.setPlayerState(state);
-    });
-    viewModel.eventOnEncountEnemyObservable.subscribe((_event) => {
-      console.log("encount");
-    });
 
-    this.updateEvent.subscribe((event) => {
-      viewModel.updatePlayer(event.delta);
-    });
+    viewModel.currentMapObservable
+      .subscribe((state) => {
+        dungeonMap.setMap(state);
+      })
+      .addTo(this.unsubscribeOnDestroy);
+
+    viewModel.playerStateObservable
+      .subscribe((state) => {
+        dungeonMap.setPlayerState(state);
+      })
+      .addTo(this.unsubscribeOnDestroy);
+
+    this.updateEvent
+      .subscribe((event) => {
+        viewModel.updatePlayer(event.delta);
+      })
+      .addTo(this.unsubscribeOnDestroy);
 
     viewModel.loadMap();
   }
