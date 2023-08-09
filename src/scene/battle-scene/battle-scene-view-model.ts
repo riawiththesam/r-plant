@@ -8,7 +8,7 @@ export type BattleCharacterState = {
   };
 };
 
-export type EnemyCharacterState = BattleCharacterState & {
+export type EnemyGraphicsState = {
   graphics: {
     image: string;
     x: number;
@@ -18,17 +18,21 @@ export type EnemyCharacterState = BattleCharacterState & {
   };
 };
 
+export type EnemyCharacterState = BattleCharacterState & EnemyGraphicsState;
+
 export type BattleEnemyListState = {
   list: ReadonlyArray<EnemyCharacterState>;
 };
 
-export type FriendCharacterState = BattleCharacterState & {
+export type FriendGraphicsState = {
   graphics: {
     image: string;
   };
 };
 
-export const friendListStateKeys = ["one", "two", "three", "four", "five"] as const;
+export type FriendCharacterState = BattleCharacterState & FriendGraphicsState;
+
+export const friendListStateKeys = ["one", "two", "three", "four", "five", "six"] as const;
 export type FriendListStateKey = (typeof friendListStateKeys)[number];
 export type FriendListState = {
   [key in FriendListStateKey]?: FriendCharacterState;
