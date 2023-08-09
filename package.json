@@ -9,7 +9,8 @@
     "analyze": "tsc && vite build --mode analyze",
     "preview": "vite preview",
     "tsc": "tsc",
-    "validator": "create-validator-ts 'src/**/*.types.ts'"
+    "validator": "create-validator-ts 'src/**/*.types.ts'",
+    "lint": "npx eslint 'src/**/*.ts'"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.196",

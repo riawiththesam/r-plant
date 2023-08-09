@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  plugins: ["rxjs"],
   extends: ["standard-with-typescript", "prettier"],
   overrides: [
     {
@@ -18,6 +19,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    project: "./tsconfig.json",
   },
-  rules: {},
+  ignorePatterns: [".eslintrc.cjs", "vite.config.js", "dist", "**/*.validator.ts"],
+  rules: {
+    "@typescript-eslint/consistent-type-definitions": 0,
+    "@typescript-eslint/array-type": 0,
+    "rxjs/no-ignored-subscription": "error",
+  },
 };
