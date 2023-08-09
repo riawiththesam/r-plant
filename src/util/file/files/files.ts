@@ -1,4 +1,4 @@
-export async function saveFile(name: string, value: string) {
+export async function saveFile(name: string, value: string): Promise<void> {
   const opts = {
     suggestedName: name,
     types: [
@@ -14,7 +14,7 @@ export async function saveFile(name: string, value: string) {
   await writable.close();
 }
 
-export async function loadFile() {
+export async function loadFile(): Promise<string> {
   const fileHandleList = await window.showOpenFilePicker();
   const handle = fileHandleList[0];
   const file = await handle.getFile();

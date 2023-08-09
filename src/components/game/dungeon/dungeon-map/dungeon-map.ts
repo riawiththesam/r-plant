@@ -1,9 +1,9 @@
 import { DungeonMapChip } from "../dungeon-map-chip/dungeon-map-chip";
-import { MapChipType, MapStateType } from "../../../../types/map-state-types/map-state.types";
-import { DungeonWallDirection } from "../dungeon-wall/dungeon-wall";
+import { type MapChipType, type MapStateType } from "../../../../types/map-state-types/map-state.types";
+import { type DungeonWallDirection } from "../dungeon-wall/dungeon-wall";
 import { DungeonPlayerIcon } from "../../../../scene/dungeon-scene/dungeon-player-icon";
 import { Container, Graphics } from "pixi.js";
-import { PlayerStateType } from "../../../../types/player-state-types/player-state-types";
+import { type PlayerStateType } from "../../../../types/player-state-types/player-state-types";
 
 const chipSize = 20;
 const wallLineWidth = 4;
@@ -15,8 +15,8 @@ export type DungeonMapProps = {
 };
 
 export class DungeonMap extends Container {
-  private mapChipContainer: Container;
-  private playerIcon: DungeonPlayerIcon;
+  private readonly mapChipContainer: Container;
+  private readonly playerIcon: DungeonPlayerIcon;
 
   constructor(private readonly props: DungeonMapProps) {
     super();
@@ -37,7 +37,7 @@ export class DungeonMap extends Container {
     this.addChild(this.playerIcon);
   }
 
-  setMap(state: MapStateType) {
+  setMap(state: MapStateType): void {
     this.mapChipContainer.removeChildren();
 
     state.mapChipList.forEach((row, rowIndex) => {
@@ -47,7 +47,7 @@ export class DungeonMap extends Container {
     });
   }
 
-  setPlayerState(state: PlayerStateType) {
+  setPlayerState(state: PlayerStateType): void {
     this.playerIcon.setState(state);
   }
 }
@@ -63,15 +63,15 @@ function createMapChip(
   xIndex: number,
   yIndex: number,
   onWallPointerEnter?: (xIndex: number, yIndex: number, direction: DungeonWallDirection) => void,
-) {
+): DungeonMapChip {
   const chipPosX = xIndex * chipSize + chipSize / 2;
   const chipPosY = yIndex * chipSize + chipSize / 2;
   return new DungeonMapChip({
     x: chipPosX,
     y: chipPosY,
-    chipSize: chipSize,
+    chipSize,
     lineWidth: wallLineWidth,
-    chip: chip,
-    onWallPointerEnter: (direction) => onWallPointerEnter && onWallPointerEnter(xIndex, yIndex, direction),
+    chip,
+    onWallPointerEnter: (direction) => onWallPointerEnter?.(xIndex, yIndex, direction),
   });
 }

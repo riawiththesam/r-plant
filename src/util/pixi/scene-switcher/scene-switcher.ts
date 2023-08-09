@@ -1,5 +1,5 @@
-import { Application, Container } from "pixi.js";
-import { Scene } from "../scene/scene";
+import { type Application, Container } from "pixi.js";
+import { type Scene } from "../scene/scene";
 
 export type SceneFactory = () => Scene;
 
@@ -10,7 +10,7 @@ export type SceneSwitcherProps = {
 
 export class SceneSwitcher extends Container {
   private currentScene: Scene | undefined;
-  private sceneMap: ReadonlyMap<string, SceneFactory>;
+  private readonly sceneMap: ReadonlyMap<string, SceneFactory>;
 
   constructor(props: SceneSwitcherProps) {
     super();
@@ -18,11 +18,11 @@ export class SceneSwitcher extends Container {
     this.sceneMap = new Map(Object.values(sceneList));
 
     app.ticker.add((delta) => {
-      this.currentScene && this.currentScene.__update(delta);
+      this.currentScene?.__update(delta);
     });
   }
 
-  startScene(name: string) {
+  startScene(name: string): void {
     if (this.currentScene != null) {
       this.removeChild(this.currentScene);
       this.currentScene.__destroy();

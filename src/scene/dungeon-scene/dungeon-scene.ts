@@ -1,10 +1,10 @@
-import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-map";
 import { Scene } from "../../util/pixi/scene/scene";
 import { DungeonSceneViewModel } from "./dungeon-scene-view-model";
 
 export class DungeonScene extends Scene {
-  constructor(private gameRootViewModel: GameRootViewModel) {
+  constructor(private readonly gameRootViewModel: GameRootViewModel) {
     super();
   }
 
@@ -35,6 +35,8 @@ export class DungeonScene extends Scene {
       })
       .addTo(this.unsubscribeOnDestroy);
 
-    viewModel.loadMap();
+    viewModel.loadMap().catch((e) => {
+      console.log(e);
+    });
   }
 }

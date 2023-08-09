@@ -1,5 +1,5 @@
 import { Color, Container, Graphics } from "pixi.js";
-import { PlayerStateType } from "../../types/player-state-types/player-state-types";
+import { type PlayerStateType } from "../../types/player-state-types/player-state-types";
 
 export type Direction = "west" | "east" | "north" | "south";
 
@@ -15,7 +15,7 @@ export type DungeonPlayerIconProps = {
 };
 
 export class DungeonPlayerIcon extends Container {
-  private graphics: Graphics;
+  private readonly graphics: Graphics;
 
   constructor(private readonly props: DungeonPlayerIconProps) {
     super();
@@ -28,7 +28,7 @@ export class DungeonPlayerIcon extends Container {
     this.addChild(this.graphics);
   }
 
-  setState(state: PlayerStateType) {
+  setState(state: PlayerStateType): void {
     const animated = getAnimatedGraphicsState(state, this.props.chipSize);
 
     this.x = this.props.chipSize * state.position.x + animated.x;
@@ -81,6 +81,7 @@ function getAnimatedGraphicsState(state: PlayerStateType, chipSize: number): Get
           };
         }
       }
+      break;
     }
     case "turnLeft": {
       const targetRadian = directionRadianMap[state.position.direction];

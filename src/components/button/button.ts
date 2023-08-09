@@ -16,8 +16,8 @@ const defaultStyle: Partial<PIXI.TextStyle> = {
 };
 
 export class Button extends PIXI.Container {
-  private rect: PIXI.Graphics;
-  private text: PIXI.Text;
+  private readonly rect: PIXI.Graphics;
+  private readonly text: PIXI.Text;
 
   constructor(props: ButtonProps) {
     super();
@@ -45,7 +45,7 @@ export class Button extends PIXI.Container {
       this.text.style = { ...defaultStyle, fill: "black" };
     });
     this.rect.on("pointerup", () => {
-      onClick && onClick();
+      onClick?.();
     });
   }
 }

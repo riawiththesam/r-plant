@@ -1,40 +1,41 @@
 import { BehaviorSubject, Subject } from "rxjs";
-import { MapStateType } from "../../types/map-state-types/map-state.types";
+import { type MapStateType } from "../../types/map-state-types/map-state.types";
 import {
-  PlayerStateType,
+  type PlayerStateType,
   defaultPlayerStateType,
   playerIsMoving,
   startMoveForwardPlayer,
   startTurnPlayer,
   updatePlayerMoveState,
 } from "../../types/player-state-types/player-state-types";
-import { PositionInDungeon } from "../../types/position-in-dungeon-types/position-in-dungeon-types";
+import { type PositionInDungeon } from "../../types/position-in-dungeon-types/position-in-dungeon-types";
 import { enemyListSample, mapSample } from "./dungeon-map-sample";
 import { canMoveForward } from "../../types/map-state-types/map-state-type-extensions";
 import { BattleScene } from "../battle-scene/battle-scene";
-import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export type EnemyListState = {
   list: ReadonlyArray<PositionInDungeon>;
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type EventEncountEnemyType = {};
 
 export class DungeonSceneViewModel {
-  private currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
+  private readonly currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
   currentMapObservable = this.currentMapState.asObservable();
 
-  private playerStateSubject = new BehaviorSubject<PlayerStateType>(defaultPlayerStateType);
+  private readonly playerStateSubject = new BehaviorSubject<PlayerStateType>(defaultPlayerStateType);
   playerStateObservable = this.playerStateSubject.asObservable();
-  private enemyListStateSubject = new BehaviorSubject<EnemyListState>({ list: [] });
+  private readonly enemyListStateSubject = new BehaviorSubject<EnemyListState>({ list: [] });
   enemyListStateObservable = this.enemyListStateSubject.asObservable();
 
-  private eventOnEncountEnemySubject = new Subject<EventEncountEnemyType>();
+  private readonly eventOnEncountEnemySubject = new Subject<EventEncountEnemyType>();
   eventOnEncountEnemyObservable = this.eventOnEncountEnemySubject.asObservable();
 
-  constructor(private gameRootViewModel: GameRootViewModel) {}
+  constructor(private readonly gameRootViewModel: GameRootViewModel) {}
 
-  async loadMap() {
+  async loadMap(): Promise<void> {
     /*
     const textJson = await loadFile();
     const json = JSON.parse(textJson);
@@ -46,7 +47,7 @@ export class DungeonSceneViewModel {
     this.enemyListStateSubject.next(enemyListSample);
   }
 
-  updatePlayer(delta: number) {
+  updatePlayer(delta: number): void {
     const keyBoard = this.gameRootViewModel.getKeyBoard();
 
     // 移動中
@@ -54,11 +55,11 @@ export class DungeonSceneViewModel {
       const next = updatePlayerMoveState(this.playerStateSubject.value, delta);
       this.playerStateSubject.next(next);
 
-      if (next.moveState.state == "stop") {
+      if (next.moveState.state === "stop") {
         const enemyList = this.enemyListStateSubject.value.list;
         const playerPosition = this.playerStateSubject.value.position;
         const encountedEnemy = enemyList.find(
-          (enemyPosition) => enemyPosition.x == playerPosition.x && enemyPosition.y == playerPosition.y,
+          (enemyPosition) => enemyPosition.x === playerPosition.x && enemyPosition.y === playerPosition.y,
         );
         if (encountedEnemy != null) {
           this.eventOnEncountEnemySubject.next({});
@@ -82,7 +83,6 @@ export class DungeonSceneViewModel {
 
     if (keyBoard.d) {
       this.playerStateSubject.next(startTurnPlayer(this.playerStateSubject.value, "right"));
-      return;
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Button } from "../../components/button/button";
 import { DungeonScene } from "../dungeon-scene/dungeon-scene";
 import { Scene } from "../../util/pixi/scene/scene";
-import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export class MainScene extends Scene {
   constructor(gameRootViewModel: GameRootViewModel) {

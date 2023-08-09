@@ -1,9 +1,9 @@
 import { ThreeGameRoot } from "../three-components/three-game-root/three-game-root";
 import { ToolRoot } from "../components/tool-root/tool-root";
-import { Application, IApplicationOptions } from "pixi.js";
+import { Application, type IApplicationOptions } from "pixi.js";
 import { gameConfig } from "../common/game-config";
 
-export function startGame() {
+export function startGame(): void {
   const canvasContainer = document.querySelector("#canvasContainer");
   const canvas = document.querySelector("#pixi") as HTMLCanvasElement;
   if (canvasContainer == null || canvas == null) return;
@@ -20,7 +20,7 @@ export function startGame() {
   const threeGamrRoot = new ThreeGameRoot();
   threeGamrRoot.run();
 
-  const resizeCanvas = () => {
+  const resizeCanvas = (): void => {
     const gameDisplayRatio = gameConfig.width / gameConfig.height;
     const containerRatio = canvasContainer.clientWidth / canvasContainer.clientHeight;
 

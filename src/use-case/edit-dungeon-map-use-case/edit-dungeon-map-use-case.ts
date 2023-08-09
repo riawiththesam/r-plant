@@ -1,13 +1,13 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, type Observable } from "rxjs";
 import range from "lodash/range";
-import { MapChipType, MapChipWallType, MapStateType } from "../../types/map-state-types/map-state.types";
-import { DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
+import { type MapChipType, type MapChipWallType, type MapStateType } from "../../types/map-state-types/map-state.types";
+import { type DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
 import { loadFile, saveFile } from "../../util/file/files/files";
 import { validateMapStateType } from "../../types/map-state-types/map-state.types.validator";
 
 type EditWallStateType = "setWall" | "setDoor" | "removeWall";
 const editWallState = new BehaviorSubject<EditWallStateType>("setWall");
-//const editWallObservable = editWallState.asObservable();
+// const editWallObservable = editWallState.asObservable();
 
 const currentMapState = new BehaviorSubject<MapStateType>({ mapChipList: [] });
 const currentMapObservable = currentMapState.asObservable();
@@ -22,20 +22,29 @@ currentMapState.next({
   mapChipList: sample,
 });
 
-export function useEditDungeonMapUseCase() {
-  function setSetWall() {
+export function useEditDungeonMapUseCase(): {
+  currentMapObservable: Observable<MapStateType>;
+  setSetWall: () => void;
+  setRemoveWall: () => void;
+  setSetDoor: () => void;
+  getEditWallState: () => EditWallStateType;
+  setWall: (xIndex: number, yIndex: number, direction: DungeonWallDirection, type: MapChipWallType) => void;
+  exportJSON: () => void;
+  loadJSON: () => Promise<void>;
+} {
+  function setSetWall(): void {
     editWallState.next("setWall");
   }
 
-  function setRemoveWall() {
+  function setRemoveWall(): void {
     editWallState.next("removeWall");
   }
 
-  function setSetDoor() {
+  function setSetDoor(): void {
     editWallState.next("setDoor");
   }
 
-  function getEditWallState() {
+  function getEditWallState(): EditWallStateType {
     return editWallState.value;
   }
 
@@ -47,19 +56,19 @@ export function useEditDungeonMapUseCase() {
    * @param direction
    * @param type
    */
-  function setWall(xIndex: number, yIndex: number, direction: DungeonWallDirection, type: MapChipWallType) {
+  function setWall(xIndex: number, yIndex: number, direction: DungeonWallDirection, type: MapChipWallType): void {
     const backSide = getBackSideWall(xIndex, yIndex, direction);
 
     const nextList = currentMapState.value.mapChipList.map((row, rowIndex) => {
       return row.map((col, colIndex) => {
         // 指定した座標の壁
-        if (colIndex == xIndex && rowIndex == yIndex) {
+        if (colIndex === xIndex && rowIndex === yIndex) {
           const nextWalls = { ...col.walls };
           nextWalls[direction] = type;
           return { ...col, walls: nextWalls };
         }
         // 指定した座標の裏側の壁
-        if (colIndex == backSide.xIndex && rowIndex == backSide.yIndex) {
+        if (colIndex === backSide.xIndex && rowIndex === backSide.yIndex) {
           const nextWalls = { ...col.walls };
           nextWalls[backSide.direction] = type;
           return { ...col, walls: nextWalls };
@@ -71,14 +80,19 @@ export function useEditDungeonMapUseCase() {
     currentMapState.next({ ...currentMapState.value, mapChipList: nextList });
   }
 
-  function exportJSON() {
+  function exportJSON(): void {
     const json = JSON.stringify(currentMapState.value, null, 2);
-    saveFile("map", json).then(() => {
-      console.log("saved");
-    });
+    saveFile("map", json)
+      .then(() => {
+        console.log("saved");
+      })
+      .catch((e) => {
+        console.log("error");
+        console.error(e);
+      });
   }
 
-  async function loadJSON() {
+  async function loadJSON(): Promise<void> {
     const jsonText = await loadFile();
     const json = JSON.parse(jsonText);
     const nextState = validateMapStateType(json);
@@ -117,24 +131,24 @@ function getBackSideWall(xIndex: number, yIndex: number, direction: DungeonWallD
     case "west":
       return {
         xIndex: xIndex - 1,
-        yIndex: yIndex,
+        yIndex,
         direction: "east",
       };
     case "east":
       return {
         xIndex: xIndex + 1,
-        yIndex: yIndex,
+        yIndex,
         direction: "west",
       };
     case "north":
       return {
-        xIndex: xIndex,
+        xIndex,
         yIndex: yIndex - 1,
         direction: "south",
       };
     case "south":
       return {
-        xIndex: xIndex,
+        xIndex,
         yIndex: yIndex + 1,
         direction: "north",
       };

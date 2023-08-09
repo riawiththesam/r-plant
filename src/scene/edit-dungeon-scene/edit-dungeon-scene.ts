@@ -2,7 +2,7 @@ import { DungeonMap } from "../../components/game/dungeon/dungeon-map/dungeon-ma
 import { useEditDungeonMapUseCase } from "../../use-case/edit-dungeon-map-use-case/edit-dungeon-map-use-case";
 import { Button } from "../../components/button/button";
 import { Scene } from "../../util/pixi/scene/scene";
-import { GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export class EditDungeonScene extends Scene {
   constructor(gameRootViewModel: GameRootViewModel) {
@@ -23,17 +23,17 @@ export class EditDungeonScene extends Scene {
       y: 50,
       onWallPointerEnter: (xIndex, yIndex, direction) => {
         const editWallType = getEditWallState();
-        if (editWallType == "setWall") {
+        if (editWallType === "setWall") {
           if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "wall");
           }
         }
-        if (editWallType == "removeWall") {
+        if (editWallType === "removeWall") {
           if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "none");
           }
         }
-        if (editWallType == "setDoor") {
+        if (editWallType === "setDoor") {
           if (gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "door");
           }
@@ -83,7 +83,11 @@ export class EditDungeonScene extends Scene {
       width: 100,
       height: 20,
       text: "Load JSON",
-      onClick: loadJSON,
+      onClick: () => {
+        loadJSON().catch((e) => {
+          console.log(e);
+        });
+      },
     });
     this.addChild(buttonloadJSON);
 

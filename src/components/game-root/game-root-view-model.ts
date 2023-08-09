@@ -7,21 +7,21 @@ export type KeyboardStateType = {
 };
 
 export class GameRootViewModel {
-  private mouseState = new BehaviorSubject({ mouseDown: false });
+  private readonly mouseState = new BehaviorSubject({ mouseDown: false });
   //  private mouseObservable = this.mouseState.asObservable();
 
-  private keyBoardState = new BehaviorSubject<KeyboardStateType>({
+  private readonly keyBoardState = new BehaviorSubject<KeyboardStateType>({
     w: false,
     a: false,
     s: false,
     d: false,
   });
 
-  private sceneState = new BehaviorSubject("");
+  private readonly sceneState = new BehaviorSubject("");
   sceneObservable = this.sceneState.asObservable();
 
   constructor() {
-    const setMouseState = (mouseDown: boolean) => {
+    const setMouseState = (mouseDown: boolean): void => {
       const current = this.mouseState.value;
       this.mouseState.next({ ...current, mouseDown });
     };
@@ -48,15 +48,15 @@ export class GameRootViewModel {
     });
   }
 
-  getKeyBoard() {
+  getKeyBoard(): KeyboardStateType {
     return this.keyBoardState.value;
   }
 
-  getMouse() {
+  getMouse(): { mouseDown: boolean } {
     return this.mouseState.value;
   }
 
-  setScene(name: string) {
+  setScene(name: string): void {
     this.sceneState.next(name);
   }
 }

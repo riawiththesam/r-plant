@@ -13,27 +13,27 @@ export type UpdateEventType = SceneEventType & {
 export abstract class Scene extends Container {
   unsubscribeOnDestroy: Subscription | undefined;
 
-  private updateEventSubject = new BehaviorSubject<UpdateEventType>({ type: "update", delta: 0 });
+  private readonly updateEventSubject = new BehaviorSubject<UpdateEventType>({ type: "update", delta: 0 });
   updateEvent = this.updateEventSubject.asObservable();
 
-  __update(delta: number) {
+  __update(delta: number): void {
     this.updateEventSubject.next({ type: "update", delta });
     this.onUpdate(delta);
   }
 
-  onUpdate(_delta: number) {}
+  onUpdate(_delta: number): void {}
 
-  __craete() {
+  __craete(): void {
     this.unsubscribeOnDestroy = new Subscription();
     this.onCreate();
   }
 
-  onCreate() {}
+  onCreate(): void {}
 
-  __destroy() {
+  __destroy(): void {
     this.unsubscribeOnDestroy?.unsubscribe();
     this.onDestroy();
   }
 
-  onDestroy() {}
+  onDestroy(): void {}
 }

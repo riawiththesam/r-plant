@@ -2,7 +2,7 @@ import { MainScene } from "../../scene/main-scene/main-scene";
 import { DungeonScene } from "../../scene/dungeon-scene/dungeon-scene";
 import { TestScene } from "../../scene/test-scene/test-scene";
 import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
-import { Application, Container } from "pixi.js";
+import { type Application, Container } from "pixi.js";
 import { BattleScene } from "../../scene/battle-scene/battle-scene";
 import { GameRootViewModel } from "./game-root-view-model";
 

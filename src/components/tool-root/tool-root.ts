@@ -3,7 +3,7 @@ import { TestScene } from "../../scene/test-scene/test-scene";
 import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
 import { EditDungeonScene } from "../../scene/edit-dungeon-scene/edit-dungeon-scene";
 import { ToolMainScene } from "../../scene/tool-main-scene/tool-main-scene";
-import { Application, Container } from "pixi.js";
+import { type Application, Container } from "pixi.js";
 import { GameRootViewModel } from "../game-root/game-root-view-model";
 
 export type ToolRootProps = {

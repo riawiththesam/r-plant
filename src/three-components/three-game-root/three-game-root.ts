@@ -1,7 +1,7 @@
 import { DungeonBackgroundThreeScene } from "../../three-scene/dungeon-background-scene/dungeon-background-three-scene";
 
 export class ThreeGameRoot {
-  private threeScene: DungeonBackgroundThreeScene | undefined;
+  private readonly threeScene: DungeonBackgroundThreeScene | undefined;
 
   constructor() {
     const threeCanvas = document.querySelector("#three") as HTMLCanvasElement;
@@ -10,15 +10,15 @@ export class ThreeGameRoot {
     this.threeScene = new DungeonBackgroundThreeScene(threeCanvas);
   }
 
-  run() {
-    const animation = () => {
+  run(): void {
+    const animation = (): void => {
       requestAnimationFrame(animation);
       this.threeScene?.animate();
     };
     animation();
   }
 
-  resize(width: number, height: number) {
+  resize(width: number, height: number): void {
     this.threeScene?.resize(width, height);
   }
 }

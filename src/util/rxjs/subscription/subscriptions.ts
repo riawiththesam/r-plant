@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
  */
 declare module "rxjs" {
   interface Subscription {
-    addTo(subscription?: Subscription): void;
+    addTo: (subscription?: Subscription) => void;
   }
 }
 

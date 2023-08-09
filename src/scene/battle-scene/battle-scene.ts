@@ -5,7 +5,7 @@ import bgGrass from "../../game-assets/background/bg-grass.png";
 import { BattleSceneViewModel } from "./battle-scene-view-model";
 
 export class BattleScene extends Scene {
-  override onCreate() {
+  override onCreate(): void {
     const viewModel = new BattleSceneViewModel();
 
     const background = Sprite.from(bgGrass, {

@@ -1,5 +1,5 @@
 import { Color, Container, Graphics } from "pixi.js";
-import { MapChipWallType } from "../../../../types/map-state-types/map-state.types";
+import { type MapChipWallType } from "../../../../types/map-state-types/map-state.types";
 
 export type DungeonWallDirection = "west" | "east" | "north" | "south";
 
@@ -20,7 +20,7 @@ export class DungeonWall extends Container {
 
     const rect = new Graphics();
     rect.beginFill(getColorByType(type));
-    rect.alpha = type == "none" ? 0 : 1;
+    rect.alpha = type === "none" ? 0 : 1;
     rect.drawRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
     this.addChild(rect);
 
@@ -38,7 +38,7 @@ export class DungeonWall extends Container {
   }
 }
 
-function getColorByType(type: MapChipWallType) {
+function getColorByType(type: MapChipWallType): Color {
   switch (type) {
     case "wall":
       return new Color({ r: 0, g: 255, b: 0 });
@@ -57,7 +57,16 @@ function getColorByType(type: MapChipWallType) {
  * @param lineWidth
  * @returns
  */
-function getRectByDirection(direction: DungeonWallDirection, chipSize: number, lineWidth: number) {
+function getRectByDirection(
+  direction: DungeonWallDirection,
+  chipSize: number,
+  lineWidth: number,
+): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} {
   switch (direction) {
     case "west": {
       return { x: -chipSize / 2, y: -chipSize / 2, width: lineWidth / 2, height: chipSize };
@@ -81,7 +90,15 @@ function getRectByDirection(direction: DungeonWallDirection, chipSize: number, l
  * @param chipSize
  * @returns
  */
-function getPointerAreaByDirection(direction: DungeonWallDirection, chipSize: number) {
+function getPointerAreaByDirection(
+  direction: DungeonWallDirection,
+  chipSize: number,
+): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} {
   switch (direction) {
     case "west": {
       const centerX = -chipSize / 2;

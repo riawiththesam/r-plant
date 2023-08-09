@@ -14,10 +14,10 @@ export type BattleCharacterListState = {
 };
 
 export class BattleSceneViewModel {
-  private enemyListSubject = new BehaviorSubject<BattleCharacterListState>({ list: [] });
+  private readonly enemyListSubject = new BehaviorSubject<BattleCharacterListState>({ list: [] });
   enemyListObservable = this.enemyListSubject.asObservable();
 
-  load() {
+  load(): void {
     this.enemyListSubject.next({
       list: [
         {
