@@ -4,6 +4,7 @@ import { gameConfig } from "../../common/game-config";
 import bgGrass from "../../game-assets/background/bg-grass.png";
 import { BattleSceneViewModel } from "./battle-scene-view-model";
 import { BattleEnemy } from "../../components/game/battle/battle-enemy/battle-enemy";
+import { BattleFriendContainer } from "../../components/game/battle/battle-friend-container/battle-friend-container";
 
 export class BattleScene extends Scene {
   override onCreate(): void {
@@ -14,6 +15,15 @@ export class BattleScene extends Scene {
       height: gameConfig.height,
     });
     this.addChild(background);
+
+    const friendContainer = new Container();
+    this.addChild(friendContainer);
+    viewModel.friendListObservable
+      .subscribe((state) => {
+        friendContainer.removeChildren();
+        friendContainer.addChild(new BattleFriendContainer(state));
+      })
+      .addTo(this.unsubscribeOnDestroy);
 
     const enemyContainer = new Container();
     this.addChild(enemyContainer);

@@ -1,8 +1,8 @@
 import { Container, Sprite } from "pixi.js";
-import { type BattleCharacterState } from "../../../../scene/battle-scene/battle-scene-view-model";
+import { type EnemyCharacterState } from "../../../../scene/battle-scene/battle-scene-view-model";
 
 export class BattleEnemy extends Container {
-  constructor(enemy: BattleCharacterState) {
+  constructor(enemy: EnemyCharacterState) {
     super();
 
     const enemySprite = Sprite.from(enemy.graphics.image);
