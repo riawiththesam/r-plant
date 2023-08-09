@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
+import { BattleFriend } from "../battle-friend/battle-friend";
+import { gameConfig } from "../../../../common/game-config";
 import {
   friendListStateKeys,
   type FriendListState,
   type FriendListStateKey,
-} from "../../../../scene/battle-scene/battle-scene-view-model";
-import { BattleFriend } from "../battle-friend/battle-friend";
-import { gameConfig } from "../../../../common/game-config";
+} from "../../../../scene/battle-scene/types/friend-list-state";
 
 const spriteSize = 100;
 const widthForOneFriend = gameConfig.width / 6;
