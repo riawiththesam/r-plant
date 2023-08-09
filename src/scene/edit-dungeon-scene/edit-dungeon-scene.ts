@@ -5,8 +5,11 @@ import { Scene } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 
 export class EditDungeonScene extends Scene {
-  constructor(gameRootViewModel: GameRootViewModel) {
+  constructor(private readonly gameRootViewModel: GameRootViewModel) {
     super();
+  }
+
+  override onCreate(): void {
     const {
       currentMapObservable,
       setWall,
@@ -24,26 +27,28 @@ export class EditDungeonScene extends Scene {
       onWallPointerEnter: (xIndex, yIndex, direction) => {
         const editWallType = getEditWallState();
         if (editWallType === "setWall") {
-          if (gameRootViewModel.getMouse().mouseDown) {
+          if (this.gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "wall");
           }
         }
         if (editWallType === "removeWall") {
-          if (gameRootViewModel.getMouse().mouseDown) {
+          if (this.gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "none");
           }
         }
         if (editWallType === "setDoor") {
-          if (gameRootViewModel.getMouse().mouseDown) {
+          if (this.gameRootViewModel.getMouse().mouseDown) {
             setWall(xIndex, yIndex, direction, "door");
           }
         }
       },
     });
 
-    currentMapObservable.subscribe((state) => {
-      dungeonMap.setMap(state);
-    });
+    currentMapObservable
+      .subscribe((state) => {
+        dungeonMap.setMap(state);
+      })
+      .addTo(this.unsubscribeOnDestroy);
 
     this.addChild(dungeonMap);
 

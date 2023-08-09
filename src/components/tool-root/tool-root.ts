@@ -5,6 +5,7 @@ import { EditDungeonScene } from "../../scene/edit-dungeon-scene/edit-dungeon-sc
 import { ToolMainScene } from "../../scene/tool-main-scene/tool-main-scene";
 import { type Application, Container } from "pixi.js";
 import { GameRootViewModel } from "../game-root/game-root-view-model";
+import { Subscription } from "rxjs";
 
 export type ToolRootProps = {
   app: Application;
@@ -28,9 +29,12 @@ export class ToolRoot extends Container {
       ],
     });
 
-    gameRootViewModel.sceneObservable.subscribe((next) => {
-      sceneSwitcher.startScene(next);
-    });
+    const subscription = new Subscription();
+    gameRootViewModel.sceneObservable
+      .subscribe((next) => {
+        sceneSwitcher.startScene(next);
+      })
+      .addTo(subscription);
     this.addChild(sceneSwitcher);
   }
 }

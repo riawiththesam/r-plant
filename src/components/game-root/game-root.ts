@@ -5,6 +5,7 @@ import { SceneSwitcher } from "../../util/pixi/scene-switcher/scene-switcher";
 import { type Application, Container } from "pixi.js";
 import { BattleScene } from "../../scene/battle-scene/battle-scene";
 import { GameRootViewModel } from "./game-root-view-model";
+import { Subscription } from "rxjs";
 
 export type GameRootProps = {
   app: Application;
@@ -29,9 +30,12 @@ export class GameRoot extends Container {
       ],
     });
 
-    gameRootViewModel.sceneObservable.subscribe((next) => {
-      sceneSwitcher.startScene(next);
-    });
+    const subscription = new Subscription();
+    gameRootViewModel.sceneObservable
+      .subscribe((next) => {
+        sceneSwitcher.startScene(next);
+      })
+      .addTo(subscription);
     this.addChild(sceneSwitcher);
   }
 }

@@ -16,17 +16,19 @@ export class BattleScene extends Scene {
 
     const enemyContainer = new Container();
     this.addChild(enemyContainer);
-    viewModel.enemyListObservable.subscribe((state) => {
-      enemyContainer.removeChildren();
-      state.list.forEach((item) => {
-        const enemySprite = Sprite.from(item.image);
-        enemySprite.x = item.x;
-        enemySprite.y = item.y;
-        enemySprite.width = item.width;
-        enemySprite.height = item.height;
-        enemyContainer.addChild(enemySprite);
-      });
-    });
+    viewModel.enemyListObservable
+      .subscribe((state) => {
+        enemyContainer.removeChildren();
+        state.list.forEach((item) => {
+          const enemySprite = Sprite.from(item.image);
+          enemySprite.x = item.x;
+          enemySprite.y = item.y;
+          enemySprite.width = item.width;
+          enemySprite.height = item.height;
+          enemyContainer.addChild(enemySprite);
+        });
+      })
+      .addTo(this.unsubscribeOnDestroy);
 
     viewModel.load();
   }
