@@ -48,5 +48,23 @@ function friendListStateKeysToGraphicsParams(key: FriendListStateKey): GraphicsP
         y: gameConfig.height - spriteSize,
       };
     }
+    case "three": {
+      return {
+        x: widthForOneFriend * 2 + marginSide,
+        y: gameConfig.height - spriteSize,
+      };
+    }
+    case "four": {
+      return {
+        x: widthForOneFriend * 3 + marginSide,
+        y: gameConfig.height - spriteSize,
+      };
+    }
+    case "five": {
+      return {
+        x: widthForOneFriend * 4 + marginSide,
+        y: gameConfig.height - spriteSize,
+      };
+    }
   }
 }

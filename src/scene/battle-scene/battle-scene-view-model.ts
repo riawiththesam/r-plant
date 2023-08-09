@@ -28,7 +28,7 @@ export type FriendCharacterState = BattleCharacterState & {
   };
 };
 
-export const friendListStateKeys = ["one", "two"] as const;
+export const friendListStateKeys = ["one", "two", "three", "four", "five"] as const;
 export type FriendListStateKey = (typeof friendListStateKeys)[number];
 export type FriendListState = {
   [key in FriendListStateKey]?: FriendCharacterState;
@@ -53,6 +53,15 @@ export class BattleSceneViewModel {
         },
       },
       two: {
+        health: {
+          max: 250,
+          current: 100,
+        },
+        graphics: {
+          image: slime,
+        },
+      },
+      four: {
         health: {
           max: 250,
           current: 100,
