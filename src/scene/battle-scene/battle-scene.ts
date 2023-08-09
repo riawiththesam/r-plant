@@ -3,6 +3,7 @@ import { Scene } from "../../util/pixi/scene/scene";
 import { gameConfig } from "../../common/game-config";
 import bgGrass from "../../game-assets/background/bg-grass.png";
 import { BattleSceneViewModel } from "./battle-scene-view-model";
+import { BattleEnemy } from "../../components/game/battle/battle-enemy/battle-enemy";
 
 export class BattleScene extends Scene {
   override onCreate(): void {
@@ -20,12 +21,7 @@ export class BattleScene extends Scene {
       .subscribe((state) => {
         enemyContainer.removeChildren();
         state.list.forEach((item) => {
-          const enemySprite = Sprite.from(item.image);
-          enemySprite.x = item.x;
-          enemySprite.y = item.y;
-          enemySprite.width = item.width;
-          enemySprite.height = item.height;
-          enemyContainer.addChild(enemySprite);
+          enemyContainer.addChild(new BattleEnemy(item));
         });
       })
       .addTo(this.unsubscribeOnDestroy);
