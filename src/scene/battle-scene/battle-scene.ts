@@ -20,9 +20,7 @@ export class BattleScene extends Scene {
     viewModel.enemyListObservable
       .subscribe((state) => {
         enemyContainer.removeChildren();
-        state.list.forEach((item) => {
-          enemyContainer.addChild(new BattleEnemy(item));
-        });
+        enemyContainer.safeAddChildren(state.list.map((item) => new BattleEnemy(item)));
       })
       .addTo(this.unsubscribeOnDestroy);
 
