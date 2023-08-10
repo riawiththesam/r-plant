@@ -22,6 +22,8 @@ export class BattleScene extends Scene {
     const battleOperationLayer = new BattleOperationLayer();
     this.addChild(battleOperationLayer);
 
+    battleOperationLayer.update();
+
     viewModel.load();
   }
 }
