@@ -24,6 +24,8 @@ export class NineSliceWithText extends Container {
       windowImageSliceSize,
       windowImageSliceSize,
     );
+    windowObject.x = x;
+    windowObject.y = y;
     windowObject.width = width;
     windowObject.height = height;
     this.addChild(windowObject);
