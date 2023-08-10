@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { BattleOperation } from "./battle-operation";
 
-export class BattleOperationContainer extends Container {
+export class BattleOperationLayer extends Container {
   constructor() {
     super();
 

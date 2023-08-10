@@ -1,6 +1,6 @@
 import { Scene } from "../../util/pixi/scene/scene";
 import { BattleSceneViewModel } from "./battle-scene-view-model";
-import { BattleOperationContainer } from "../../components/game/battle/battle-operation/battle-operation-container";
+import { BattleOperationLayer } from "../../components/game/battle/battle-operation/battle-operation-layer";
 import { BattleFriendLayer } from "../../components/game/battle/battle-friend/battle-friend-layer";
 import { BattleEnemyLayer } from "../../components/game/battle/battle-enemy/battle-enemy-layer";
 import { BattleBackgroundLayer } from "../../components/game/battle/battle-background/battle-background-layer";
@@ -19,8 +19,8 @@ export class BattleScene extends Scene {
     this.addChild(enemyLayer);
     viewModel.enemyListObservable.subscribe((state) => enemyLayer.update(state)).addTo(this.unsubscribeOnDestroy);
 
-    const battleOperationContainer = new BattleOperationContainer();
-    this.addChild(battleOperationContainer);
+    const battleOperationLayer = new BattleOperationLayer();
+    this.addChild(battleOperationLayer);
 
     viewModel.load();
   }
