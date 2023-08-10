@@ -5,6 +5,7 @@ import bgGrass from "../../game-assets/background/bg-grass.png";
 import { BattleSceneViewModel } from "./battle-scene-view-model";
 import { BattleEnemy } from "../../components/game/battle/battle-enemy/battle-enemy";
 import { BattleFriendContainer } from "../../components/game/battle/battle-friend-container/battle-friend-container";
+import { BattleOperationContainer } from "../../components/game/battle/battle-operation/battle-operation-container";
 
 export class BattleScene extends Scene {
   override onCreate(): void {
@@ -33,6 +34,9 @@ export class BattleScene extends Scene {
         enemyContainer.safeAddChildren(state.list.map((item) => new BattleEnemy(item)));
       })
       .addTo(this.unsubscribeOnDestroy);
+
+    const battleOperationContainer = new BattleOperationContainer();
+    this.addChild(battleOperationContainer);
 
     viewModel.load();
   }
