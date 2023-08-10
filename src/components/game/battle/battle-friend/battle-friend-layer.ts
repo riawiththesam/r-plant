@@ -1,20 +1,19 @@
 import { Container } from "pixi.js";
-import { BattleFriend } from "../battle-friend/battle-friend";
-import { gameConfig } from "../../../../common/game-config";
 import {
   friendListStateKeys,
   type FriendListState,
   type FriendListStateKey,
 } from "../../../../scene/battle-scene/types/friend-list-state";
+import { BattleFriend } from "./battle-friend";
+import { gameConfig } from "../../../../common/game-config";
 
 const spriteSize = 100;
 const widthForOneFriend = gameConfig.width / 6;
 const marginSide = (widthForOneFriend - spriteSize) / 2;
 
-export class BattleFriendContainer extends Container {
-  constructor(listState: FriendListState) {
-    super();
-
+export class BattleFriendLayer extends Container {
+  update(listState: FriendListState): void {
+    this.removeChildren();
     this.safeAddChildren(
       friendListStateKeys.map((key) => {
         const params = friendListStateKeysToGraphicsParams(key);
