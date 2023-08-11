@@ -1,9 +1,8 @@
-import { ColorMatrixFilter, Container, type Filter } from "pixi.js";
+import { Container } from "pixi.js";
 import { NineSliceWithText } from "../../../nine-slice-with-text/nine-slice-with-text";
 import { type FriendCommandState } from "../../../../scene/battle-scene/types/friend-list-state";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const unselectedFilter = createUnselectedFilter();
+import windowBlack from "../../../../game-assets/ui/window/window-black.png";
+import windowRed from "../../../../game-assets/ui/window/window-red.png";
 
 const textHeight = 60;
 
@@ -13,6 +12,7 @@ export class CharacterLayer extends Container {
 
     const text = new NineSliceWithText({
       text: "キャラクター1",
+      textureUrl: windowBlack,
       x: 0,
       y: 0,
       width: 300,
@@ -21,21 +21,18 @@ export class CharacterLayer extends Container {
     this.addChild(text);
 
     const commandList = state?.command.commandList ?? [];
+    const selectedIndex = state?.command.selectedCommandIndex ?? 0;
     const commandObjectList = commandList.map(([_, commandText], index) => {
-      return new NineSliceWithText({
+      const commandObject = new NineSliceWithText({
         text: commandText,
+        textureUrl: index !== selectedIndex ? windowBlack : windowRed,
         x: 0,
         y: textHeight + textHeight * index,
         width: 280,
         height: textHeight,
       });
+      return commandObject;
     });
     this.safeAddChildren(commandObjectList);
   }
-}
-
-function createUnselectedFilter(): Filter {
-  const filter = new ColorMatrixFilter();
-  filter.brightness(0.7, true);
-  return filter;
 }

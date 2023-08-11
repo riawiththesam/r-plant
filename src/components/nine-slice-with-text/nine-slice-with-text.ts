@@ -1,8 +1,8 @@
 import { Container, NineSlicePlane, Text, Texture } from "pixi.js";
-import windowImage from "../../game-assets/ui/window/window-black.png";
 
 export type NineSliceWithTextProps = {
   text: string;
+  textureUrl: string;
   x: number;
   y: number;
   width: number;
@@ -15,10 +15,10 @@ const windowImageSliceSize = windowImageSize / 3;
 export class NineSliceWithText extends Container {
   constructor(props: NineSliceWithTextProps) {
     super();
-    const { text, x, y, width, height } = props;
+    const { text, textureUrl, x, y, width, height } = props;
 
     const windowObject = new NineSlicePlane(
-      Texture.from(windowImage),
+      Texture.from(textureUrl),
       windowImageSliceSize,
       windowImageSliceSize,
       windowImageSliceSize,

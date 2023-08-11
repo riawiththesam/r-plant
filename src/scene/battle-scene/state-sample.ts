@@ -17,6 +17,8 @@ export const friendListSample: FriendListState = {
         ["skill", "スキル"],
         ["item", "アイテム"],
       ],
+      selectedCommandIndex: 0,
+      instructed: false,
     },
   },
   two: {
@@ -34,6 +36,8 @@ export const friendListSample: FriendListState = {
         ["skill", "スキル"],
         ["item", "アイテム"],
       ],
+      selectedCommandIndex: 0,
+      instructed: false,
     },
   },
   four: {
@@ -51,6 +55,8 @@ export const friendListSample: FriendListState = {
         ["skill", "スキル"],
         ["item", "アイテム"],
       ],
+      selectedCommandIndex: 0,
+      instructed: false,
     },
   },
 };

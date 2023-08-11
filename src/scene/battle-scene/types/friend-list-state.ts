@@ -9,6 +9,8 @@ export type FriendGraphicsState = {
 export type FriendCommandState = {
   command: {
     commandList: Array<[string, string]>;
+    selectedCommandIndex: number;
+    instructed: boolean;
   };
 };
 
