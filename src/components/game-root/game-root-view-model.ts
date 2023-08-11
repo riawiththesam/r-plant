@@ -1,10 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-
-const gameKeyTypes = ["w", "a", "s", "d"] as const;
-type GameKeyType = (typeof gameKeyTypes)[number];
-export type KeyboardStateType = {
-  [key in GameKeyType]: boolean;
-};
+import { type KeyboardStateType } from "../../scene/battle-scene/types/keyboard-state";
 
 export class GameRootViewModel {
   private readonly mouseState = new BehaviorSubject({ mouseDown: false });
