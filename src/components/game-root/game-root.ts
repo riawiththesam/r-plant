@@ -18,6 +18,10 @@ export class GameRoot extends Container {
 
     const gameRootViewModel = new GameRootViewModel();
 
+    app.ticker.add((delta) => {
+      gameRootViewModel.tick(delta);
+    });
+
     gameRootViewModel.setScene(MainScene.name);
 
     const sceneSwitcher = new SceneSwitcher({

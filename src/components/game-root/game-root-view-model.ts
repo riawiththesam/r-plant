@@ -1,15 +1,27 @@
 import { BehaviorSubject } from "rxjs";
 import { type KeyboardStateType } from "../../scene/battle-scene/types/keyboard-state";
+import { type GameInputStateType, type GameInputType } from "../../scene/battle-scene/types/input-state";
+
+const keyboardGameInputMap: {
+  [key in string]: GameInputType;
+} = {
+  w: "up",
+  a: "left",
+  s: "down",
+  d: "right",
+};
 
 export class GameRootViewModel {
   private readonly mouseState = new BehaviorSubject({ mouseDown: false });
   //  private mouseObservable = this.mouseState.asObservable();
 
-  private readonly keyBoardState = new BehaviorSubject<KeyboardStateType>({
-    w: false,
-    a: false,
-    s: false,
-    d: false,
+  private readonly keyBoardState = new BehaviorSubject<KeyboardStateType>({});
+
+  private readonly inputState = new BehaviorSubject<GameInputStateType>({
+    up: 0,
+    down: 0,
+    left: 0,
+    right: 0,
   });
 
   private readonly sceneState = new BehaviorSubject("");
@@ -43,8 +55,32 @@ export class GameRootViewModel {
     });
   }
 
+  tick(delta: number): void {
+    const current = this.inputState.value;
+    const next: GameInputStateType = {
+      up: 0,
+      down: 0,
+      left: 0,
+      right: 0,
+    };
+    const currentKeyboard = this.getKeyBoard();
+
+    Object.entries(keyboardGameInputMap).forEach(([keyboardKey, inputKey]) => {
+      const state = currentKeyboard[keyboardKey];
+      if (state === true) {
+        next[inputKey] = current[inputKey] + delta;
+      }
+    });
+
+    this.inputState.next(next);
+  }
+
   getKeyBoard(): KeyboardStateType {
     return this.keyBoardState.value;
+  }
+
+  getInput(): GameInputStateType {
+    return this.inputState.value;
   }
 
   getMouse(): { mouseDown: boolean } {

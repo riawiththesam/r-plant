@@ -70,18 +70,18 @@ export class DungeonSceneViewModel {
       return;
     }
 
-    if (keyBoard.w) {
+    if (keyBoard["w"] === true) {
       if (canMoveForward(this.playerStateSubject.value.position, this.currentMapState.value))
         this.playerStateSubject.next(startMoveForwardPlayer(this.playerStateSubject.value));
       return;
     }
 
-    if (keyBoard.a) {
+    if (keyBoard["a"] === true) {
       this.playerStateSubject.next(startTurnPlayer(this.playerStateSubject.value, "left"));
       return;
     }
 
-    if (keyBoard.d) {
+    if (keyBoard["d"] === true) {
       this.playerStateSubject.next(startTurnPlayer(this.playerStateSubject.value, "right"));
     }
   }

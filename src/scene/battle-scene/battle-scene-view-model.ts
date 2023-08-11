@@ -27,15 +27,16 @@ export class BattleSceneViewModel {
 
   subscribeUpdate(observable: Observable<UpdateEventType>): Subscription {
     return observable.subscribe((_) => {
-      const keyboard = this.gameRootViewModel.getKeyBoard();
+      const input = this.gameRootViewModel.getInput();
+
       const one = this.friendListSubject.value.one;
       if (one == null) return;
 
-      if (keyboard.w) {
-        console.log("w");
+      if (input.up > 0) {
+        console.log("up");
       }
-      if (keyboard.s) {
-        console.log("s");
+      if (input.down > 0) {
+        //        console.log("s");
         const nextOne = produce(one, (draft) => {
           const nextIndex = (draft.command.selectedCommandIndex + 1) % draft.command.commandList.length;
           draft.command.selectedCommandIndex = nextIndex;
