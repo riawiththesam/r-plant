@@ -5,6 +5,7 @@ import { enemyListSample, friendListSample } from "./state-sample";
 import { type PhaseState } from "./types/phase-state";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { produce } from "immer";
 
 export class BattleSceneViewModel {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {}
@@ -35,6 +36,14 @@ export class BattleSceneViewModel {
       }
       if (keyboard.s) {
         console.log("s");
+        const nextOne = produce(one, (draft) => {
+          const nextIndex = (draft.command.selectedCommandIndex + 1) % draft.command.commandList.length;
+          draft.command.selectedCommandIndex = nextIndex;
+        });
+        const next = produce(this.friendListSubject.value, (draft) => {
+          draft.one = nextOne;
+        });
+        this.friendListSubject.next(next);
       }
     });
   }
