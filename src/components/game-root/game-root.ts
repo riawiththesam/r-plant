@@ -25,7 +25,7 @@ export class GameRoot extends Container {
       sceneList: [
         [MainScene.name, () => new MainScene(gameRootViewModel)],
         [DungeonScene.name, () => new DungeonScene(gameRootViewModel)],
-        [BattleScene.name, () => new BattleScene()],
+        [BattleScene.name, () => new BattleScene(gameRootViewModel)],
         [TestScene.name, () => new TestScene()],
       ],
     });
