@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { CharacterLayer } from "./character-layer";
 
 export class BattleOperationLayer extends Container {
-  private characterLayer = new CharacterLayer();
+  private readonly characterLayer = new CharacterLayer();
 
   constructor() {
     super();
@@ -10,7 +10,7 @@ export class BattleOperationLayer extends Container {
     this.addChild(this.characterLayer);
   }
 
-  update() {
+  update(): void {
     this.characterLayer.update();
   }
 }

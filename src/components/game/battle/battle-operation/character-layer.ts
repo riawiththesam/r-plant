@@ -1,6 +1,7 @@
-import { ColorMatrixFilter, Container } from "pixi.js";
+import { ColorMatrixFilter, Container, type Filter } from "pixi.js";
 import { NineSliceWithText } from "../../../nine-slice-with-text/nine-slice-with-text";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const unselectedFilter = createUnselectedFilter();
 
 const commandList: Array<[string, string]> = [
@@ -13,7 +14,7 @@ const commandList: Array<[string, string]> = [
 const textHeight = 60;
 
 export class CharacterLayer extends Container {
-  update() {
+  update(): void {
     this.removeChildren();
 
     const text = new NineSliceWithText({
@@ -38,7 +39,7 @@ export class CharacterLayer extends Container {
   }
 }
 
-function createUnselectedFilter() {
+function createUnselectedFilter(): Filter {
   const filter = new ColorMatrixFilter();
   filter.brightness(0.7, true);
   return filter;
