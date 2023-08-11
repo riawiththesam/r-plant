@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/consistent-type-definitions": 0,
     "@typescript-eslint/array-type": 0,
-    "@typescript-eslint/no-confusing-void-expression": ["error", "ignoreArrowShorthand"],
+    "@typescript-eslint/no-confusing-void-expression": ["error", { ignoreArrowShorthand: true }],
     "rxjs/no-ignored-subscription": "error",
   },
 };
