@@ -6,7 +6,13 @@ export type FriendGraphicsState = {
   };
 };
 
-export type FriendCharacterState = CharacterState & FriendGraphicsState;
+export type FriendCommandState = {
+  command: {
+    commandList: Array<[string, string]>;
+  };
+};
+
+export type FriendCharacterState = CharacterState & FriendGraphicsState & FriendCommandState;
 
 export const friendListStateKeys = ["one", "two", "three", "four", "five", "six"] as const;
 export type FriendListStateKey = (typeof friendListStateKeys)[number];

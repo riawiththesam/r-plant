@@ -1,20 +1,14 @@
 import { ColorMatrixFilter, Container, type Filter } from "pixi.js";
 import { NineSliceWithText } from "../../../nine-slice-with-text/nine-slice-with-text";
+import { type FriendCommandState } from "../../../../scene/battle-scene/types/friend-list-state";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const unselectedFilter = createUnselectedFilter();
 
-const commandList: Array<[string, string]> = [
-  ["attack", "攻撃"],
-  ["spell", "呪文"],
-  ["skill", "スキル"],
-  ["item", "アイテム"],
-];
-
 const textHeight = 60;
 
 export class CharacterLayer extends Container {
-  update(): void {
+  update(state?: FriendCommandState): void {
     this.removeChildren();
 
     const text = new NineSliceWithText({
@@ -26,6 +20,7 @@ export class CharacterLayer extends Container {
     });
     this.addChild(text);
 
+    const commandList = state?.command.commandList ?? [];
     const commandObjectList = commandList.map(([_, commandText], index) => {
       return new NineSliceWithText({
         text: commandText,

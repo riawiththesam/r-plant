@@ -1,6 +1,7 @@
 import slime from "../../game-assets/character/slime/slime.png";
+import { type FriendListState } from "./types/friend-list-state";
 
-export const friendListSample = {
+export const friendListSample: FriendListState = {
   one: {
     health: {
       max: 250,
@@ -8,6 +9,14 @@ export const friendListSample = {
     },
     graphics: {
       image: slime,
+    },
+    command: {
+      commandList: [
+        ["attack", "攻撃"],
+        ["spell", "呪文"],
+        ["skill", "スキル"],
+        ["item", "アイテム"],
+      ],
     },
   },
   two: {
@@ -18,6 +27,14 @@ export const friendListSample = {
     graphics: {
       image: slime,
     },
+    command: {
+      commandList: [
+        ["attack", "攻撃"],
+        ["spell", "呪文"],
+        ["skill", "スキル"],
+        ["item", "アイテム"],
+      ],
+    },
   },
   four: {
     health: {
@@ -26,6 +43,14 @@ export const friendListSample = {
     },
     graphics: {
       image: slime,
+    },
+    command: {
+      commandList: [
+        ["attack", "攻撃"],
+        ["spell", "呪文"],
+        ["skill", "スキル"],
+        ["item", "アイテム"],
+      ],
     },
   },
 };
