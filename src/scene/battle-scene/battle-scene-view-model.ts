@@ -1,51 +1,9 @@
-import { BehaviorSubject, map, pairwise, type Observable, Subscription, filter } from "rxjs";
-import { type EnemyListState } from "./types/enemy-list-state";
-import { type FriendListState } from "./types/friend-list-state";
+import { map, pairwise, type Observable, Subscription, filter } from "rxjs";
 import { enemyListSample, friendListSample } from "./state-sample";
-import { type PhaseState } from "./types/phase-state";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 import { produce } from "immer";
-
-export type BattleSceneState = {
-  phaseState: PhaseState;
-  friendListState: FriendListState;
-  enemyListState: EnemyListState;
-};
-
-const defaultBattleSceneState: BattleSceneState = {
-  phaseState: { phase: "prepare" },
-  friendListState: {},
-  enemyListState: { list: [] },
-};
-
-export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
-  constructor() {
-    super(defaultBattleSceneState);
-  }
-
-  applyInputFriendListStateIfPossible(input: "down" | "up"): void {
-    const one = this.value.friendListState.one;
-    if (one == null) return;
-    const nextOne = produce(one, (draft) => {
-      const indexDiff = input === "down" ? 1 : -1 + draft.command.commandList.length;
-      const nextIndex = (draft.command.selectedCommandIndex + indexDiff) % draft.command.commandList.length;
-      draft.command.selectedCommandIndex = nextIndex;
-    });
-    const next = produce(this.value, (draft) => {
-      draft.friendListState.one = nextOne;
-    });
-    this.next(next);
-  }
-
-  applyInputDecide(): void {
-    this.next(
-      produce(this.value, (draft) => {
-        draft.phaseState.phase = "executeActions";
-      }),
-    );
-  }
-}
+import { BattleSceneSubject } from "./battle-scene-subject";
 
 export class BattleSceneViewModel {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {}
