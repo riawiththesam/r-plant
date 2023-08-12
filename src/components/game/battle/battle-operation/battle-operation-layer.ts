@@ -15,14 +15,14 @@ export class BattleOperationLayer extends Container {
   subscribe(battleSceneViewModel: BattleSceneViewModel): Subscription {
     const subscription = new Subscription();
 
-    battleSceneViewModel.phaseStateObservable
+    battleSceneViewModel.battleSceneObservable
       .subscribe((state) => {
-        this.visible = state.phase === "reserveActions";
+        this.visible = state.phaseState.phase === "reserveActions";
       })
       .addTo(subscription);
 
-    battleSceneViewModel.friendListObservable
-      .subscribe((state) => this.characterLayer.update(state.one))
+    battleSceneViewModel.battleSceneObservable
+      .subscribe((state) => this.characterLayer.update(state.friendListState.one))
       .addTo(subscription);
 
     return subscription;

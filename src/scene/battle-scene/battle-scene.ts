@@ -18,11 +18,15 @@ export class BattleScene extends Scene {
 
     const friendLayer = new BattleFriendLayer();
     this.addChild(friendLayer);
-    viewModel.friendListObservable.subscribe((state) => friendLayer.update(state)).addTo(this.unsubscribeOnDestroy);
+    viewModel.battleSceneObservable
+      .subscribe((state) => friendLayer.update(state.friendListState))
+      .addTo(this.unsubscribeOnDestroy);
 
     const enemyLayer = new BattleEnemyLayer();
     this.addChild(enemyLayer);
-    viewModel.enemyListObservable.subscribe((state) => enemyLayer.update(state)).addTo(this.unsubscribeOnDestroy);
+    viewModel.battleSceneObservable
+      .subscribe((state) => enemyLayer.update(state.enemyListState))
+      .addTo(this.unsubscribeOnDestroy);
 
     const battleOperationLayer = new BattleOperationLayer();
     battleOperationLayer.subscribe(viewModel).addTo(this.unsubscribeOnDestroy);
