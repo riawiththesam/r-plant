@@ -21,7 +21,7 @@ export class BattleSceneViewModel {
   load(): void {
     this.friendListSubject.next(friendListSample);
     this.enemyListSubject.next(enemyListSample);
-    this.phaseStateSubject.next({ phase: "reserveActions" });
+    this.phaseStateSubject.next({ phase: "reserveActions", characterIndex: 0 });
   }
 
   subscribeUpdate(updateObservable: Observable<UpdateEventType>): Subscription {

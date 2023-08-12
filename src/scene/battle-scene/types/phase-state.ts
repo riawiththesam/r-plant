@@ -8,6 +8,7 @@ type PreparePhaseState = BasePhaseState & {
 
 type ReserveActionsState = BasePhaseState & {
   phase: "reserveActions";
+  characterIndex: number;
 };
 
 export type PhaseState = PreparePhaseState | ReserveActionsState;
