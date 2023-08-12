@@ -38,7 +38,11 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyInputDecide(): void {
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState.phase = "executeActions";
+        const targetFriend = draft.friendListState.list[0];
+        const index = targetFriend?.command.selectedCommandIndex ?? 0;
+        const command = draft.friendListState.list[0]?.command.commandList[index];
+        if (targetFriend == null || command == null) return;
+        targetFriend.reservedCommand.command = command[0];
       }),
     );
   }

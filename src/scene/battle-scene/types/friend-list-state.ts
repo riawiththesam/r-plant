@@ -7,7 +7,10 @@ export type FriendGraphicsState = {
 export type FriendCommandState = {
   commandList: Array<[string, string]>;
   selectedCommandIndex: number;
-  instructed: boolean;
+};
+
+export type FriendReservedCommandState = {
+  command: string | undefined;
 };
 
 export type FriendInPartyState = {
@@ -18,6 +21,7 @@ export type FriendCharacterState = {
   common: CharacterState;
   graphics: FriendGraphicsState;
   command: FriendCommandState;
+  reservedCommand: FriendReservedCommandState;
   inParty: FriendInPartyState;
 };
 
