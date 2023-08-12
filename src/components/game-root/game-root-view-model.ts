@@ -1,6 +1,10 @@
 import { BehaviorSubject } from "rxjs";
 import { type KeyboardStateType } from "../../scene/battle-scene/types/keyboard-state";
-import { type GameInputStateType, type GameInputType } from "../../scene/battle-scene/types/input-state";
+import {
+  defaultGameInputState,
+  type GameInputStateType,
+  type GameInputType,
+} from "../../scene/battle-scene/types/input-state";
 
 const keyboardGameInputMap: {
   [key in string]: GameInputType;
@@ -9,6 +13,8 @@ const keyboardGameInputMap: {
   a: "left",
   s: "down",
   d: "right",
+  l: "buttonA",
+  ";": "buttonB",
 };
 
 export class GameRootViewModel {
@@ -17,12 +23,7 @@ export class GameRootViewModel {
 
   private readonly keyBoardState = new BehaviorSubject<KeyboardStateType>({});
 
-  private readonly inputState = new BehaviorSubject<GameInputStateType>({
-    up: 0,
-    down: 0,
-    left: 0,
-    right: 0,
-  });
+  private readonly inputState = new BehaviorSubject<GameInputStateType>({ ...defaultGameInputState });
 
   private readonly sceneState = new BehaviorSubject("");
   sceneObservable = this.sceneState.asObservable();
@@ -57,12 +58,7 @@ export class GameRootViewModel {
 
   tick(delta: number): void {
     const current = this.inputState.value;
-    const next: GameInputStateType = {
-      up: 0,
-      down: 0,
-      left: 0,
-      right: 0,
-    };
+    const next: GameInputStateType = { ...defaultGameInputState };
     const currentKeyboard = this.getKeyBoard();
 
     Object.entries(keyboardGameInputMap).forEach(([keyboardKey, inputKey]) => {
