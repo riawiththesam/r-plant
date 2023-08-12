@@ -10,6 +10,9 @@ export const friendListSample: FriendListState = {
           current: 100,
         },
       },
+      parsonal: {
+        name: "キャラクター1",
+      },
       graphics: {
         image: slime,
       },
@@ -36,6 +39,9 @@ export const friendListSample: FriendListState = {
           current: 100,
         },
       },
+      parsonal: {
+        name: "キャラクター2",
+      },
       graphics: {
         image: slime,
       },
@@ -61,6 +67,9 @@ export const friendListSample: FriendListState = {
           max: 250,
           current: 100,
         },
+      },
+      parsonal: {
+        name: "キャラクター3",
       },
       graphics: {
         image: slime,

@@ -1,5 +1,9 @@
 import { type CharacterState } from "./character-state";
 
+export type FriendParsonalState = {
+  name: string;
+};
+
 export type FriendGraphicsState = {
   image: string;
 };
@@ -18,6 +22,7 @@ export type FriendInPartyState = {
 };
 
 export type FriendCharacterState = {
+  parsonal: FriendParsonalState;
   common: CharacterState;
   graphics: FriendGraphicsState;
   command: FriendCommandState;

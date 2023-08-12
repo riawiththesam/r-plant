@@ -22,7 +22,11 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   }
 
   applyInputFriendListStateIfPossible(input: "down" | "up"): void {
-    const friendState = this.value.friendListState.list[0];
+    // 行動選択中
+    const phaseState = this.value.phaseState;
+    if (phaseState.phase !== "reserveActions") return;
+
+    const friendState = this.value.friendListState.list[phaseState.characterIndex];
     if (friendState == null) return;
     const nextOne = produce(friendState, (draft) => {
       const indexDiff = input === "down" ? 1 : -1 + draft.command.commandList.length;
@@ -30,7 +34,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       draft.command.selectedCommandIndex = nextIndex;
     });
     const next = produce(this.value, (draft) => {
-      draft.friendListState.list[0] = nextOne;
+      draft.friendListState.list[phaseState.characterIndex] = nextOne;
     });
     this.next(next);
   }
@@ -42,12 +46,15 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         const phaseTarget = draft.phaseState;
         if (phaseTarget.phase !== "reserveActions") return;
 
+        const friendTarget = draft.friendListState.list[phaseTarget.characterIndex];
+        if (friendTarget == null) return;
+
         // 対象のキャラクターの行動を設定
-        const targetFriend = draft.friendListState.list[0];
-        const index = targetFriend?.command.selectedCommandIndex ?? 0;
-        const command = draft.friendListState.list[0]?.command.commandList[index];
-        if (targetFriend == null || command == null) return;
-        targetFriend.reservedCommand.command = command[0];
+        const index = friendTarget.command.selectedCommandIndex;
+        const [commandType] = friendTarget.command.commandList[index] ?? [];
+        if (friendTarget == null || commandType == null) return;
+
+        friendTarget.reservedCommand.command = commandType;
 
         // 行動選択対象を次に移す
         phaseTarget.characterIndex = phaseTarget.characterIndex + 1;
@@ -60,6 +67,5 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         }
       }),
     );
-    console.log(this.value);
   }
 }
