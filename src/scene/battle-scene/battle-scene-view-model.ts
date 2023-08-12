@@ -4,6 +4,7 @@ import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 import { produce } from "immer";
 import { BattleSceneSubject } from "./battle-scene-subject";
+import { type GameInputType } from "./types/input-state";
 
 export class BattleSceneViewModel {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {}
@@ -24,53 +25,33 @@ export class BattleSceneViewModel {
   subscribeUpdate(updateObservable: Observable<UpdateEventType>): Subscription {
     const subscription = new Subscription();
 
-    // 下入力1フレーム目
-    updateObservable
-      .pipe(map((_) => this.gameRootViewModel.getInput()))
-      .pipe(pairwise())
-      .pipe(filter(([previous, current]) => previous.down === 0 && current.down > 0))
-      .subscribe((_) => {
-        this.battleSceneSubject.applyInputFriendListStateIfPossible("down");
-      })
+    const getInputFilteredUpdateObservable = (input: GameInputType): Observable<null> => {
+      return updateObservable
+        .pipe(map((_) => this.gameRootViewModel.getInput()))
+        .pipe(pairwise())
+        .pipe(
+          filter(([previous, current], index) => {
+            const isFirstFrame = previous[input] === 0 && current[input] > 0;
+            const isLongPressFrame = current[input] > 30 && index % 4 === 0;
+            return isFirstFrame || isLongPressFrame;
+          }),
+        )
+        .pipe(map((_) => null));
+    };
+
+    // 下入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
+    getInputFilteredUpdateObservable("down")
+      .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("down"))
       .addTo(subscription);
 
-    // 下入力30フレーム目以降かつ4フレームに一度
-    updateObservable
-      .pipe(map((_) => this.gameRootViewModel.getInput()))
-      .pipe(pairwise())
-      .pipe(filter(([_, current], index) => current.down > 30 && index % 4 === 0))
-      .subscribe((_) => {
-        this.battleSceneSubject.applyInputFriendListStateIfPossible("down");
-      })
+    // 上入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
+    getInputFilteredUpdateObservable("up")
+      .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("up"))
       .addTo(subscription);
 
-    // 上入力1フレーム目
-    updateObservable
-      .pipe(map((_) => this.gameRootViewModel.getInput()))
-      .pipe(pairwise())
-      .pipe(filter(([previous, current]) => previous.up === 0 && current.up > 0))
-      .subscribe((_) => {
-        this.battleSceneSubject.applyInputFriendListStateIfPossible("up");
-      })
-      .addTo(subscription);
-
-    // 上入力30フレーム目以降かつ4フレームに一度
-    updateObservable
-      .pipe(map((_) => this.gameRootViewModel.getInput()))
-      .pipe(pairwise())
-      .pipe(filter(([_, current], index) => current.up > 30 && index % 4 === 0))
-      .subscribe((_) => {
-        this.battleSceneSubject.applyInputFriendListStateIfPossible("up");
-      })
-      .addTo(subscription);
-
-    updateObservable
-      .pipe(map((_) => this.gameRootViewModel.getInput()))
-      .pipe(pairwise())
-      .pipe(filter(([previous, current]) => previous.buttonA === 0 && current.buttonA > 0))
-      .subscribe((_) => {
-        this.battleSceneSubject.applyInputDecide();
-      })
+    // 決定入力
+    getInputFilteredUpdateObservable("buttonA")
+      .subscribe((_) => this.battleSceneSubject.applyInputDecide())
       .addTo(subscription);
 
     return subscription;
