@@ -26,17 +26,16 @@ export class BattleSceneViewModel {
     const subscription = new Subscription();
 
     const getInputFilteredUpdateObservable = (input: GameInputType): Observable<null> => {
-      return updateObservable
-        .pipe(map((_) => this.gameRootViewModel.getInput()))
-        .pipe(pairwise())
-        .pipe(
-          filter(([previous, current], index) => {
-            const isFirstFrame = previous[input] === 0 && current[input] > 0;
-            const isLongPressFrame = current[input] > 30 && index % 4 === 0;
-            return isFirstFrame || isLongPressFrame;
-          }),
-        )
-        .pipe(map((_) => null));
+      return updateObservable.pipe(
+        map((_) => this.gameRootViewModel.getInput()),
+        pairwise(),
+        filter(([previous, current], index) => {
+          const isFirstFrame = previous[input] === 0 && current[input] > 0;
+          const isLongPressFrame = current[input] > 30 && index % 4 === 0;
+          return isFirstFrame || isLongPressFrame;
+        }),
+        map((_) => null),
+      );
     };
 
     // 下入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
