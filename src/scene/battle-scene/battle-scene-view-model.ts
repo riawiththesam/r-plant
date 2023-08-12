@@ -1,6 +1,6 @@
 import { BehaviorSubject, map, pairwise, type Observable, Subscription, filter } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
-import { applyInputFriendListStateIfPossible, type FriendListState } from "./types/friend-list-state";
+import { applyInputDecide, applyInputFriendListStateIfPossible, type FriendListState } from "./types/friend-list-state";
 import { enemyListSample, friendListSample } from "./state-sample";
 import { type PhaseState } from "./types/phase-state";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
@@ -64,6 +64,15 @@ export class BattleSceneViewModel {
       .pipe(filter(([_, current], index) => current.up > 30 && index % 4 === 0))
       .subscribe((_) => {
         this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "up"));
+      })
+      .addTo(subscription);
+
+    updateObservable
+      .pipe(map((_) => this.gameRootViewModel.getInput()))
+      .pipe(pairwise())
+      .pipe(filter(([previous, current]) => previous.buttonA === 0 && current.buttonA > 0))
+      .subscribe((_) => {
+        this.phaseStateSubject.next(applyInputDecide(this.phaseStateSubject.value));
       })
       .addTo(subscription);
 

@@ -11,4 +11,8 @@ type ReserveActionsState = BasePhaseState & {
   characterIndex: number;
 };
 
-export type PhaseState = PreparePhaseState | ReserveActionsState;
+type ExecuteActionsState = BasePhaseState & {
+  phase: "executeActions";
+};
+
+export type PhaseState = PreparePhaseState | ReserveActionsState | ExecuteActionsState;

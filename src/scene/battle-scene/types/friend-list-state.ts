@@ -1,5 +1,6 @@
 import { produce } from "immer";
 import { type CharacterState } from "./character-state";
+import { type PhaseState } from "./phase-state";
 
 export type FriendGraphicsState = {
   graphics: {
@@ -35,4 +36,10 @@ export function applyInputFriendListStateIfPossible(current: FriendListState, in
     draft.one = nextOne;
   });
   return next;
+}
+
+export function applyInputDecide(current: PhaseState): PhaseState {
+  return produce(current, (draft) => {
+    draft.phase = "executeActions";
+  });
 }
