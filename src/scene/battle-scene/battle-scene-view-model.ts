@@ -27,6 +27,7 @@ export class BattleSceneViewModel {
   subscribeUpdate(updateObservable: Observable<UpdateEventType>): Subscription {
     const subscription = new Subscription();
 
+    // 下入力1フレーム目
     updateObservable
       .pipe(map((_) => this.gameRootViewModel.getInput()))
       .pipe(pairwise())
@@ -36,10 +37,31 @@ export class BattleSceneViewModel {
       })
       .addTo(subscription);
 
+    // 下入力30フレーム目以降かつ4フレームに一度
+    updateObservable
+      .pipe(map((_) => this.gameRootViewModel.getInput()))
+      .pipe(pairwise())
+      .pipe(filter(([_, current], index) => current.down > 30 && index % 4 === 0))
+      .subscribe((_) => {
+        this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "down"));
+      })
+      .addTo(subscription);
+
+    // 上入力1フレーム目
     updateObservable
       .pipe(map((_) => this.gameRootViewModel.getInput()))
       .pipe(pairwise())
       .pipe(filter(([previous, current]) => previous.up === 0 && current.up > 0))
+      .subscribe((_) => {
+        this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "up"));
+      })
+      .addTo(subscription);
+
+    // 上入力30フレーム目以降かつ4フレームに一度
+    updateObservable
+      .pipe(map((_) => this.gameRootViewModel.getInput()))
+      .pipe(pairwise())
+      .pipe(filter(([_, current], index) => current.up > 30 && index % 4 === 0))
       .subscribe((_) => {
         this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "up"));
       })
