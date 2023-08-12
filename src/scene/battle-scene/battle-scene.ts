@@ -25,7 +25,7 @@ export class BattleScene extends Scene {
     viewModel.enemyListObservable.subscribe((state) => enemyLayer.update(state)).addTo(this.unsubscribeOnDestroy);
 
     const battleOperationLayer = new BattleOperationLayer();
-    battleOperationLayer.subscribe(viewModel.friendListObservable).addTo(this.unsubscribeOnDestroy);
+    battleOperationLayer.subscribe(viewModel).addTo(this.unsubscribeOnDestroy);
     this.addChild(battleOperationLayer);
 
     viewModel.subscribeUpdate(this.updateEvent).addTo(this.unsubscribeOnDestroy);

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { CharacterLayer } from "./character-layer";
-import { type Subscription, type Observable } from "rxjs";
-import { type FriendListState } from "../../../../scene/battle-scene/types/friend-list-state";
+import { type Subscription } from "rxjs";
+import { type BattleSceneViewModel } from "../../../../scene/battle-scene/battle-scene-view-model";
 
 export class BattleOperationLayer extends Container {
   private readonly characterLayer = new CharacterLayer();
@@ -12,7 +12,7 @@ export class BattleOperationLayer extends Container {
     this.addChild(this.characterLayer);
   }
 
-  subscribe(observable: Observable<FriendListState>): Subscription {
-    return observable.subscribe((state) => this.characterLayer.update(state.one));
+  subscribe(battleSceneViewModel: BattleSceneViewModel): Subscription {
+    return battleSceneViewModel.friendListObservable.subscribe((state) => this.characterLayer.update(state.one));
   }
 }
