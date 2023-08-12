@@ -1,5 +1,8 @@
+export const phaseTypes = ["prepare", "reserveActions", "executeActions"] as const;
+export type PhaseType = (typeof phaseTypes)[number];
+
 type BasePhaseState = {
-  phase: string;
+  phase: PhaseType;
 };
 
 type PreparePhaseState = BasePhaseState & {

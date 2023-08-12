@@ -1,10 +1,20 @@
-import { map, pairwise, type Observable, Subscription, filter } from "rxjs";
+import {
+  map,
+  pairwise,
+  type Observable,
+  Subscription,
+  filter,
+  type MonoTypeOperatorFunction,
+  pipe,
+  type UnaryFunction,
+} from "rxjs";
 import { enemyListSample, friendListSample } from "./state-sample";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
 import { produce } from "immer";
 import { BattleSceneSubject } from "./battle-scene-subject";
 import { type GameInputType } from "./types/input-state";
+import { type PhaseType } from "./types/phase-state";
 
 export class BattleSceneViewModel {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {}
@@ -25,9 +35,13 @@ export class BattleSceneViewModel {
   subscribeUpdate(updateObservable: Observable<UpdateEventType>): Subscription {
     const subscription = new Subscription();
 
-    const getInputFilteredUpdateObservable = (input: GameInputType): Observable<null> => {
-      return updateObservable.pipe(
-        filter((_) => this.battleSceneSubject.value.phaseState.phase === "reserveActions"),
+    // PhaseStateでフィルタ
+    const filterPhase = (phase: PhaseType): MonoTypeOperatorFunction<unknown> =>
+      filter((_) => this.battleSceneSubject.value.phaseState.phase === phase);
+
+    // 入力でフィルタ 1フレーム目または30フレーム目以降かつ4フレームに一度にフィルタする
+    const filterInput = (input: GameInputType): UnaryFunction<Observable<unknown>, Observable<null>> =>
+      pipe(
         map((_) => this.gameRootViewModel.getInput()),
         pairwise(),
         filter(([previous, current], index) => {
@@ -37,20 +51,22 @@ export class BattleSceneViewModel {
         }),
         map((_) => null),
       );
-    };
 
     // 下入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
-    getInputFilteredUpdateObservable("down")
+    updateObservable
+      .pipe(filterPhase("reserveActions"), filterInput("down"))
       .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("down"))
       .addTo(subscription);
 
     // 上入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
-    getInputFilteredUpdateObservable("up")
+    updateObservable
+      .pipe(filterPhase("reserveActions"), filterInput("up"))
       .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("up"))
       .addTo(subscription);
 
     // 決定入力
-    getInputFilteredUpdateObservable("buttonA")
+    updateObservable
+      .pipe(filterPhase("reserveActions"), filterInput("buttonA"))
       .subscribe((_) => this.battleSceneSubject.applyInputDecide())
       .addTo(subscription);
 
