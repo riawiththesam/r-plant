@@ -2,63 +2,80 @@ import slime from "../../game-assets/character/slime/slime.png";
 import { type FriendListState } from "./types/friend-list-state";
 
 export const friendListSample: FriendListState = {
-  one: {
-    health: {
-      max: 250,
-      current: 100,
+  list: [
+    {
+      common: {
+        health: {
+          max: 250,
+          current: 100,
+        },
+      },
+      graphics: {
+        image: slime,
+      },
+      command: {
+        commandList: [
+          ["attack", "攻撃"],
+          ["spell", "呪文"],
+          ["skill", "スキル"],
+          ["item", "アイテム"],
+        ],
+        selectedCommandIndex: 0,
+        instructed: false,
+      },
+      inParty: {
+        position: 0,
+      },
     },
-    graphics: {
-      image: slime,
+    {
+      common: {
+        health: {
+          max: 250,
+          current: 100,
+        },
+      },
+      graphics: {
+        image: slime,
+      },
+      command: {
+        commandList: [
+          ["attack", "攻撃"],
+          ["spell", "呪文"],
+          ["skill", "スキル"],
+          ["item", "アイテム"],
+        ],
+        selectedCommandIndex: 0,
+        instructed: false,
+      },
+      inParty: {
+        position: 1,
+      },
     },
-    command: {
-      commandList: [
-        ["attack", "攻撃"],
-        ["spell", "呪文"],
-        ["skill", "スキル"],
-        ["item", "アイテム"],
-      ],
-      selectedCommandIndex: 0,
-      instructed: false,
+    {
+      common: {
+        health: {
+          max: 250,
+          current: 100,
+        },
+      },
+      graphics: {
+        image: slime,
+      },
+      command: {
+        commandList: [
+          ["attack", "攻撃"],
+          ["spell", "呪文"],
+          ["skill", "スキル"],
+          ["item", "アイテム"],
+        ],
+        selectedCommandIndex: 0,
+        instructed: false,
+      },
+      inParty: {
+        position: 3,
+      },
     },
-  },
-  two: {
-    health: {
-      max: 250,
-      current: 100,
-    },
-    graphics: {
-      image: slime,
-    },
-    command: {
-      commandList: [
-        ["attack", "攻撃"],
-        ["spell", "呪文"],
-        ["skill", "スキル"],
-        ["item", "アイテム"],
-      ],
-      selectedCommandIndex: 0,
-      instructed: false,
-    },
-  },
-  four: {
-    health: {
-      max: 250,
-      current: 100,
-    },
-    graphics: {
-      image: slime,
-    },
-    command: {
-      commandList: [
-        ["attack", "攻撃"],
-        ["spell", "呪文"],
-        ["skill", "スキル"],
-        ["item", "アイテム"],
-      ],
-      selectedCommandIndex: 0,
-      instructed: false,
-    },
-  },
+  ],
 };
 
 export const enemyListSample = {

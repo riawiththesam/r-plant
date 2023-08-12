@@ -12,7 +12,7 @@ export type BattleSceneState = {
 
 const defaultBattleSceneState: BattleSceneState = {
   phaseState: { phase: "prepare" },
-  friendListState: {},
+  friendListState: { list: [] },
   enemyListState: { list: [] },
 };
 
@@ -22,15 +22,15 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   }
 
   applyInputFriendListStateIfPossible(input: "down" | "up"): void {
-    const one = this.value.friendListState.one;
-    if (one == null) return;
-    const nextOne = produce(one, (draft) => {
+    const friendState = this.value.friendListState.list[0];
+    if (friendState == null) return;
+    const nextOne = produce(friendState, (draft) => {
       const indexDiff = input === "down" ? 1 : -1 + draft.command.commandList.length;
       const nextIndex = (draft.command.selectedCommandIndex + indexDiff) % draft.command.commandList.length;
       draft.command.selectedCommandIndex = nextIndex;
     });
     const next = produce(this.value, (draft) => {
-      draft.friendListState.one = nextOne;
+      draft.friendListState.list[0] = nextOne;
     });
     this.next(next);
   }

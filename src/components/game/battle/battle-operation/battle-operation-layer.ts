@@ -22,7 +22,7 @@ export class BattleOperationLayer extends Container {
       .addTo(subscription);
 
     battleSceneViewModel.battleSceneObservable
-      .subscribe((state) => this.characterLayer.update(state.friendListState.one))
+      .subscribe((state) => this.characterLayer.update(state.friendListState.list[0]?.command))
       .addTo(subscription);
 
     return subscription;

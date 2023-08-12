@@ -20,8 +20,8 @@ export class CharacterLayer extends Container {
     });
     this.addChild(text);
 
-    const commandList = state?.command.commandList ?? [];
-    const selectedIndex = state?.command.selectedCommandIndex ?? 0;
+    const commandList = state?.commandList ?? [];
+    const selectedIndex = state?.selectedCommandIndex ?? 0;
     const commandObjectList = commandList.map(([_, commandText], index) => {
       const commandObject = new NineSliceWithText({
         text: commandText,
