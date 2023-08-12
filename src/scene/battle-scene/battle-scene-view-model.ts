@@ -1,11 +1,10 @@
-import { BehaviorSubject, type Observable, type Subscription } from "rxjs";
+import { BehaviorSubject, map, pairwise, type Observable, Subscription, filter } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
-import { type FriendListState } from "./types/friend-list-state";
+import { applyInputFriendListStateIfPossible, type FriendListState } from "./types/friend-list-state";
 import { enemyListSample, friendListSample } from "./state-sample";
 import { type PhaseState } from "./types/phase-state";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
-import { produce } from "immer";
 
 export class BattleSceneViewModel {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {}
@@ -25,27 +24,27 @@ export class BattleSceneViewModel {
     this.phaseStateSubject.next({ phase: "reserveActions" });
   }
 
-  subscribeUpdate(observable: Observable<UpdateEventType>): Subscription {
-    return observable.subscribe((_) => {
-      const input = this.gameRootViewModel.getInput();
+  subscribeUpdate(updateObservable: Observable<UpdateEventType>): Subscription {
+    const subscription = new Subscription();
 
-      const one = this.friendListSubject.value.one;
-      if (one == null) return;
+    updateObservable
+      .pipe(map((_) => this.gameRootViewModel.getInput()))
+      .pipe(pairwise())
+      .pipe(filter(([previous, current]) => previous.down === 0 && current.down > 0))
+      .subscribe((_) => {
+        this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "down"));
+      })
+      .addTo(subscription);
 
-      if (input.up > 0) {
-        console.log("up");
-      }
-      if (input.down > 0) {
-        //        console.log("s");
-        const nextOne = produce(one, (draft) => {
-          const nextIndex = (draft.command.selectedCommandIndex + 1) % draft.command.commandList.length;
-          draft.command.selectedCommandIndex = nextIndex;
-        });
-        const next = produce(this.friendListSubject.value, (draft) => {
-          draft.one = nextOne;
-        });
-        this.friendListSubject.next(next);
-      }
-    });
+    updateObservable
+      .pipe(map((_) => this.gameRootViewModel.getInput()))
+      .pipe(pairwise())
+      .pipe(filter(([previous, current]) => previous.up === 0 && current.up > 0))
+      .subscribe((_) => {
+        this.friendListSubject.next(applyInputFriendListStateIfPossible(this.friendListSubject.value, "up"));
+      })
+      .addTo(subscription);
+
+    return subscription;
   }
 }
