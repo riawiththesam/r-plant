@@ -27,6 +27,7 @@ export class BattleSceneViewModel {
 
     const getInputFilteredUpdateObservable = (input: GameInputType): Observable<null> => {
       return updateObservable.pipe(
+        filter((_) => this.battleSceneSubject.value.phaseState.phase === "reserveActions"),
         map((_) => this.gameRootViewModel.getInput()),
         pairwise(),
         filter(([previous, current], index) => {

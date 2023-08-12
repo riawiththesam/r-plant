@@ -38,12 +38,28 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyInputDecide(): void {
     this.next(
       produce(this.value, (draft) => {
+        // 行動選択中
+        const phaseTarget = draft.phaseState;
+        if (phaseTarget.phase !== "reserveActions") return;
+
+        // 対象のキャラクターの行動を設定
         const targetFriend = draft.friendListState.list[0];
         const index = targetFriend?.command.selectedCommandIndex ?? 0;
         const command = draft.friendListState.list[0]?.command.commandList[index];
         if (targetFriend == null || command == null) return;
         targetFriend.reservedCommand.command = command[0];
+
+        // 行動選択対象を次に移す
+        phaseTarget.characterIndex = phaseTarget.characterIndex + 1;
+
+        // すべてのキャラクターの行動が決まった場合
+        if (phaseTarget.characterIndex === draft.friendListState.list.length) {
+          draft.phaseState = {
+            phase: "executeActions",
+          };
+        }
       }),
     );
+    console.log(this.value);
   }
 }
