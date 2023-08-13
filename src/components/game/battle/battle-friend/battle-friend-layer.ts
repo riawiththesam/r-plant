@@ -22,7 +22,7 @@ export class BattleFriendLayer extends Container {
                 y: gameConfig.height - spriteSize,
                 widht: spriteSize,
                 height: spriteSize,
-                image: friend.graphics.image,
+                friend,
               });
             }),
           );
