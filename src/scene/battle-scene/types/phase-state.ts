@@ -18,6 +18,7 @@ export type ReserveActionsState = BasePhaseState & {
 export type SelectTargetState = BasePhaseState & {
   phase: "selectTarget";
   characterIndex: number;
+  selectedCommandIndex: number;
   selectedEnemyTargetIndexes: Array<number>;
 };
 

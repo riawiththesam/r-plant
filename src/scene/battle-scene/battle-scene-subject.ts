@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
 import { type FriendListState } from "./types/friend-list-state";
-import { type PhaseState } from "./types/phase-state";
+import { type SelectTargetState, type PhaseState } from "./types/phase-state";
 import { produce } from "immer";
 
 export type BattleSceneState = {
@@ -35,6 +35,22 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       draft.selectedCommandIndex = nextIndex;
     });
 
+    this.next(
+      produce(this.value, (draft) => {
+        draft.phaseState = nextPhase;
+      }),
+    );
+  }
+
+  applyReserveActionsDecide(): void {
+    const phase = this.value.phaseState;
+    if (phase.phase !== "reserveActions") return undefined;
+    const nextPhase: SelectTargetState = {
+      phase: "selectTarget",
+      characterIndex: phase.characterIndex,
+      selectedCommandIndex: phase.selectedCommandIndex,
+      selectedEnemyTargetIndexes: [0],
+    };
     this.next(
       produce(this.value, (draft) => {
         draft.phaseState = nextPhase;

@@ -67,7 +67,7 @@ export class BattleSceneViewModel {
     // 決定入力
     updateObservable
       .pipe(filterPhase("reserveActions"), filterInput("buttonA"))
-      .subscribe((_) => this.battleSceneSubject.applyInputDecide())
+      .subscribe((_) => this.battleSceneSubject.applyReserveActionsDecide())
       .addTo(subscription);
 
     return subscription;
