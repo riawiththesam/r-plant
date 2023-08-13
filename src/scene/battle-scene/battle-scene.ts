@@ -5,6 +5,7 @@ import { BattleFriendLayer } from "../../components/game/battle/battle-friend/ba
 import { BattleEnemyLayer } from "../../components/game/battle/battle-enemy/battle-enemy-layer";
 import { BattleBackgroundLayer } from "../../components/game/battle/battle-background/battle-background-layer";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
+import { BattleEffectLayer } from "../../components/game/battle/battle-effect/battle-effect-layer";
 
 export class BattleScene extends Scene {
   constructor(private readonly gameRootViewModel: GameRootViewModel) {
@@ -23,6 +24,10 @@ export class BattleScene extends Scene {
     const enemyLayer = new BattleEnemyLayer();
     enemyLayer.subscribe(viewModel.battleSceneObservable).addTo(this.unsubscribeOnDestroy);
     this.addChild(enemyLayer);
+
+    const effectLayer = new BattleEffectLayer();
+    effectLayer.subscribe(viewModel.battleSceneObservable).addTo(this.unsubscribeOnDestroy);
+    this.addChild(effectLayer);
 
     const battleOperationLayer = new BattleOperationLayer();
     battleOperationLayer.subscribe(viewModel).addTo(this.unsubscribeOnDestroy);

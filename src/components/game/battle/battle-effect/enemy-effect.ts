@@ -10,11 +10,13 @@ export class EnemyEffect extends Container {
 
     const animation = new AnimatedSprite(props.textureList);
     animation.animationSpeed = 0.1;
-    animation.x = 200;
-    animation.y = 200;
+    animation.x = 400;
+    animation.y = 400;
     animation.width = 100;
     animation.height = 100;
     animation.play();
     this.addChild(animation);
   }
+
+  update(): void {}
 }
