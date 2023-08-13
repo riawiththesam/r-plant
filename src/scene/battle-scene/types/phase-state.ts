@@ -9,11 +9,16 @@ export type PreparePhaseState = BasePhaseState & {
   phase: "prepare";
 };
 
+export type CommandDetail = {
+  commandType: string;
+  targetList: Array<number>;
+};
+
 export type ReserveActionsState = BasePhaseState & {
   phase: "reserveActions";
   characterIndex: number;
   selectedCommandIndex: number;
-  reservedCommandList: Array<string>;
+  reservedCommandList: Array<CommandDetail>;
 };
 
 export function createReserveActinsState(value: Partial<ReserveActionsState>): ReserveActionsState {
@@ -30,7 +35,7 @@ export type SelectTargetState = BasePhaseState & {
   characterIndex: number;
   selectedCommandIndex: number;
   selectedEnemyTargetIndexes: Array<number>;
-  reservedCommandList: Array<string>;
+  reservedCommandList: Array<CommandDetail>;
 };
 
 export function createSelectTargetState(value: Partial<SelectTargetState>): SelectTargetState {
@@ -45,7 +50,7 @@ export function createSelectTargetState(value: Partial<SelectTargetState>): Sele
 
 export type ExecuteActionsState = BasePhaseState & {
   phase: "executeActions";
-  reservedCommandList: Array<string>;
+  reservedCommandList: Array<CommandDetail>;
 };
 
 export function createExecuteActionsState(value: Partial<ExecuteActionsState>): ExecuteActionsState {

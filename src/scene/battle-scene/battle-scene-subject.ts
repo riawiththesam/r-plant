@@ -74,10 +74,10 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     if (friend === null) return;
     const [commandType] = friend?.command.commandList[phase.selectedCommandIndex] ?? [];
     if (commandType == null) return;
+    const targetList = [...phase.selectedEnemyTargetIndexes];
 
     // コマンドを保存
-    // TODO: コマンドの対象等の保存
-    const reservedCommand = [...phase.reservedCommandList, commandType];
+    const reservedCommand = [...phase.reservedCommandList, { commandType, targetList }];
 
     this.next(
       produce(this.value, (draft) => {
