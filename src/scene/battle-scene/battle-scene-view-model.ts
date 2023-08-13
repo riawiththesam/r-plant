@@ -81,6 +81,17 @@ export class BattleSceneViewModel {
       .subscribe((_) => this.battleSceneSubject.applyDecideSelectTarget())
       .addTo(subscription);
 
+    // 行動実行前の状態になったら行動情報を整理する
+    updateObservable
+      .pipe(filterPhase("preExecuteActions"))
+      .subscribe((_) => this.battleSceneSubject.resolvePreExecuteActions())
+      .addTo(subscription);
+
+    updateObservable
+      .pipe(filterPhase("executeActions"))
+      .subscribe((_) => console.log(this.battleSceneSubject.value))
+      .addTo(subscription);
+
     return subscription;
   }
 }

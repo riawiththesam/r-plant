@@ -95,4 +95,29 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       }),
     );
   }
+
+  resolvePreExecuteActions(): void {
+    const phase = this.value.phaseState;
+    if (phase.phase !== "preExecuteActions") return;
+
+    const enemyCommandList: Array<CommandDetail> = this.value.enemyListState.list.map((_, index) => {
+      return {
+        actorType: "enemy",
+        actorIndex: index,
+        commandType: "attack",
+        targetList: [0],
+      };
+    });
+
+    const allCharacterCommandList = phase.reservedCommandList.concat(enemyCommandList);
+
+    // お互いのすべての行動を設定
+    const nextValue = produce(this.value, (draft) => {
+      draft.phaseState = {
+        phase: "executeActions",
+        allCharacterCommandList,
+      };
+    });
+    this.next(nextValue);
+  }
 }
