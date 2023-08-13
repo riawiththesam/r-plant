@@ -4,14 +4,10 @@ import { type FriendListState } from "./types/friend-list-state";
 export const friendListSample: FriendListState = {
   list: [
     {
-      common: {
-        health: {
-          max: 250,
-          current: 100,
-        },
-      },
       parsonal: {
         name: "キャラクター1",
+        maxHitPoint: 250,
+        currentHitPoint: 100,
       },
       graphics: {
         image: slime,
@@ -29,14 +25,10 @@ export const friendListSample: FriendListState = {
       },
     },
     {
-      common: {
-        health: {
-          max: 250,
-          current: 100,
-        },
-      },
       parsonal: {
         name: "キャラクター2",
+        maxHitPoint: 250,
+        currentHitPoint: 100,
       },
       graphics: {
         image: slime,
@@ -54,14 +46,10 @@ export const friendListSample: FriendListState = {
       },
     },
     {
-      common: {
-        health: {
-          max: 250,
-          current: 100,
-        },
-      },
       parsonal: {
         name: "キャラクター3",
+        maxHitPoint: 250,
+        currentHitPoint: 100,
       },
       graphics: {
         image: slime,
