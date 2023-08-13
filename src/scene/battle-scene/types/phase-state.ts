@@ -1,4 +1,4 @@
-export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "executeActions"] as const;
+export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "preExecuteActions", "executeActions"] as const;
 export type PhaseType = (typeof phaseTypes)[number];
 
 export type BasePhaseState = {
@@ -48,6 +48,18 @@ export function createSelectTargetState(value: Partial<SelectTargetState>): Sele
   };
 }
 
+export type PreExecuteActionsState = BasePhaseState & {
+  phase: "preExecuteActions";
+  reservedCommandList: Array<CommandDetail>;
+};
+
+export function createPreExecuteActionsState(value: Partial<PreExecuteActionsState>): PreExecuteActionsState {
+  return {
+    phase: "preExecuteActions",
+    reservedCommandList: value.reservedCommandList ?? [],
+  };
+}
+
 export type ExecuteActionsState = BasePhaseState & {
   phase: "executeActions";
   reservedCommandList: Array<CommandDetail>;
@@ -60,4 +72,9 @@ export function createExecuteActionsState(value: Partial<ExecuteActionsState>): 
   };
 }
 
-export type PhaseState = PreparePhaseState | ReserveActionsState | SelectTargetState | ExecuteActionsState;
+export type PhaseState =
+  | PreparePhaseState
+  | ReserveActionsState
+  | SelectTargetState
+  | PreExecuteActionsState
+  | ExecuteActionsState;

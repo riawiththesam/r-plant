@@ -4,7 +4,7 @@ import { type FriendListState } from "./types/friend-list-state";
 import {
   type SelectTargetState,
   type PhaseState,
-  createExecuteActionsState,
+  createPreExecuteActionsState,
   createReserveActinsState,
 } from "./types/phase-state";
 import { produce } from "immer";
@@ -79,11 +79,12 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     // コマンドを保存
     const reservedCommand = [...phase.reservedCommandList, { commandType, targetList }];
 
+    // 次のPhaseに変更 パーティ全員分の行動を予約したらPreExecuteActions、まだであれば次のキャラクターの行動予約
     this.next(
       produce(this.value, (draft) => {
         const nextPhase =
           reservedCommand.length === draft.friendListState.list.length
-            ? createExecuteActionsState({
+            ? createPreExecuteActionsState({
                 reservedCommandList: reservedCommand,
               })
             : createReserveActinsState({
