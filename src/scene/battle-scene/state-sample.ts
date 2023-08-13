@@ -24,9 +24,6 @@ export const friendListSample: FriendListState = {
           ["item", "アイテム"],
         ],
       },
-      reservedCommand: {
-        command: undefined,
-      },
       inParty: {
         position: 0,
       },
@@ -52,9 +49,6 @@ export const friendListSample: FriendListState = {
           ["item", "アイテム"],
         ],
       },
-      reservedCommand: {
-        command: undefined,
-      },
       inParty: {
         position: 1,
       },
@@ -79,9 +73,6 @@ export const friendListSample: FriendListState = {
           ["skill", "スキル"],
           ["item", "アイテム"],
         ],
-      },
-      reservedCommand: {
-        command: undefined,
       },
       inParty: {
         position: 3,
