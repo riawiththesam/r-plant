@@ -27,7 +27,12 @@ export class BattleSceneViewModel {
       produce(this.battleSceneSubject.value, (draft) => {
         draft.friendListState = friendListSample;
         draft.enemyListState = enemyListSample;
-        draft.phaseState = { phase: "reserveActions", characterIndex: 0, selectedCommandIndex: 0 };
+        draft.phaseState = {
+          phase: "reserveActions",
+          characterIndex: 0,
+          selectedCommandIndex: 0,
+          reservedCommandList: [],
+        };
       }),
     );
   }
@@ -68,6 +73,12 @@ export class BattleSceneViewModel {
     updateObservable
       .pipe(filterPhase("reserveActions"), filterInput("buttonA"))
       .subscribe((_) => this.battleSceneSubject.applyReserveActionsDecide())
+      .addTo(subscription);
+
+    // 対象決定
+    updateObservable
+      .pipe(filterPhase("selectTarget"), filterInput("buttonA"))
+      .subscribe((_) => this.battleSceneSubject.applyDecideSelectTarget())
       .addTo(subscription);
 
     return subscription;

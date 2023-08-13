@@ -1,7 +1,12 @@
 import { BehaviorSubject } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
 import { type FriendListState } from "./types/friend-list-state";
-import { type SelectTargetState, type PhaseState } from "./types/phase-state";
+import {
+  type SelectTargetState,
+  type PhaseState,
+  createExecuteActionsState,
+  createReserveActinsState,
+} from "./types/phase-state";
 import { produce } from "immer";
 
 export type BattleSceneState = {
@@ -50,9 +55,41 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       characterIndex: phase.characterIndex,
       selectedCommandIndex: phase.selectedCommandIndex,
       selectedEnemyTargetIndexes: [0],
+      reservedCommandList: [...phase.reservedCommandList],
     };
     this.next(
       produce(this.value, (draft) => {
+        draft.phaseState = nextPhase;
+      }),
+    );
+  }
+
+  applyDecideSelectTarget(): void {
+    console.log(this.applyDecideSelectTarget.name);
+
+    // selectTarget以外のフェーズ、対象のキャラクターがいない、コマンドが選択できていない場合は何もしない
+    const phase = this.value.phaseState;
+    if (phase.phase !== "selectTarget") return;
+    const friend = this.value.friendListState.list[phase.characterIndex];
+    if (friend === null) return;
+    const [commandType] = friend?.command.commandList[phase.selectedCommandIndex] ?? [];
+    if (commandType == null) return;
+
+    // コマンドを保存
+    // TODO: コマンドの対象等の保存
+    const reservedCommand = [...phase.reservedCommandList, commandType];
+
+    this.next(
+      produce(this.value, (draft) => {
+        const nextPhase =
+          reservedCommand.length === draft.friendListState.list.length
+            ? createExecuteActionsState({
+                reservedCommandList: reservedCommand,
+              })
+            : createReserveActinsState({
+                characterIndex: phase.characterIndex + 1,
+                reservedCommandList: reservedCommand,
+              });
         draft.phaseState = nextPhase;
       }),
     );
@@ -82,6 +119,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         if (phaseTarget.characterIndex === draft.friendListState.list.length) {
           draft.phaseState = {
             phase: "executeActions",
+            reservedCommandList: [...phaseTarget.reservedCommandList],
           };
         }
       }),
