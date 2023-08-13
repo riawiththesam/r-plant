@@ -27,7 +27,7 @@ export class BattleSceneViewModel {
       produce(this.battleSceneSubject.value, (draft) => {
         draft.friendListState = friendListSample;
         draft.enemyListState = enemyListSample;
-        draft.phaseState = { phase: "reserveActions", characterIndex: 0 };
+        draft.phaseState = { phase: "reserveActions", characterIndex: 0, selectedCommandIndex: 0 };
       }),
     );
   }

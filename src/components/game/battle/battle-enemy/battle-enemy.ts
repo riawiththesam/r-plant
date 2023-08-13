@@ -1,5 +1,5 @@
 import { Container, Sprite } from "pixi.js";
-import { type EnemyCharacterState } from "../../../../scene/battle-scene/battle-scene-view-model";
+import { type EnemyCharacterState } from "../../../../scene/battle-scene/types/enemy-list-state";
 
 export class BattleEnemy extends Container {
   constructor(enemy: EnemyCharacterState) {

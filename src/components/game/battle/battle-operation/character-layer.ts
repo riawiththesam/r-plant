@@ -7,7 +7,7 @@ import windowRed from "../../../../game-assets/ui/window/window-red.png";
 const textHeight = 60;
 
 export class CharacterLayer extends Container {
-  update(state?: FriendCommandState): void {
+  update(state?: FriendCommandState, selectedCommandIndex?: number): void {
     this.removeChildren();
 
     const text = new NineSliceWithText({
@@ -21,7 +21,7 @@ export class CharacterLayer extends Container {
     this.addChild(text);
 
     const commandList = state?.commandList ?? [];
-    const selectedIndex = state?.selectedCommandIndex ?? 0;
+    const selectedIndex = selectedCommandIndex;
     const commandObjectList = commandList.map(([_, commandText], index) => {
       const commandObject = new NineSliceWithText({
         text: commandText,

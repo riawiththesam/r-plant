@@ -1,26 +1,27 @@
 export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "executeActions"] as const;
 export type PhaseType = (typeof phaseTypes)[number];
 
-type BasePhaseState = {
+export type BasePhaseState = {
   phase: PhaseType;
 };
 
-type PreparePhaseState = BasePhaseState & {
+export type PreparePhaseState = BasePhaseState & {
   phase: "prepare";
 };
 
-type ReserveActionsState = BasePhaseState & {
+export type ReserveActionsState = BasePhaseState & {
   phase: "reserveActions";
   characterIndex: number;
+  selectedCommandIndex: number;
 };
 
-type SelectTargetState = BasePhaseState & {
+export type SelectTargetState = BasePhaseState & {
   phase: "selectTarget";
   characterIndex: number;
   selectedEnemyTargetIndexes: Array<number>;
 };
 
-type ExecuteActionsState = BasePhaseState & {
+export type ExecuteActionsState = BasePhaseState & {
   phase: "executeActions";
 };
 

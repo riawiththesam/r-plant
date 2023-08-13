@@ -26,7 +26,10 @@ export class BattleOperationLayer extends Container {
         const phaseState = state.phaseState;
         if (phaseState.phase !== "reserveActions") return;
         const characterIndex = phaseState.characterIndex;
-        this.characterLayer.update(state.friendListState.list[characterIndex]?.command);
+        this.characterLayer.update(
+          state.friendListState.list[characterIndex]?.command,
+          phaseState.selectedCommandIndex,
+        );
       })
       .addTo(subscription);
 
