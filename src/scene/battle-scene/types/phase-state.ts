@@ -67,12 +67,14 @@ export function createPreExecuteActionsState(value: Partial<PreExecuteActionsSta
 export type ExecuteActionsState = BasePhaseState & {
   phase: "executeActions";
   allCharacterCommandList: Array<CommandDetail>;
+  executingIndex: number;
 };
 
 export function createExecuteActionsState(value: Partial<ExecuteActionsState>): ExecuteActionsState {
   return {
     phase: "executeActions",
     allCharacterCommandList: value.allCharacterCommandList ?? [],
+    executingIndex: value.executingIndex ?? 0,
   };
 }
 

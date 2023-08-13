@@ -116,6 +116,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       draft.phaseState = {
         phase: "executeActions",
         allCharacterCommandList,
+        executingIndex: 0,
       };
     });
     this.next(nextValue);
