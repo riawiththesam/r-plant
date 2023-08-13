@@ -10,7 +10,18 @@ export class BattleEnemyLayer extends Container {
       battleSceneObservable
         .subscribe((state) => {
           this.removeChildren();
-          this.safeAddChildren(state.enemyListState.list.map((item) => new BattleEnemy(item)));
+
+          const phase = state.phaseState;
+          const selectedEnemyIndexes = phase.phase === "selectTarget" ? phase.selectedEnemyTargetIndexes : [];
+
+          this.safeAddChildren(
+            state.enemyListState.list.map((item, enemyIndex) => {
+              return new BattleEnemy(
+                item,
+                selectedEnemyIndexes.some((i) => i === enemyIndex),
+              );
+            }),
+          );
         })
         .addTo(it);
     });
