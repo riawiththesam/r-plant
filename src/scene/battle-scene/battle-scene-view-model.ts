@@ -88,8 +88,8 @@ export class BattleSceneViewModel {
       .addTo(subscription);
 
     updateObservable
-      .pipe(filterPhase("executeActions"))
-      .subscribe((_) => console.log(this.battleSceneSubject.value))
+      .pipe(filter((_) => this.battleSceneSubject.value.phaseState.phase === "executeActions"))
+      .subscribe((event) => this.battleSceneSubject.updateExecuteActions(event.delta))
       .addTo(subscription);
 
     return subscription;

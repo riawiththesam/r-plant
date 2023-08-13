@@ -31,7 +31,10 @@ export class BattleEffectLayer extends Container {
     return letSubscription((it) => {
       battleStateObservable
         .subscribe((state) => {
-          this.enemyEffect.update();
+          const phase = state.phaseState;
+          this.enemyEffect.visible = phase.phase === "executeActions";
+          if (phase.phase !== "executeActions") return;
+          this.enemyEffect.update(phase.commandElapsedFrame);
         })
         .addTo(it);
     });
