@@ -6,6 +6,7 @@ import {
   type PhaseState,
   createPreExecuteActionsState,
   createReserveActinsState,
+  type CommandDetail,
 } from "./types/phase-state";
 import { produce } from "immer";
 
@@ -65,8 +66,6 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   }
 
   applyDecideSelectTarget(): void {
-    console.log(this.applyDecideSelectTarget.name);
-
     // selectTarget以外のフェーズ、対象のキャラクターがいない、コマンドが選択できていない場合は何もしない
     const phase = this.value.phaseState;
     if (phase.phase !== "selectTarget") return;
@@ -77,7 +76,8 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     const targetList = [...phase.selectedEnemyTargetIndexes];
 
     // コマンドを保存
-    const reservedCommand = [...phase.reservedCommandList, { commandType, targetList }];
+    const command: CommandDetail = { actorType: "friend", actorIndex: phase.characterIndex, commandType, targetList };
+    const reservedCommand = [...phase.reservedCommandList, command];
 
     // 次のPhaseに変更 パーティ全員分の行動を予約したらPreExecuteActions、まだであれば次のキャラクターの行動予約
     this.next(
