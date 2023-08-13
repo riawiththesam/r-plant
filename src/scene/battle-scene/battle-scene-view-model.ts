@@ -45,39 +45,39 @@ export class BattleSceneViewModel {
       filter((_) => this.battleSceneSubject.value.phaseState.phase === phase);
 
     // 入力でフィルタ 1フレーム目または30フレーム目以降かつ4フレームに一度にフィルタする
-    const filterInput = (input: GameInputType): UnaryFunction<Observable<unknown>, Observable<null>> =>
+    const filterInput = (input: GameInputType, press: boolean): UnaryFunction<Observable<unknown>, Observable<null>> =>
       pipe(
         map((_) => this.gameRootViewModel.getInput()),
         pairwise(),
         filter(([previous, current], index) => {
           const isFirstFrame = previous[input] === 0 && current[input] > 0;
           const isLongPressFrame = current[input] > 30 && index % 4 === 0;
-          return isFirstFrame || isLongPressFrame;
+          return isFirstFrame || (isLongPressFrame && press);
         }),
         map((_) => null),
       );
 
     // 下入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
     updateObservable
-      .pipe(filterPhase("reserveActions"), filterInput("down"))
+      .pipe(filterPhase("reserveActions"), filterInput("down", true))
       .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("down"))
       .addTo(subscription);
 
     // 上入力1フレーム目 or 30フレーム目以降かつ4フレームに一度
     updateObservable
-      .pipe(filterPhase("reserveActions"), filterInput("up"))
+      .pipe(filterPhase("reserveActions"), filterInput("up", true))
       .subscribe((_) => this.battleSceneSubject.applyInputFriendListStateIfPossible("up"))
       .addTo(subscription);
 
     // 決定入力
     updateObservable
-      .pipe(filterPhase("reserveActions"), filterInput("buttonA"))
+      .pipe(filterPhase("reserveActions"), filterInput("buttonA", false))
       .subscribe((_) => this.battleSceneSubject.applyReserveActionsDecide())
       .addTo(subscription);
 
     // 対象決定
     updateObservable
-      .pipe(filterPhase("selectTarget"), filterInput("buttonA"))
+      .pipe(filterPhase("selectTarget"), filterInput("buttonA", false))
       .subscribe((_) => this.battleSceneSubject.applyDecideSelectTarget())
       .addTo(subscription);
 
