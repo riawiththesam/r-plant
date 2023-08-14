@@ -118,6 +118,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         allCharacterCommandList,
         executingIndex: 0,
         commandEffectCurrentFrame: 0,
+        commandEffectDuration: 5,
       };
     });
     this.next(nextValue);
@@ -126,6 +127,31 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   updateExecuteActions(delta: number): void {
     const phase = this.value.phaseState;
     if (phase.type !== "executeActions") return;
+
+    if (phase.commandEffectCurrentFrame >= phase.commandEffectDuration) {
+      // エフェクト表示終了
+      if (phase.executingIndex + 1 === phase.allCharacterCommandList.length) {
+        // 全員のコマンド実行終了
+        this.next(
+          produce(this.value, (draft) => {
+            draft.phaseState = createReserveActinsState();
+          }),
+        );
+        return;
+      } else {
+        const nextPhase = produce(phase, (draft) => {
+          draft.commandEffectCurrentFrame = 0;
+          draft.commandEffectDuration = 5;
+          draft.executingIndex = draft.executingIndex + 1;
+        });
+        this.next(
+          produce(this.value, (draft) => {
+            draft.phaseState = nextPhase;
+          }),
+        );
+        return;
+      }
+    }
 
     const nextPhase = produce(phase, (draft) => {
       draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
