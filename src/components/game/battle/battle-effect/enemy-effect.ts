@@ -1,19 +1,28 @@
-import { AnimatedSprite, Container, type Texture } from "pixi.js";
+import range from "lodash/range";
+import { AnimatedSprite, Container, Rectangle, Texture } from "pixi.js";
+import attack1Effect from "../../../../game-assets/effect/battle/attack_1.png";
 
 const animationWidth = 100;
 const animationHeight = 100;
 
-export type EnemyEffectProps = {
-  textureList: Array<Texture>;
-};
+const fullTextureHeight = 240;
+const textureWidth = 240;
 
 export class EnemyEffect extends Container {
-  constructor(private readonly props: EnemyEffectProps) {
+  private readonly textureList: Array<Texture>;
+
+  constructor() {
     super();
+
+    const fullTexture = Texture.from(attack1Effect);
+    this.textureList = range(0, 5).map((index) => {
+      const rect = new Rectangle(textureWidth * index, 0, textureWidth, fullTextureHeight);
+      return new Texture(fullTexture.castToBaseTexture(), rect);
+    });
   }
 
   startAnimation(x: number, y: number): void {
-    const animation = new AnimatedSprite(this.props.textureList);
+    const animation = new AnimatedSprite(this.textureList);
 
     animation.x = x - animationWidth / 2;
     animation.y = y - animationHeight / 2;
