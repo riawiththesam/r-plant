@@ -5,22 +5,23 @@ export type EnemyEffectProps = {
 };
 
 export class EnemyEffect extends Container {
-  private readonly animation: AnimatedSprite;
-
-  constructor(props: EnemyEffectProps) {
+  constructor(private readonly props: EnemyEffectProps) {
     super();
-
-    this.animation = new AnimatedSprite(props.textureList);
-    this.animation.x = 400;
-    this.animation.y = 400;
-    this.animation.width = 100;
-    this.animation.height = 100;
-    this.addChild(this.animation);
   }
 
-  update(elapsedFrame: number): void {
-    console.log(elapsedFrame);
-    const frame = Math.round(elapsedFrame / 10);
-    this.animation.currentFrame = frame % this.animation.totalFrames;
+  startAnimation(x: number, y: number): void {
+    const animation = new AnimatedSprite(this.props.textureList);
+
+    animation.x = x;
+    animation.y = y;
+    animation.width = 100;
+    animation.height = 100;
+    animation.animationSpeed = 1;
+    animation.loop = false;
+    animation.onComplete = () => {
+      this.removeChild(animation);
+    };
+    this.addChild(animation);
+    animation.play();
   }
 }

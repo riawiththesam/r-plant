@@ -34,7 +34,9 @@ export class BattleEffectLayer extends Container {
           const phase = state.phaseState;
           this.enemyEffect.visible = phase.type === "executeActions";
           if (phase.type !== "executeActions") return;
-          this.enemyEffect.update(phase.commandElapsedFrame);
+          if (phase.commandElapsedFrame === 0) {
+            this.enemyEffect.startAnimation(500, 500);
+          }
         })
         .addTo(it);
     });
