@@ -21,17 +21,22 @@ export function createExecuteActionsState(value?: Partial<ExecuteActionsState>):
   };
 }
 
-export function executeActionsStateCreateNextPhase(current: ExecuteActionsState): PhaseState {
-  // エフェクト表示終了
-  if (current.executingIndex + 1 === current.allCharacterCommandList.length) {
-    // 全員のコマンド実行終了
-    return createReserveActionsState();
-  } else {
-    // 次のコマンド実行
-    return produce(current, (draft) => {
-      draft.commandEffectCurrentFrame = 0;
-      draft.commandEffectDuration = 5;
-      draft.executingIndex = draft.executingIndex + 1;
-    });
+export function executeActionsStateCreateNextPhase(current: ExecuteActionsState, delta: number): PhaseState {
+  if (current.commandEffectCurrentFrame >= current.commandEffectDuration) {
+    // エフェクト表示終了
+    if (current.executingIndex + 1 === current.allCharacterCommandList.length) {
+      // 全員のコマンド実行終了
+      return createReserveActionsState();
+    } else {
+      // 次のコマンド実行
+      return produce(current, (draft) => {
+        draft.commandEffectCurrentFrame = 0;
+        draft.commandEffectDuration = 5;
+        draft.executingIndex = draft.executingIndex + 1;
+      });
+    }
   }
+  return produce(current, (draft) => {
+    draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
+  });
 }
