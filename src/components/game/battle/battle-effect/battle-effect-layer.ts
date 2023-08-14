@@ -2,15 +2,15 @@ import { Container } from "pixi.js";
 import { type Observable, type Subscription } from "rxjs";
 import { type BattleSceneState } from "../../../../scene/battle-scene/battle-scene-subject";
 import { letSubscription } from "../../../../util/rxjs/subscription/subscriptions";
-import { EnemyEffect } from "./enemy-effect";
+import { BattleEffect } from "./battle-effect";
 
 export class BattleEffectLayer extends Container {
-  private readonly enemyEffect: EnemyEffect;
+  private readonly battleEffect: BattleEffect;
 
   constructor() {
     super();
-    this.enemyEffect = new EnemyEffect();
-    this.addChild(this.enemyEffect);
+    this.battleEffect = new BattleEffect();
+    this.addChild(this.battleEffect);
   }
 
   subscribe(battleStateObservable: Observable<BattleSceneState>): Subscription {
@@ -18,7 +18,7 @@ export class BattleEffectLayer extends Container {
       battleStateObservable
         .subscribe((state) => {
           const phase = state.phaseState;
-          this.enemyEffect.visible = phase.type === "executeActions";
+          this.battleEffect.visible = phase.type === "executeActions";
           if (phase.type !== "executeActions") return;
 
           const command = phase.allCharacterCommandList[phase.executingIndex];
@@ -30,7 +30,7 @@ export class BattleEffectLayer extends Container {
             const targetIndex = command.targetList[0] ?? -1;
             const target = state.enemyListState.list[targetIndex];
             if (target == null) return;
-            this.enemyEffect.startAnimation(target.graphics.x, target.graphics.y);
+            this.battleEffect.startAnimation(target.graphics.x, target.graphics.y);
           }
         })
         .addTo(it);

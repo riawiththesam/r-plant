@@ -8,7 +8,7 @@ const animationHeight = 100;
 const fullTextureHeight = 240;
 const textureWidth = 240;
 
-export class EnemyEffect extends Container {
+export class BattleEffect extends Container {
   private readonly textureList: Array<Texture>;
 
   constructor() {
