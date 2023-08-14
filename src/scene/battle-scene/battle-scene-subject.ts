@@ -1,15 +1,12 @@
 import { BehaviorSubject } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
 import { type FriendListState } from "./types/friend-list-state";
-import {
-  type SelectTargetState,
-  type PhaseState,
-  createPreExecuteActionsState,
-} from "./types/battle-phase-state/battle-phase-state";
+import { type PhaseState, createPreExecuteActionsState } from "./types/battle-phase-state/battle-phase-state";
 import { produce } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
 import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
+import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -52,13 +49,13 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyReserveActionsDecide(): void {
     const phase = this.value.phaseState;
     if (phase.type !== "reserveActions") return undefined;
-    const nextPhase: SelectTargetState = {
+    const nextPhase = createSelectTargetState({
       type: "selectTarget",
       characterIndex: phase.characterIndex,
       selectedCommandIndex: phase.selectedCommandIndex,
       selectedEnemyTargetIndexes: [0],
       reservedCommandList: [...phase.reservedCommandList],
-    };
+    });
     this.next(
       produce(this.value, (draft) => {
         draft.phaseState = nextPhase;
