@@ -8,6 +8,7 @@ import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phas
 import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
+import { executeActionsStateCreateNextPhase } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -128,28 +129,12 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     if (phase.type !== "executeActions") return;
 
     if (phase.commandEffectCurrentFrame >= phase.commandEffectDuration) {
-      // エフェクト表示終了
-      if (phase.executingIndex + 1 === phase.allCharacterCommandList.length) {
-        // 全員のコマンド実行終了
-        this.next(
-          produce(this.value, (draft) => {
-            draft.phaseState = createReserveActionsState();
-          }),
-        );
-        return;
-      } else {
-        const nextPhase = produce(phase, (draft) => {
-          draft.commandEffectCurrentFrame = 0;
-          draft.commandEffectDuration = 5;
-          draft.executingIndex = draft.executingIndex + 1;
-        });
-        this.next(
-          produce(this.value, (draft) => {
-            draft.phaseState = nextPhase;
-          }),
-        );
-        return;
-      }
+      this.next(
+        produce(this.value, (draft) => {
+          draft.phaseState = executeActionsStateCreateNextPhase(phase);
+        }),
+      );
+      return;
     }
 
     const nextPhase = produce(phase, (draft) => {
