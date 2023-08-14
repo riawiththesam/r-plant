@@ -32,8 +32,8 @@ export class BattleEffectLayer extends Container {
       battleStateObservable
         .subscribe((state) => {
           const phase = state.phaseState;
-          this.enemyEffect.visible = phase.phase === "executeActions";
-          if (phase.phase !== "executeActions") return;
+          this.enemyEffect.visible = phase.type === "executeActions";
+          if (phase.type !== "executeActions") return;
           this.enemyEffect.update(phase.commandElapsedFrame);
         })
         .addTo(it);

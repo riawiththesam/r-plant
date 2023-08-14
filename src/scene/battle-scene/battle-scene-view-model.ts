@@ -28,7 +28,7 @@ export class BattleSceneViewModel {
         draft.friendListState = friendListSample;
         draft.enemyListState = enemyListSample;
         draft.phaseState = {
-          phase: "reserveActions",
+          type: "reserveActions",
           characterIndex: 0,
           selectedCommandIndex: 0,
           reservedCommandList: [],
@@ -42,7 +42,7 @@ export class BattleSceneViewModel {
 
     // PhaseStateでフィルタ
     const filterPhase = (phase: PhaseType): MonoTypeOperatorFunction<unknown> =>
-      filter((_) => this.battleSceneSubject.value.phaseState.phase === phase);
+      filter((_) => this.battleSceneSubject.value.phaseState.type === phase);
 
     // 入力でフィルタ 1フレーム目または30フレーム目以降かつ4フレームに一度にフィルタする
     const filterInput = (input: GameInputType, press: boolean): UnaryFunction<Observable<unknown>, Observable<null>> =>
@@ -88,7 +88,7 @@ export class BattleSceneViewModel {
       .addTo(subscription);
 
     updateObservable
-      .pipe(filter((_) => this.battleSceneSubject.value.phaseState.phase === "executeActions"))
+      .pipe(filter((_) => this.battleSceneSubject.value.phaseState.type === "executeActions"))
       .subscribe((event) => this.battleSceneSubject.updateExecuteActions(event.delta))
       .addTo(subscription);
 

@@ -17,14 +17,14 @@ export class BattleOperationLayer extends Container {
 
     battleSceneViewModel.battleSceneObservable
       .subscribe((state) => {
-        this.visible = state.phaseState.phase === "reserveActions";
+        this.visible = state.phaseState.type === "reserveActions";
       })
       .addTo(subscription);
 
     battleSceneViewModel.battleSceneObservable
       .subscribe((state) => {
         const phaseState = state.phaseState;
-        if (phaseState.phase !== "reserveActions") return;
+        if (phaseState.type !== "reserveActions") return;
         const characterIndex = phaseState.characterIndex;
         this.characterLayer.update(
           state.friendListState.list[characterIndex]?.command,

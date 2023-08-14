@@ -17,7 +17,7 @@ export type BattleSceneState = {
 };
 
 const defaultBattleSceneState: BattleSceneState = {
-  phaseState: { phase: "prepare" },
+  phaseState: { type: "prepare" },
   friendListState: { list: [] },
   enemyListState: { list: [] },
 };
@@ -30,7 +30,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyInputFriendListStateIfPossible(input: "down" | "up"): void {
     // 行動選択中
     const phaseState = this.value.phaseState;
-    if (phaseState.phase !== "reserveActions") return;
+    if (phaseState.type !== "reserveActions") return;
 
     const friendState = this.value.friendListState.list[phaseState.characterIndex];
     if (friendState == null) return;
@@ -50,9 +50,9 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
   applyReserveActionsDecide(): void {
     const phase = this.value.phaseState;
-    if (phase.phase !== "reserveActions") return undefined;
+    if (phase.type !== "reserveActions") return undefined;
     const nextPhase: SelectTargetState = {
-      phase: "selectTarget",
+      type: "selectTarget",
       characterIndex: phase.characterIndex,
       selectedCommandIndex: phase.selectedCommandIndex,
       selectedEnemyTargetIndexes: [0],
@@ -68,7 +68,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyDecideSelectTarget(): void {
     // selectTarget以外のフェーズ、対象のキャラクターがいない、コマンドが選択できていない場合は何もしない
     const phase = this.value.phaseState;
-    if (phase.phase !== "selectTarget") return;
+    if (phase.type !== "selectTarget") return;
     const friend = this.value.friendListState.list[phase.characterIndex];
     if (friend === null) return;
     const [commandType] = friend?.command.commandList[phase.selectedCommandIndex] ?? [];
@@ -98,7 +98,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
   resolvePreExecuteActions(): void {
     const phase = this.value.phaseState;
-    if (phase.phase !== "preExecuteActions") return;
+    if (phase.type !== "preExecuteActions") return;
 
     const enemyCommandList: Array<CommandDetail> = this.value.enemyListState.list.map((_, index) => {
       return {
@@ -114,7 +114,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
       draft.phaseState = {
-        phase: "executeActions",
+        type: "executeActions",
         allCharacterCommandList,
         executingIndex: 0,
         commandElapsedFrame: 0,
@@ -125,7 +125,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
   updateExecuteActions(delta: number): void {
     const phase = this.value.phaseState;
-    if (phase.phase !== "executeActions") return;
+    if (phase.type !== "executeActions") return;
 
     const nextPhase = produce(phase, (draft) => {
       draft.commandElapsedFrame = draft.commandElapsedFrame + delta;

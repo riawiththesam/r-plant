@@ -2,11 +2,11 @@ export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "preExec
 export type PhaseType = (typeof phaseTypes)[number];
 
 export type BasePhaseState = {
-  phase: PhaseType;
+  type: PhaseType;
 };
 
 export type PreparePhaseState = BasePhaseState & {
-  phase: "prepare";
+  type: "prepare";
 };
 
 export type ActorType = "enemy" | "friend";
@@ -19,7 +19,7 @@ export type CommandDetail = {
 };
 
 export type ReserveActionsState = BasePhaseState & {
-  phase: "reserveActions";
+  type: "reserveActions";
   characterIndex: number;
   selectedCommandIndex: number;
   reservedCommandList: Array<CommandDetail>;
@@ -27,7 +27,7 @@ export type ReserveActionsState = BasePhaseState & {
 
 export function createReserveActinsState(value: Partial<ReserveActionsState>): ReserveActionsState {
   return {
-    phase: "reserveActions",
+    type: "reserveActions",
     characterIndex: value.characterIndex ?? 0,
     selectedCommandIndex: value.selectedCommandIndex ?? 0,
     reservedCommandList: value.reservedCommandList ?? [],
@@ -35,7 +35,7 @@ export function createReserveActinsState(value: Partial<ReserveActionsState>): R
 }
 
 export type SelectTargetState = BasePhaseState & {
-  phase: "selectTarget";
+  type: "selectTarget";
   characterIndex: number;
   selectedCommandIndex: number;
   selectedEnemyTargetIndexes: Array<number>;
@@ -44,7 +44,7 @@ export type SelectTargetState = BasePhaseState & {
 
 export function createSelectTargetState(value: Partial<SelectTargetState>): SelectTargetState {
   return {
-    phase: "selectTarget",
+    type: "selectTarget",
     characterIndex: value.characterIndex ?? 0,
     selectedCommandIndex: value.selectedCommandIndex ?? 0,
     selectedEnemyTargetIndexes: value.selectedEnemyTargetIndexes ?? [],
@@ -53,19 +53,19 @@ export function createSelectTargetState(value: Partial<SelectTargetState>): Sele
 }
 
 export type PreExecuteActionsState = BasePhaseState & {
-  phase: "preExecuteActions";
+  type: "preExecuteActions";
   reservedCommandList: Array<CommandDetail>;
 };
 
 export function createPreExecuteActionsState(value: Partial<PreExecuteActionsState>): PreExecuteActionsState {
   return {
-    phase: "preExecuteActions",
+    type: "preExecuteActions",
     reservedCommandList: value.reservedCommandList ?? [],
   };
 }
 
 export type ExecuteActionsState = BasePhaseState & {
-  phase: "executeActions";
+  type: "executeActions";
   allCharacterCommandList: Array<CommandDetail>;
   executingIndex: number;
   commandElapsedFrame: number;
@@ -73,7 +73,7 @@ export type ExecuteActionsState = BasePhaseState & {
 
 export function createExecuteActionsState(value: Partial<ExecuteActionsState>): ExecuteActionsState {
   return {
-    phase: "executeActions",
+    type: "executeActions",
     allCharacterCommandList: value.allCharacterCommandList ?? [],
     executingIndex: value.executingIndex ?? 0,
     commandElapsedFrame: value.commandElapsedFrame ?? 0,

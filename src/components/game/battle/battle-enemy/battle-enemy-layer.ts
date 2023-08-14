@@ -12,7 +12,7 @@ export class BattleEnemyLayer extends Container {
           this.removeChildren();
 
           const phase = state.phaseState;
-          const selectedEnemyIndexes = phase.phase === "selectTarget" ? phase.selectedEnemyTargetIndexes : [];
+          const selectedEnemyIndexes = phase.type === "selectTarget" ? phase.selectedEnemyTargetIndexes : [];
 
           this.safeAddChildren(
             state.enemyListState.list.map((item, enemyIndex) => {
