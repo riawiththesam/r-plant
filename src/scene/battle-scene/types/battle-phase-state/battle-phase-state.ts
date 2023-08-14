@@ -1,5 +1,6 @@
 import { type CommandDetail } from "./command-detail/command-detail";
 import { type PreparePhaseState } from "./prepare-phase-state/prepare-phase-state";
+import { type ReserveActionsState } from "./reserve-actions-state/reserve-actions-state";
 
 export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "preExecuteActions", "executeActions"] as const;
 export type PhaseType = (typeof phaseTypes)[number];
@@ -7,22 +8,6 @@ export type PhaseType = (typeof phaseTypes)[number];
 export type BasePhaseState = {
   type: PhaseType;
 };
-
-export type ReserveActionsState = BasePhaseState & {
-  type: "reserveActions";
-  characterIndex: number;
-  selectedCommandIndex: number;
-  reservedCommandList: Array<CommandDetail>;
-};
-
-export function createReserveActinsState(value?: Partial<ReserveActionsState>): ReserveActionsState {
-  return {
-    type: "reserveActions",
-    characterIndex: value?.characterIndex ?? 0,
-    selectedCommandIndex: value?.selectedCommandIndex ?? 0,
-    reservedCommandList: value?.reservedCommandList ?? [],
-  };
-}
 
 export type SelectTargetState = BasePhaseState & {
   type: "selectTarget";

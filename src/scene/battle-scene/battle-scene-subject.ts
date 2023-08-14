@@ -5,11 +5,11 @@ import {
   type SelectTargetState,
   type PhaseState,
   createPreExecuteActionsState,
-  createReserveActinsState,
 } from "./types/battle-phase-state/battle-phase-state";
 import { produce } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
+import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -88,7 +88,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
             ? createPreExecuteActionsState({
                 reservedCommandList: reservedCommand,
               })
-            : createReserveActinsState({
+            : createReserveActionsState({
                 characterIndex: phase.characterIndex + 1,
                 reservedCommandList: reservedCommand,
               });
@@ -135,7 +135,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         // 全員のコマンド実行終了
         this.next(
           produce(this.value, (draft) => {
-            draft.phaseState = createReserveActinsState();
+            draft.phaseState = createReserveActionsState();
           }),
         );
         return;
