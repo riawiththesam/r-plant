@@ -1,14 +1,11 @@
 import { type CommandDetail } from "./command-detail/command-detail";
+import { type PreparePhaseState } from "./prepare-phase-state/prepare-phase-state";
 
 export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "preExecuteActions", "executeActions"] as const;
 export type PhaseType = (typeof phaseTypes)[number];
 
 export type BasePhaseState = {
   type: PhaseType;
-};
-
-export type PreparePhaseState = BasePhaseState & {
-  type: "prepare";
 };
 
 export type ReserveActionsState = BasePhaseState & {
