@@ -14,7 +14,7 @@ import { type GameRootViewModel } from "../../components/game-root/game-root-vie
 import { produce } from "immer";
 import { BattleSceneSubject } from "./battle-scene-subject";
 import { type GameInputType } from "./types/input-state";
-import { type PhaseType } from "./types/phase-state";
+import { type PhaseType } from "./types/phase-state/phase-state";
 import { letSubscription } from "../../util/rxjs/subscription/subscriptions";
 
 export class BattleSceneViewModel {

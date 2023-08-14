@@ -7,7 +7,7 @@ import {
   createPreExecuteActionsState,
   createReserveActinsState,
   type CommandDetail,
-} from "./types/phase-state";
+} from "./types/phase-state/phase-state";
 import { produce } from "immer";
 
 export type BattleSceneState = {
