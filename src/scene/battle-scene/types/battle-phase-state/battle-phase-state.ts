@@ -1,4 +1,5 @@
 import { type CommandDetail } from "./command-detail/command-detail";
+import { type PreExecuteActionsState } from "./pre-execute-actions-state/pre-execute-actions-state";
 import { type PreparePhaseState } from "./prepare-phase-state/prepare-phase-state";
 import { type ReserveActionsState } from "./reserve-actions-state/reserve-actions-state";
 import { type SelectTargetState } from "./select-target-state/select-target-state";
@@ -9,18 +10,6 @@ export type PhaseType = (typeof phaseTypes)[number];
 export type BasePhaseState = {
   type: PhaseType;
 };
-
-export type PreExecuteActionsState = BasePhaseState & {
-  type: "preExecuteActions";
-  reservedCommandList: Array<CommandDetail>;
-};
-
-export function createPreExecuteActionsState(value?: Partial<PreExecuteActionsState>): PreExecuteActionsState {
-  return {
-    type: "preExecuteActions",
-    reservedCommandList: value?.reservedCommandList ?? [],
-  };
-}
 
 export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";
