@@ -8,7 +8,7 @@ export type ExecuteActionsState = BasePhaseState & {
   allCharacterCommandList: Array<CommandDetail>;
   executingIndex: number;
   commandEffectCurrentFrame: number;
-  commandEffectDuration: number;
+  commandAutoProgressionDuration: number;
 };
 
 export function createExecuteActionsState(value?: Partial<ExecuteActionsState>): ExecuteActionsState {
@@ -17,12 +17,12 @@ export function createExecuteActionsState(value?: Partial<ExecuteActionsState>):
     allCharacterCommandList: value?.allCharacterCommandList ?? [],
     executingIndex: value?.executingIndex ?? 0,
     commandEffectCurrentFrame: value?.commandEffectCurrentFrame ?? 0,
-    commandEffectDuration: value?.commandEffectDuration ?? 0,
+    commandAutoProgressionDuration: value?.commandAutoProgressionDuration ?? 15,
   };
 }
 
 export function executeActionsStateCreateNextPhase(current: ExecuteActionsState, delta: number): PhaseState {
-  if (current.commandEffectCurrentFrame >= current.commandEffectDuration) {
+  if (current.commandEffectCurrentFrame >= current.commandAutoProgressionDuration) {
     // エフェクト表示終了
     if (current.executingIndex + 1 === current.allCharacterCommandList.length) {
       // 全員のコマンド実行終了
@@ -31,7 +31,7 @@ export function executeActionsStateCreateNextPhase(current: ExecuteActionsState,
       // 次のコマンド実行
       return produce(current, (draft) => {
         draft.commandEffectCurrentFrame = 0;
-        draft.commandEffectDuration = 5;
+        draft.commandAutoProgressionDuration = 15;
         draft.executingIndex = draft.executingIndex + 1;
       });
     }

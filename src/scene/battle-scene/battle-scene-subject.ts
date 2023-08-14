@@ -8,7 +8,10 @@ import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phas
 import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
-import { executeActionsStateCreateNextPhase } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
+import {
+  createExecuteActionsState,
+  executeActionsStateCreateNextPhase,
+} from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -113,13 +116,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
-      draft.phaseState = {
-        type: "executeActions",
-        allCharacterCommandList,
-        executingIndex: 0,
-        commandEffectCurrentFrame: 0,
-        commandEffectDuration: 5,
-      };
+      draft.phaseState = createExecuteActionsState({ allCharacterCommandList });
     });
     this.next(nextValue);
   }
