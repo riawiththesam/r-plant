@@ -5,7 +5,7 @@ import { HitPointBar } from "./hit-point-bar";
 export type BattleFriendProps = {
   x: number;
   y: number;
-  widht: number;
+  width: number;
   height: number;
   friend: FriendCharacterState;
 };
@@ -15,17 +15,17 @@ export class BattleFriend extends Container {
     super();
 
     const sprite = Sprite.from(props.friend.graphics.image);
-    sprite.x = props.x;
-    sprite.y = props.y;
-    sprite.width = props.widht;
+    sprite.x = props.x - props.width / 2;
+    sprite.y = props.y - props.height / 2;
+    sprite.width = props.width;
     sprite.height = props.height;
     this.addChild(sprite);
 
-    const barY = props.y + props.height - 12;
+    const barY = props.y + props.height / 2 - 12;
     const hpBar = new HitPointBar({
-      x: props.x,
+      x: props.x - props.width / 2,
       y: barY,
-      width: props.widht,
+      width: props.width,
       max: props.friend.parsonal.maxHitPoint,
       current: props.friend.parsonal.currentHitPoint,
     });
