@@ -34,8 +34,17 @@ export class BattleEffectLayer extends Container {
           const phase = state.phaseState;
           this.enemyEffect.visible = phase.type === "executeActions";
           if (phase.type !== "executeActions") return;
-          if (phase.commandElapsedFrame === 0) {
-            this.enemyEffect.startAnimation(500, 500);
+
+          const command = phase.allCharacterCommandList[phase.executingIndex];
+          if (phase.commandElapsedFrame !== 0 || command == null) return;
+
+          // TODO コマンド実行者actorTypeではなくコマンドの対象等で分岐する
+          if (command.actorType === "friend") {
+            // TODO 対象の数だけ表示などする
+            const targetIndex = command.targetList[0] ?? -1;
+            const target = state.enemyListState.list[targetIndex];
+            if (target == null) return;
+            this.enemyEffect.startAnimation(target.graphics.x, target.graphics.y);
           }
         })
         .addTo(it);
