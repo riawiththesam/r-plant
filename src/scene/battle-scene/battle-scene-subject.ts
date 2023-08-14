@@ -9,6 +9,7 @@ import {
 } from "./types/battle-phase-state/battle-phase-state";
 import { produce } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
+import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -17,7 +18,7 @@ export type BattleSceneState = {
 };
 
 const defaultBattleSceneState: BattleSceneState = {
-  phaseState: { type: "prepare" },
+  phaseState: createPreparePhaseState(),
   friendListState: { list: [] },
   enemyListState: { list: [] },
 };
