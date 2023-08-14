@@ -1,3 +1,5 @@
+import { type CommandDetail } from "./command-detail/command-detail";
+
 export const phaseTypes = ["prepare", "reserveActions", "selectTarget", "preExecuteActions", "executeActions"] as const;
 export type PhaseType = (typeof phaseTypes)[number];
 
@@ -7,15 +9,6 @@ export type BasePhaseState = {
 
 export type PreparePhaseState = BasePhaseState & {
   type: "prepare";
-};
-
-export type ActorType = "enemy" | "friend";
-
-export type CommandDetail = {
-  actorType: ActorType;
-  actorIndex: number;
-  commandType: string;
-  targetList: Array<number>;
 };
 
 export type ReserveActionsState = BasePhaseState & {

@@ -6,9 +6,9 @@ import {
   type PhaseState,
   createPreExecuteActionsState,
   createReserveActinsState,
-  type CommandDetail,
 } from "./types/battle-phase-state/battle-phase-state";
 import { produce } from "immer";
+import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
