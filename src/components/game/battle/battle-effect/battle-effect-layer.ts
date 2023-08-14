@@ -36,7 +36,7 @@ export class BattleEffectLayer extends Container {
           if (phase.type !== "executeActions") return;
 
           const command = phase.allCharacterCommandList[phase.executingIndex];
-          if (phase.commandElapsedFrame !== 0 || command == null) return;
+          if (phase.commandEffectCurrentFrame !== 0 || command == null) return;
 
           // TODO コマンド実行者actorTypeではなくコマンドの対象等で分岐する
           if (command.actorType === "friend") {

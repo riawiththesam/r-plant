@@ -117,7 +117,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
         type: "executeActions",
         allCharacterCommandList,
         executingIndex: 0,
-        commandElapsedFrame: 0,
+        commandEffectCurrentFrame: 0,
       };
     });
     this.next(nextValue);
@@ -128,7 +128,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     if (phase.type !== "executeActions") return;
 
     const nextPhase = produce(phase, (draft) => {
-      draft.commandElapsedFrame = draft.commandElapsedFrame + delta;
+      draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
     });
     this.next(
       produce(this.value, (draft) => {

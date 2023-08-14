@@ -68,7 +68,7 @@ export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";
   allCharacterCommandList: Array<CommandDetail>;
   executingIndex: number;
-  commandElapsedFrame: number;
+  commandEffectCurrentFrame: number;
 };
 
 export function createExecuteActionsState(value: Partial<ExecuteActionsState>): ExecuteActionsState {
@@ -76,7 +76,7 @@ export function createExecuteActionsState(value: Partial<ExecuteActionsState>): 
     type: "executeActions",
     allCharacterCommandList: value.allCharacterCommandList ?? [],
     executingIndex: value.executingIndex ?? 0,
-    commandElapsedFrame: value.commandElapsedFrame ?? 0,
+    commandEffectCurrentFrame: value.commandEffectCurrentFrame ?? 0,
   };
 }
 
