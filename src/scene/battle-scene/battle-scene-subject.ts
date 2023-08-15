@@ -13,6 +13,7 @@ import {
   createExecuteActionsState,
   executeActionsStateCreateNextPhase,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
+import { createCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -117,8 +118,15 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
-      const log = castDraft(createBattleLog(draft, allCharacterCommandList[0]));
-      draft.phaseState = createExecuteActionsState({ allCharacterCommandList, battleLogList: log });
+      const commandEffectList = createCommandEffectList(draft, allCharacterCommandList[0]);
+      const log = createBattleLog(draft, commandEffectList);
+      draft.phaseState = castDraft(
+        createExecuteActionsState({
+          allCharacterCommandList,
+          commandResult: commandEffectList,
+          battleLogList: log,
+        }),
+      );
     });
     this.next(nextValue);
   }
@@ -128,7 +136,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     if (phase.type !== "executeActions") return;
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState = executeActionsStateCreateNextPhase(phase, this.value, delta);
+        draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value, delta));
       }),
     );
   }

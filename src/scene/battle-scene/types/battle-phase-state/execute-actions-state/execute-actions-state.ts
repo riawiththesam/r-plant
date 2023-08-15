@@ -3,14 +3,16 @@ import { type PhaseState, type BasePhaseState } from "../battle-phase-state";
 import { type CommandDetail } from "../command-detail/command-detail";
 import { createReserveActionsState } from "../reserve-actions-state/reserve-actions-state";
 import { type BattleSceneState } from "../../../battle-scene-subject";
+import { createCommandEffectList, type CommandEffect } from "../command-effect/command-effect";
 
 export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";
-  allCharacterCommandList: Array<CommandDetail>;
+  allCharacterCommandList: ReadonlyArray<CommandDetail>;
   executingIndex: number;
   commandEffectCurrentFrame: number;
   commandAutoProgressionDuration: number;
-  battleLogList: Array<string>;
+  commandResult: ReadonlyArray<CommandEffect>;
+  battleLogList: ReadonlyArray<string>;
 };
 
 export function createExecuteActionsState(value?: Partial<ExecuteActionsState>): ExecuteActionsState {
@@ -20,6 +22,7 @@ export function createExecuteActionsState(value?: Partial<ExecuteActionsState>):
     executingIndex: value?.executingIndex ?? 0,
     commandEffectCurrentFrame: value?.commandEffectCurrentFrame ?? 0,
     commandAutoProgressionDuration: value?.commandAutoProgressionDuration ?? 15,
+    commandResult: value?.commandResult ?? [],
     battleLogList: value?.battleLogList ?? [],
   };
 }
@@ -39,10 +42,12 @@ export function executeActionsStateCreateNextPhase(
       return produce(current, (draft) => {
         const nextExecutingIndex = draft.executingIndex + 1;
         const nextCommand = draft.allCharacterCommandList[nextExecutingIndex];
+        const effectList = createCommandEffectList(state, nextCommand);
+        const logList = castDraft(createBattleLog(state, effectList));
         draft.commandEffectCurrentFrame = 0;
         draft.commandAutoProgressionDuration = 15;
         draft.executingIndex = nextExecutingIndex;
-        draft.battleLogList = castDraft(createBattleLog(state, nextCommand));
+        draft.battleLogList = logList;
       });
     }
   }
@@ -51,26 +56,30 @@ export function executeActionsStateCreateNextPhase(
   });
 }
 
-export function createBattleLog(state: BattleSceneState, command?: CommandDetail): ReadonlyArray<string> {
-  if (command == null) return [];
-
-  const actorName = getActorName(state, command);
-  // TODO weapon
-  const weaponName = "素手";
-  // TODO ヒット数
-  const numberOfHits = "2回ヒット";
-  // TODO ダメージ数
-  const numberOfDamage = "10のダメージ";
-
-  return [actorName, weaponName, numberOfHits, numberOfDamage];
+export function createBattleLog(
+  state: BattleSceneState,
+  commandEffectList: ReadonlyArray<CommandEffect>,
+): ReadonlyArray<string> {
+  return commandEffectList
+    .map((effect) => {
+      // TODO weapon
+      const weaponName = "素手";
+      // TODO ヒット数
+      const numberOfHits = "2回ヒット";
+      // TODO ダメージ数
+      const numberOfDamage = "10のダメージ";
+      const actorName = getActorName(state, effect);
+      return [actorName, weaponName, numberOfHits, numberOfDamage];
+    })
+    .flat();
 }
 
-export function getActorName(state: BattleSceneState, command: CommandDetail): string {
-  if (command.actorType === "enemy") {
-    const actor = state.enemyListState.list[command.actorIndex];
+export function getActorName(state: BattleSceneState, commandEffect: CommandEffect): string {
+  if (commandEffect.target === "enemy") {
+    const actor = state.enemyListState.list[commandEffect.targetIndex];
     return actor?.personal.name ?? "???";
   } else {
-    const actor = state.friendListState.list[command.actorIndex];
+    const actor = state.friendListState.list[commandEffect.targetIndex];
     return actor?.parsonal.name ?? "???";
   }
 }
