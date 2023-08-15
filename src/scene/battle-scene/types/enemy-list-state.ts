@@ -1,5 +1,3 @@
-import { type CharacterState } from "./character-state";
-
 export type EnemyParsonalState = {
   name: string;
   maxHitPoint: number;
@@ -17,7 +15,7 @@ export type EnemyGraphicsState = {
   };
 };
 
-export type EnemyCharacterState = CharacterState & EnemyGraphicsState;
+export type EnemyCharacterState = EnemyGraphicsState;
 
 export type EnemyListState = {
   list: ReadonlyArray<EnemyCharacterState>;

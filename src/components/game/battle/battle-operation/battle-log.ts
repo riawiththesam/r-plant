@@ -6,7 +6,7 @@ const bgColorBlue = new Color({ r: 0, g: 0, b: 255, a: 0.5 });
 const bgColorDarkBlue = new Color({ r: 0, g: 0, b: 128, a: 0.5 });
 
 type BattleLogProps = {
-  log: Array<string>;
+  log: ReadonlyArray<string>;
 };
 
 export class BattleLog extends Container {

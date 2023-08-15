@@ -78,11 +78,6 @@ export const enemyListSample: EnemyListState = {
         maxHitPoint: 150,
         currentHitPoint: 100,
       },
-      // TODO 削除
-      health: {
-        max: 150,
-        current: 100,
-      },
       graphics: {
         image: slime,
         x: 600,
