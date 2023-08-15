@@ -15,13 +15,16 @@ export type ExecuteActionsState = BasePhaseState & {
   battleLogList: ReadonlyArray<string>;
 };
 
-export function createExecuteActionsState(value?: Partial<ExecuteActionsState>): ExecuteActionsState {
+export function createExecuteActionsState(
+  commandAutoProgressionDuration: number,
+  value?: Partial<Omit<ExecuteActionsState, "commandAutoProgressionDuration">>,
+): ExecuteActionsState {
   return {
     type: "executeActions",
     allCharacterCommandList: value?.allCharacterCommandList ?? [],
     executingIndex: value?.executingIndex ?? 0,
     commandEffectCurrentFrame: value?.commandEffectCurrentFrame ?? 0,
-    commandAutoProgressionDuration: value?.commandAutoProgressionDuration ?? 15,
+    commandAutoProgressionDuration,
     commandResult: value?.commandResult ?? [],
     battleLogList: value?.battleLogList ?? [],
   };
@@ -45,7 +48,7 @@ export function executeActionsStateCreateNextPhase(
         const effectList = createCommandEffectList(state, nextCommand);
         const logList = castDraft(createBattleLog(state, effectList));
         draft.commandEffectCurrentFrame = 0;
-        draft.commandAutoProgressionDuration = 15;
+        draft.commandAutoProgressionDuration = state.settingState.commandAutoProgressionDuration;
         draft.executingIndex = nextExecutingIndex;
         draft.battleLogList = logList;
       });

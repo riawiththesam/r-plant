@@ -2,6 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import { type EnemyListState } from "./types/battle-character-state/enemy-list-state";
 import { type FriendListState } from "./types/battle-character-state/friend-list-state";
 import { type PhaseState } from "./types/battle-phase-state/battle-phase-state";
+import { type BattleSettingState } from "./types/battle-setting-state/battle-setting-state";
 import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
@@ -19,12 +20,16 @@ export type BattleSceneState = {
   phaseState: PhaseState;
   friendListState: FriendListState;
   enemyListState: EnemyListState;
+  settingState: BattleSettingState;
 };
 
 const defaultBattleSceneState: BattleSceneState = {
   phaseState: createPreparePhaseState(),
   friendListState: { list: [] },
   enemyListState: { list: [] },
+  settingState: {
+    commandAutoProgressionDuration: 30,
+  },
 };
 
 export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
@@ -121,7 +126,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       const commandEffectList = createCommandEffectList(draft, allCharacterCommandList[0]);
       const log = createBattleLog(draft, commandEffectList);
       draft.phaseState = castDraft(
-        createExecuteActionsState({
+        createExecuteActionsState(draft.settingState.commandAutoProgressionDuration, {
           allCharacterCommandList,
           commandResult: commandEffectList,
           battleLogList: log,
