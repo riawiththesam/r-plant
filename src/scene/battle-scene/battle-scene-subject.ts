@@ -13,8 +13,12 @@ import {
   createBattleLog,
   createExecuteActionsState,
   executeActionsStateCreateNextPhase,
+  updateExecuteActionsState,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
-import { createCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
+import {
+  createCommandEffectList,
+  personalStateApplyCommandEffectList,
+} from "./types/battle-phase-state/command-effect/command-effect";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -139,9 +143,26 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   updateExecuteActions(delta: number): void {
     const phase = this.value.phaseState;
     if (phase.type !== "executeActions") return;
+
+    if (phase.commandEffectCurrentFrame >= phase.commandAutoProgressionDuration) {
+      const nextCharacterState = personalStateApplyCommandEffectList(
+        this.value.friendListState,
+        this.value.enemyListState,
+        phase.commandResult,
+      );
+      this.next(
+        produce(this.value, (draft) => {
+          draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value));
+          draft.enemyListState = castDraft(nextCharacterState.enemy);
+          draft.friendListState = castDraft(nextCharacterState.friend);
+        }),
+      );
+      return;
+    }
+
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value, delta));
+        draft.phaseState = castDraft(updateExecuteActionsState(phase, delta));
       }),
     );
   }

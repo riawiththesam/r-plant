@@ -3,6 +3,9 @@ import { type BattleSceneState } from "../../../battle-scene-subject";
 import { type PersonalState } from "../../battle-character-state/personal-state";
 import { type CommandDetail } from "../command-detail/command-detail";
 import { dice } from "../../../../../use-case/dice/dice";
+import { type FriendListState } from "../../battle-character-state/friend-list-state";
+import { type EnemyListState } from "../../battle-character-state/enemy-list-state";
+import { produce } from "immer";
 
 const commandEffectTypes = ["damage"];
 type CommandEffectType = (typeof commandEffectTypes)[number];
@@ -109,3 +112,40 @@ export function attack(actor: PersonalState, target: PersonalState): AttackComma
 }
 
 export type CommandEffect = DamageCommandEffect;
+
+/**
+ *
+ */
+export type PersonalStateApplyCommandEffectListResult = {
+  friend: FriendListState;
+  enemy: EnemyListState;
+};
+
+export function personalStateApplyCommandEffectList(
+  friendListState: FriendListState,
+  enemyListState: EnemyListState,
+  list: ReadonlyArray<CommandEffect>,
+): PersonalStateApplyCommandEffectListResult {
+  const effectOnFriend = list.filter((effect) => effect.target === "friend");
+  const effectOnEnemy = list.filter((effect) => effect.target === "enemy");
+
+  const friendResult = produce(friendListState, (draft) => {
+    effectOnFriend.forEach((effect) => {
+      const target = draft.list[effect.targetIndex];
+      if (target == null) return;
+      target.parsonal.currentHitPoint = target.parsonal.currentHitPoint - effect.value;
+    });
+  });
+  const enemyResult = produce(enemyListState, (draft) => {
+    effectOnEnemy.forEach((effect) => {
+      const target = draft.list[effect.targetIndex];
+      if (target == null) return;
+      target.personal.currentHitPoint = target.personal.currentHitPoint - effect.value;
+    });
+  });
+
+  return {
+    friend: friendResult,
+    enemy: enemyResult,
+  };
+}

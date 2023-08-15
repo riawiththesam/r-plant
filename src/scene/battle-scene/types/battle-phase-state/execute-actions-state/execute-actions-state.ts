@@ -30,30 +30,28 @@ export function createExecuteActionsState(
   };
 }
 
-export function executeActionsStateCreateNextPhase(
-  current: ExecuteActionsState,
-  state: BattleSceneState,
-  delta: number,
-): PhaseState {
-  if (current.commandEffectCurrentFrame >= current.commandAutoProgressionDuration) {
-    // エフェクト表示終了
-    if (current.executingIndex + 1 === current.allCharacterCommandList.length) {
-      // 全員のコマンド実行終了
-      return createReserveActionsState();
-    } else {
-      // 次のコマンド実行
-      return produce(current, (draft) => {
-        const nextExecutingIndex = draft.executingIndex + 1;
-        const nextCommand = draft.allCharacterCommandList[nextExecutingIndex];
-        const effectList = createCommandEffectList(state, nextCommand);
-        const logList = castDraft(createBattleLog(state, effectList));
-        draft.commandEffectCurrentFrame = 0;
-        draft.commandAutoProgressionDuration = state.settingState.commandAutoProgressionDuration;
-        draft.executingIndex = nextExecutingIndex;
-        draft.battleLogList = logList;
-      });
-    }
+export function executeActionsStateCreateNextPhase(current: ExecuteActionsState, state: BattleSceneState): PhaseState {
+  // エフェクト表示終了
+  if (current.executingIndex + 1 !== current.allCharacterCommandList.length) {
+    // 次のコマンド実行
+    return produce(current, (draft) => {
+      const nextExecutingIndex = draft.executingIndex + 1;
+      const nextCommand = draft.allCharacterCommandList[nextExecutingIndex];
+      const effectList = createCommandEffectList(state, nextCommand);
+      const logList = createBattleLog(state, effectList);
+      draft.commandEffectCurrentFrame = 0;
+      draft.commandAutoProgressionDuration = state.settingState.commandAutoProgressionDuration;
+      draft.executingIndex = nextExecutingIndex;
+      draft.commandResult = castDraft(effectList);
+      draft.battleLogList = castDraft(logList);
+    });
+  } else {
+    // 全員のコマンド実行終了
+    return createReserveActionsState();
   }
+}
+
+export function updateExecuteActionsState(current: ExecuteActionsState, delta: number): ExecuteActionsState {
   return produce(current, (draft) => {
     draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
   });
