@@ -1,5 +1,5 @@
 import { Container, Sprite } from "pixi.js";
-import { type FriendCharacterState } from "../../../../scene/battle-scene/types/friend-list-state";
+import { type FriendCharacterState } from "../../../../scene/battle-scene/types/battle-character-state/friend-list-state";
 import { HitPointBar } from "./hit-point-bar";
 
 export type BattleFriendProps = {

@@ -1,4 +1,4 @@
-import { type PersonalState } from "./battle-character-state/personal-state";
+import { type PersonalState } from "./personal-state";
 
 export type EnemyGraphicsState = {
   personal: PersonalState;

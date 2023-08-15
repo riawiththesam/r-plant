@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
-import { type EnemyListState } from "./types/enemy-list-state";
-import { type FriendListState } from "./types/friend-list-state";
+import { type EnemyListState } from "./types/battle-character-state/enemy-list-state";
+import { type FriendListState } from "./types/battle-character-state/friend-list-state";
 import { type PhaseState } from "./types/battle-phase-state/battle-phase-state";
 import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";

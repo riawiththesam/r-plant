@@ -1,6 +1,6 @@
 import slime from "../../game-assets/character/slime/slime.png";
-import { type EnemyListState } from "./types/enemy-list-state";
-import { type FriendListState } from "./types/friend-list-state";
+import { type EnemyListState } from "./types/battle-character-state/enemy-list-state";
+import { type FriendListState } from "./types/battle-character-state/friend-list-state";
 
 export const friendListSample: FriendListState = {
   list: [

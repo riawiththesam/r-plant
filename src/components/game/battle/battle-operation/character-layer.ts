@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { NineSliceWithText } from "../../../nine-slice-with-text/nine-slice-with-text";
-import { type FriendCommandState } from "../../../../scene/battle-scene/types/friend-list-state";
+import { type FriendCommandState } from "../../../../scene/battle-scene/types/battle-character-state/friend-list-state";
 import windowBlack from "../../../../game-assets/ui/window/window-black.png";
 import windowRed from "../../../../game-assets/ui/window/window-red.png";
 
