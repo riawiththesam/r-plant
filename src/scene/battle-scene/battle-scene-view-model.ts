@@ -11,7 +11,7 @@ import {
 import { enemyListSample, friendListSample } from "./state-sample";
 import { type UpdateEventType } from "../../util/pixi/scene/scene";
 import { type GameRootViewModel } from "../../components/game-root/game-root-view-model";
-import { produce } from "immer";
+import { castDraft, produce } from "immer";
 import { BattleSceneSubject } from "./battle-scene-subject";
 import { type GameInputType } from "./types/input-state";
 import { type PhaseType } from "./types/battle-phase-state/battle-phase-state";
@@ -26,8 +26,8 @@ export class BattleSceneViewModel {
   load(): void {
     this.battleSceneSubject.next(
       produce(this.battleSceneSubject.value, (draft) => {
-        draft.friendListState = friendListSample;
-        draft.enemyListState = enemyListSample;
+        draft.friendListState = castDraft(friendListSample);
+        draft.enemyListState = castDraft(enemyListSample);
         draft.phaseState = {
           type: "reserveActions",
           characterIndex: 0,

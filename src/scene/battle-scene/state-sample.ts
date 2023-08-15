@@ -1,4 +1,5 @@
 import slime from "../../game-assets/character/slime/slime.png";
+import { type EnemyListState } from "./types/enemy-list-state";
 import { type FriendListState } from "./types/friend-list-state";
 
 export const friendListSample: FriendListState = {
@@ -69,9 +70,15 @@ export const friendListSample: FriendListState = {
   ],
 };
 
-export const enemyListSample = {
+export const enemyListSample: EnemyListState = {
   list: [
     {
+      personal: {
+        name: "敵スライム1",
+        maxHitPoint: 150,
+        currentHitPoint: 100,
+      },
+      // TODO 削除
       health: {
         max: 150,
         current: 100,

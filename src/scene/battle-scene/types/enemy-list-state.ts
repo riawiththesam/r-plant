@@ -1,6 +1,13 @@
 import { type CharacterState } from "./character-state";
 
+export type EnemyParsonalState = {
+  name: string;
+  maxHitPoint: number;
+  currentHitPoint: number;
+};
+
 export type EnemyGraphicsState = {
+  personal: EnemyParsonalState;
   graphics: {
     image: string;
     x: number;

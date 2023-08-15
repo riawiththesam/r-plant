@@ -24,5 +24,5 @@ export type FriendCharacterState = {
 };
 
 export type FriendListState = {
-  list: Array<FriendCharacterState>;
+  list: ReadonlyArray<FriendCharacterState>;
 };
