@@ -1,4 +1,5 @@
 import { Color, Container, Graphics, Text } from "pixi.js";
+import { letContainer } from "../../../../util/pixi/container/containers";
 
 const lineHeight = 30;
 const bgColorBlue = new Color({ r: 0, g: 0, b: 255, a: 0.5 });
@@ -23,23 +24,21 @@ export class BattleLog extends Container {
 }
 
 function createLogLine(y: number, text: string, bgColor: Color): Container {
-  const container = new Container();
+  return letContainer((it) => {
+    const lineBackground = new Graphics();
+    lineBackground.x = 0;
+    lineBackground.y = y;
+    lineBackground.beginFill(bgColor);
+    lineBackground.drawRect(0, 0, 400, lineHeight);
+    lineBackground.addTo(it);
 
-  const lineBackground = new Graphics();
-  lineBackground.x = 0;
-  lineBackground.y = y;
-  lineBackground.beginFill(bgColor);
-  lineBackground.drawRect(0, 0, 400, lineHeight);
-  container.addChild(lineBackground);
-
-  const textObject = new Text(text, {
-    fill: new Color({ r: 255, g: 255, b: 255 }).toArray(),
-    fontSize: 20,
+    const textObject = new Text(text, {
+      fill: new Color({ r: 255, g: 255, b: 255 }).toArray(),
+      fontSize: 20,
+    });
+    textObject.anchor.set(0.5);
+    textObject.x = 0 + textObject.width / 2;
+    textObject.y = y + textObject.height / 2;
+    textObject.addTo(it);
   });
-  textObject.anchor.set(0.5);
-  textObject.x = 0 + textObject.width / 2;
-  textObject.y = y + textObject.height / 2;
-  container.addChild(textObject);
-
-  return container;
 }
