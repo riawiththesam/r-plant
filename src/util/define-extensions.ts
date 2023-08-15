@@ -1,2 +1,2 @@
 import "./rxjs/subscription/subscription-extensions";
-import "./pixi/container/containers";
+import "./pixi/container/container-extensions";
