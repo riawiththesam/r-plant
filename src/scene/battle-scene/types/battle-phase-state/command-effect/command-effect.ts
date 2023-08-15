@@ -1,6 +1,5 @@
-import range from "lodash/range";
-import random from "lodash/random";
-import sum from "lodash/sum";
+import range from "just-range";
+import random from "just-random-integer";
 import { type BattleSceneState } from "../../../battle-scene-subject";
 import { type PersonalState } from "../../battle-character-state/personal-state";
 import { type CommandDetail } from "../command-detail/command-detail";
@@ -83,7 +82,7 @@ export function attack(actor: PersonalState, target: PersonalState): AttackResul
     return hit ? damage : 0;
   });
 
-  const effectValue = sum(damageList);
+  const effectValue = damageList.reduce((a, b) => a + b, 0);
   return {
     damage: effectValue,
     hitRate,

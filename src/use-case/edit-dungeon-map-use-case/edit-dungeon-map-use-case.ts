@@ -1,5 +1,5 @@
 import { BehaviorSubject, type Observable } from "rxjs";
-import range from "lodash/range";
+import range from "just-range";
 import { type MapChipType, type MapChipWallType, type MapStateType } from "../../types/map-state-types/map-state.types";
 import { type DungeonWallDirection } from "../../components/game/dungeon/dungeon-wall/dungeon-wall";
 import { loadFile, saveFile } from "../../util/file/files/files";

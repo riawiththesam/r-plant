@@ -1,4 +1,4 @@
-import range from "lodash/range";
+import range from "just-range";
 import { AnimatedSprite, Container, Rectangle, Texture } from "pixi.js";
 import attack1Effect from "../../../../game-assets/effect/battle/attack_1.png";
 
