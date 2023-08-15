@@ -75,11 +75,11 @@ export function createBattleLog(
 }
 
 export function getActorName(state: BattleSceneState, commandEffect: CommandEffect): string {
-  if (commandEffect.target === "enemy") {
-    const actor = state.enemyListState.list[commandEffect.targetIndex];
+  if (commandEffect.actor === "enemy") {
+    const actor = state.enemyListState.list[commandEffect.actorIndex];
     return actor?.personal.name ?? "???";
   } else {
-    const actor = state.friendListState.list[commandEffect.targetIndex];
+    const actor = state.friendListState.list[commandEffect.actorIndex];
     return actor?.parsonal.name ?? "???";
   }
 }

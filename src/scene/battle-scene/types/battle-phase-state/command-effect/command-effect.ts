@@ -16,6 +16,8 @@ export type CommandEffectBase = {
 
 export type DamageCommandEffect = {
   type: "damage";
+  actor: "friend" | "enemy";
+  actorIndex: number;
   target: "friend" | "enemy";
   targetIndex: number;
   hitRate: number;
@@ -47,6 +49,8 @@ export function createCommandEffectList(
 
       return {
         type: "damage",
+        actor: command.actorType,
+        actorIndex: command.actorIndex,
         target: targetType,
         targetIndex,
         hitRate: attackCommandResult.hitRate,
