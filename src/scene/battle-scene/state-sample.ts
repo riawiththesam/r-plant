@@ -13,8 +13,8 @@ export const friendListSample: FriendListState = {
         hitRateLevelBonus: getHitRateBonus("warrior", 10),
         numberOfAttacks: getNumberOfAttacks("warrior", 10),
         armorClass: 0,
-        maxHitPoint: 250,
-        currentHitPoint: 100,
+        maxHitPoint: 50,
+        currentHitPoint: 50,
       },
       graphics: {
         image: slime,
@@ -39,8 +39,8 @@ export const friendListSample: FriendListState = {
         hitRateLevelBonus: getHitRateBonus("mage", 10),
         numberOfAttacks: getNumberOfAttacks("mage", 10),
         armorClass: 0,
-        maxHitPoint: 250,
-        currentHitPoint: 100,
+        maxHitPoint: 50,
+        currentHitPoint: 50,
       },
       graphics: {
         image: slime,
@@ -65,8 +65,8 @@ export const friendListSample: FriendListState = {
         hitRateLevelBonus: getHitRateBonus("warrior", 1),
         numberOfAttacks: getNumberOfAttacks("warrior", 1),
         armorClass: 0,
-        maxHitPoint: 250,
-        currentHitPoint: 100,
+        maxHitPoint: 50,
+        currentHitPoint: 50,
       },
       graphics: {
         image: slime,
@@ -96,8 +96,8 @@ export const enemyListSample: EnemyListState = {
         hitRateLevelBonus: getHitRateBonus("warrior", 10),
         numberOfAttacks: getNumberOfAttacks("warrior", 10),
         armorClass: 0,
-        maxHitPoint: 150,
-        currentHitPoint: 100,
+        maxHitPoint: 50,
+        currentHitPoint: 50,
       },
       graphics: {
         image: slime,
