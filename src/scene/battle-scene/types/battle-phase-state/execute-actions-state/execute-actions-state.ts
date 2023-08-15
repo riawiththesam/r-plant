@@ -4,6 +4,7 @@ import { type CommandDetail } from "../command-detail/command-detail";
 import { createReserveActionsState } from "../reserve-actions-state/reserve-actions-state";
 import { type BattleSceneState } from "../../../battle-scene-subject";
 import { createCommandEffectList, type CommandEffect } from "../command-effect/command-effect";
+import { createBattleLog, type BattleLog } from "../battle-log/battle-log";
 
 export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";
@@ -12,21 +13,29 @@ export type ExecuteActionsState = BasePhaseState & {
   commandEffectCurrentFrame: number;
   commandAutoProgressionDuration: number;
   commandResult: ReadonlyArray<CommandEffect>;
-  battleLogList: ReadonlyArray<string>;
+  battleLog: BattleLog;
 };
 
 export function createExecuteActionsState(
+  state: BattleSceneState,
+  allCharacterCommandList: ReadonlyArray<CommandDetail>,
+  executingIndex: number,
+  commandEffectCurrentFrame: number,
   commandAutoProgressionDuration: number,
-  value?: Partial<Omit<ExecuteActionsState, "commandAutoProgressionDuration">>,
-): ExecuteActionsState {
+): ExecuteActionsState | undefined {
+  const command = allCharacterCommandList[executingIndex];
+  if (command == null) return;
+
+  const commandEffectList = createCommandEffectList(state, command);
+  const log = createBattleLog(state, command.actorType, commandEffectList);
   return {
     type: "executeActions",
-    allCharacterCommandList: value?.allCharacterCommandList ?? [],
-    executingIndex: value?.executingIndex ?? 0,
-    commandEffectCurrentFrame: value?.commandEffectCurrentFrame ?? 0,
+    allCharacterCommandList,
+    executingIndex,
+    commandEffectCurrentFrame,
     commandAutoProgressionDuration,
-    commandResult: value?.commandResult ?? [],
-    battleLogList: value?.battleLogList ?? [],
+    commandResult: commandEffectList,
+    battleLog: log,
   };
 }
 
@@ -38,12 +47,12 @@ export function executeActionsStateCreateNextPhase(current: ExecuteActionsState,
       const nextExecutingIndex = draft.executingIndex + 1;
       const nextCommand = draft.allCharacterCommandList[nextExecutingIndex];
       const effectList = createCommandEffectList(state, nextCommand);
-      const logList = createBattleLog(state, effectList);
+      const logList = createBattleLog(state, nextCommand?.actorType ?? "friend", effectList);
       draft.commandEffectCurrentFrame = 0;
       draft.commandAutoProgressionDuration = state.settingState.commandAutoProgressionDuration;
       draft.executingIndex = nextExecutingIndex;
       draft.commandResult = castDraft(effectList);
-      draft.battleLogList = castDraft(logList);
+      draft.battleLog = castDraft(logList);
     });
   } else {
     // 全員のコマンド実行終了
@@ -55,31 +64,4 @@ export function updateExecuteActionsState(current: ExecuteActionsState, delta: n
   return produce(current, (draft) => {
     draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
   });
-}
-
-export function createBattleLog(
-  state: BattleSceneState,
-  commandEffectList: ReadonlyArray<CommandEffect>,
-): ReadonlyArray<string> {
-  return commandEffectList
-    .map((effect) => {
-      // TODO weapon
-      const weaponName = "素手";
-      const numberOfAttacks = `${effect.numberOfAttacks}回攻撃`;
-      const numberOfHits = `${effect.numberOfHits}回ヒット`;
-      const numberOfDamage = `${effect.value}のダメージ`;
-      const actorName = getActorName(state, effect);
-      return [actorName, weaponName, numberOfAttacks, numberOfHits, numberOfDamage];
-    })
-    .flat();
-}
-
-export function getActorName(state: BattleSceneState, commandEffect: CommandEffect): string {
-  if (commandEffect.actor === "enemy") {
-    const actor = state.enemyListState.list[commandEffect.actorIndex];
-    return actor?.personal.name ?? "???";
-  } else {
-    const actor = state.friendListState.list[commandEffect.actorIndex];
-    return actor?.parsonal.name ?? "???";
-  }
 }

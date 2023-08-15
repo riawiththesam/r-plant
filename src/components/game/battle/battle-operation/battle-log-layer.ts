@@ -14,8 +14,9 @@ export class BattleLogLayer extends Container {
           const phaseState = state.phaseState;
           if (phaseState.type !== "executeActions") return;
 
-          const log = phaseState.battleLogList;
-          this.addChild(new BattleLog({ log }));
+          const actor = phaseState.battleLog.actor;
+          const log = phaseState.battleLog.list;
+          this.addChild(new BattleLog({ actor, log }));
         })
         .addTo(it);
     });

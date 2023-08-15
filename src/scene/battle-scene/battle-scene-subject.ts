@@ -10,15 +10,11 @@ import { createReserveActionsState } from "./types/battle-phase-state/reserve-ac
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
 import {
-  createBattleLog,
   createExecuteActionsState,
   executeActionsStateCreateNextPhase,
   updateExecuteActionsState,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
-import {
-  createCommandEffectList,
-  personalStateApplyCommandEffectList,
-} from "./types/battle-phase-state/command-effect/command-effect";
+import { personalStateApplyCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
 
 export type BattleSceneState = {
   phaseState: PhaseState;
@@ -127,15 +123,16 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
-      const commandEffectList = createCommandEffectList(draft, allCharacterCommandList[0]);
-      const log = createBattleLog(draft, commandEffectList);
-      draft.phaseState = castDraft(
-        createExecuteActionsState(draft.settingState.commandAutoProgressionDuration, {
-          allCharacterCommandList,
-          commandResult: commandEffectList,
-          battleLogList: log,
-        }),
+      const nextPhase = createExecuteActionsState(
+        draft,
+        allCharacterCommandList,
+        0,
+        0,
+        draft.settingState.commandAutoProgressionDuration,
       );
+      if (nextPhase == null) return;
+
+      draft.phaseState = castDraft(nextPhase);
     });
     this.next(nextValue);
   }
