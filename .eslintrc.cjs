@@ -21,7 +21,7 @@ module.exports = {
     sourceType: "module",
     project: "./tsconfig.json",
   },
-  ignorePatterns: [".eslintrc.cjs", "vite.config.js", "dist", "**/*.validator.ts"],
+  ignorePatterns: [".eslintrc.cjs", "vite.config.js", "jest.config.mjs", "dist", "**/*.validator.ts"],
   rules: {
     "@typescript-eslint/consistent-type-definitions": 0,
     "@typescript-eslint/array-type": 0,
