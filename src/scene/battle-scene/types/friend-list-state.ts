@@ -1,8 +1,4 @@
-export type FriendParsonalState = {
-  name: string;
-  maxHitPoint: number;
-  currentHitPoint: number;
-};
+import { type PersonalState } from "./battle-character-state/personal-state";
 
 export type FriendGraphicsState = {
   image: string;
@@ -17,7 +13,7 @@ export type FriendInPartyState = {
 };
 
 export type FriendCharacterState = {
-  parsonal: FriendParsonalState;
+  parsonal: PersonalState;
   graphics: FriendGraphicsState;
   command: FriendCommandState;
   inParty: FriendInPartyState;
