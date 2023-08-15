@@ -1,4 +1,4 @@
-import { produce } from "immer";
+import { castDraft, produce } from "immer";
 import { type PhaseState, type BasePhaseState } from "../battle-phase-state";
 import { type CommandDetail } from "../command-detail/command-detail";
 import { createReserveActionsState } from "../reserve-actions-state/reserve-actions-state";
@@ -42,7 +42,7 @@ export function executeActionsStateCreateNextPhase(
         draft.commandEffectCurrentFrame = 0;
         draft.commandAutoProgressionDuration = 15;
         draft.executingIndex = nextExecutingIndex;
-        draft.battleLogList = createBattleLog(state, nextCommand);
+        draft.battleLogList = castDraft(createBattleLog(state, nextCommand));
       });
     }
   }
@@ -51,6 +51,20 @@ export function executeActionsStateCreateNextPhase(
   });
 }
 
-export function createBattleLog(state: BattleSceneState, command?: CommandDetail): Array<string> {
-  return ["BattleLogTest1", "BattleLogTest2", "BattleLogTest3"];
+export function createBattleLog(state: BattleSceneState, command?: CommandDetail): ReadonlyArray<string> {
+  if (command == null) return [];
+
+  const actorName = getActorName(state, command);
+
+  return [actorName, "BattleLogTest2", "BattleLogTest3"];
+}
+
+export function getActorName(state: BattleSceneState, command: CommandDetail): string {
+  if (command.actorType === "enemy") {
+    const actor = state.enemyListState.list[command.actorIndex];
+    return actor?.personal.name ?? "???";
+  } else {
+    const actor = state.friendListState.list[command.actorIndex];
+    return actor?.parsonal.name ?? "???";
+  }
 }

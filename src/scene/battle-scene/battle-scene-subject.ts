@@ -2,7 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import { type EnemyListState } from "./types/enemy-list-state";
 import { type FriendListState } from "./types/friend-list-state";
 import { type PhaseState } from "./types/battle-phase-state/battle-phase-state";
-import { produce } from "immer";
+import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
 import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
@@ -117,7 +117,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
 
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
-      const log = createBattleLog(draft, allCharacterCommandList[0]);
+      const log = castDraft(createBattleLog(draft, allCharacterCommandList[0]));
       draft.phaseState = createExecuteActionsState({ allCharacterCommandList, battleLogList: log });
     });
     this.next(nextValue);
