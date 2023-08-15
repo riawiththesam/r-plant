@@ -1,12 +1,18 @@
 import slime from "../../game-assets/character/slime/slime.png";
 import { type EnemyListState } from "./types/battle-character-state/enemy-list-state";
 import { type FriendListState } from "./types/battle-character-state/friend-list-state";
+import { getHitRateBonus, getNumberOfAttacks } from "./types/battle-character-state/job-state";
 
 export const friendListSample: FriendListState = {
   list: [
     {
       parsonal: {
         name: "キャラクター1",
+        level: 10,
+        job: "warrior",
+        hitRatelevelBonus: getHitRateBonus("warrior", 10),
+        numberOfAttacks: getNumberOfAttacks("warrior", 10),
+        armorClass: 0,
         maxHitPoint: 250,
         currentHitPoint: 100,
       },
@@ -28,6 +34,11 @@ export const friendListSample: FriendListState = {
     {
       parsonal: {
         name: "キャラクター2",
+        level: 10,
+        job: "mage",
+        hitRatelevelBonus: getHitRateBonus("mage", 10),
+        numberOfAttacks: getNumberOfAttacks("mage", 10),
+        armorClass: 0,
         maxHitPoint: 250,
         currentHitPoint: 100,
       },
@@ -49,6 +60,11 @@ export const friendListSample: FriendListState = {
     {
       parsonal: {
         name: "キャラクター3",
+        level: 1,
+        job: "warrior",
+        hitRatelevelBonus: getHitRateBonus("warrior", 1),
+        numberOfAttacks: getNumberOfAttacks("warrior", 1),
+        armorClass: 0,
         maxHitPoint: 250,
         currentHitPoint: 100,
       },
@@ -75,6 +91,11 @@ export const enemyListSample: EnemyListState = {
     {
       personal: {
         name: "敵スライム1",
+        level: 10,
+        job: "warrior",
+        hitRatelevelBonus: getHitRateBonus("warrior", 10),
+        numberOfAttacks: getNumberOfAttacks("warrior", 10),
+        armorClass: 0,
         maxHitPoint: 150,
         currentHitPoint: 100,
       },
