@@ -144,25 +144,24 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     const phase = this.value.phaseState;
     if (phase.type !== "executeActions") return;
 
-    if (phase.commandEffectCurrentFrame >= phase.commandAutoProgressionDuration) {
-      const nextCharacterState = personalStateApplyCommandEffectList(
-        this.value.friendListState,
-        this.value.enemyListState,
-        phase.commandResult,
-      );
+    if (phase.commandEffectCurrentFrame < phase.commandAutoProgressionDuration) {
       this.next(
         produce(this.value, (draft) => {
-          draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value));
-          draft.enemyListState = castDraft(nextCharacterState.enemy);
-          draft.friendListState = castDraft(nextCharacterState.friend);
+          draft.phaseState = castDraft(updateExecuteActionsState(phase, delta));
         }),
       );
       return;
     }
-
+    const nextCharacterState = personalStateApplyCommandEffectList(
+      this.value.friendListState,
+      this.value.enemyListState,
+      phase.commandResult,
+    );
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState = castDraft(updateExecuteActionsState(phase, delta));
+        draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value));
+        draft.enemyListState = castDraft(nextCharacterState.enemy);
+        draft.friendListState = castDraft(nextCharacterState.friend);
       }),
     );
   }
