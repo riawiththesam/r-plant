@@ -13,7 +13,8 @@ export function getHitRateBonus(job: JobType, level: number): number {
 export function getNumberOfAttacks(job: JobType, level: number): number {
   switch (job) {
     case "warrior":
-      return Math.max(Math.floor(level / 5 + 1), 10);
+      // レベルにより攻撃回数変動、最大値10
+      return Math.min(Math.floor(level / 5 + 1), 10);
     case "mage":
       return 1;
   }

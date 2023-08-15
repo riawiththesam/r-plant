@@ -64,12 +64,11 @@ export function createBattleLog(
     .map((effect) => {
       // TODO weapon
       const weaponName = "素手";
-      // TODO ヒット数
-      const numberOfHits = "2回ヒット";
-      // TODO ダメージ数
-      const numberOfDamage = "10のダメージ";
+      const numberOfAttacks = `${effect.numberOfAttacks}回攻撃`;
+      const numberOfHits = `${effect.numberOfHits}回ヒット`;
+      const numberOfDamage = `${effect.value}のダメージ`;
       const actorName = getActorName(state, effect);
-      return [actorName, weaponName, numberOfHits, numberOfDamage];
+      return [actorName, weaponName, numberOfAttacks, numberOfHits, numberOfDamage];
     })
     .flat();
 }
