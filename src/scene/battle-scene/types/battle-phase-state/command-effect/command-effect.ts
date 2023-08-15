@@ -82,7 +82,7 @@ export type AttackCommandResult = {
 };
 
 export function attack(actor: PersonalState, target: PersonalState): AttackCommandResult {
-  const hitRate = Math.min(19 + target.armorClass + actor.hitRatelevelBonus, 19);
+  const hitRate = Math.min(19 + target.armorClass + actor.hitRateLevelBonus, 19);
   const numberOfAttacks = actor.numberOfAttacks;
 
   const attackResultList: ReadonlyArray<AttackResult> = range(0, numberOfAttacks).map((_) => {

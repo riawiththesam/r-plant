@@ -4,7 +4,7 @@ export type PersonalState = {
   name: string;
   level: number;
   job: JobType;
-  hitRatelevelBonus: number;
+  hitRateLevelBonus: number;
   numberOfAttacks: number;
   armorClass: number;
   maxHitPoint: number;
