@@ -55,8 +55,14 @@ export function createBattleLog(state: BattleSceneState, command?: CommandDetail
   if (command == null) return [];
 
   const actorName = getActorName(state, command);
+  // TODO weapon
+  const weaponName = "素手";
+  // TODO ヒット数
+  const numberOfHits = "2回ヒット";
+  // TODO ダメージ数
+  const numberOfDamage = "10のダメージ";
 
-  return [actorName, "BattleLogTest2", "BattleLogTest3"];
+  return [actorName, weaponName, numberOfHits, numberOfDamage];
 }
 
 export function getActorName(state: BattleSceneState, command: CommandDetail): string {
