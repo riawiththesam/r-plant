@@ -101,7 +101,26 @@ export const enemyListSample: EnemyListState = {
       },
       graphics: {
         image: slime,
-        x: 600,
+        x: 400,
+        y: 400,
+        width: 100,
+        height: 100,
+      },
+    },
+    {
+      personal: {
+        name: "敵スライム2",
+        level: 10,
+        job: "warrior",
+        hitRateLevelBonus: getHitRateBonus("warrior", 10),
+        numberOfAttacks: getNumberOfAttacks("warrior", 10),
+        armorClass: 0,
+        maxHitPoint: 50,
+        currentHitPoint: 50,
+      },
+      graphics: {
+        image: slime,
+        x: 800,
         y: 400,
         width: 100,
         height: 100,
