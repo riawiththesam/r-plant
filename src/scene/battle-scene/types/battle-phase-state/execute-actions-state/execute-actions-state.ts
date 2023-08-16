@@ -2,10 +2,10 @@ import { castDraft, produce } from "immer";
 import { type PhaseState, type BasePhaseState } from "../battle-phase-state";
 import { type CommandDetail } from "../command-detail/command-detail";
 import { createReserveActionsState } from "../reserve-actions-state/reserve-actions-state";
-import { type BattleSceneState } from "../../../battle-scene-subject";
 import { createCommandEffectList, type CommandEffect } from "../command-effect/command-effect";
 import { createBattleLog, type BattleLog } from "../battle-log/battle-log";
 import { type PreExecuteActionsState } from "../pre-execute-actions-state/pre-execute-actions-state";
+import { type BattleSceneState } from "../../battle-scene-state/battle-scene-state";
 
 export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";

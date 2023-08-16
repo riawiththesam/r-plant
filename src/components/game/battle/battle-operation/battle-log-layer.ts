@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
 import { BattleLog } from "./battle-log";
-import { type BattleSceneState } from "../../../../scene/battle-scene/battle-scene-subject";
 import { type Observable, type Subscription } from "rxjs";
 import { letSubscription } from "../../../../util/rxjs/subscription/subscriptions";
+import { type BattleSceneState } from "../../../../scene/battle-scene/types/battle-scene-state/battle-scene-state";
 
 export class BattleLogLayer extends Container {
   subscribe(battleSceneObservable: Observable<BattleSceneState>): Subscription {

@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
 import { type Observable, type Subscription } from "rxjs";
-import { type BattleSceneState } from "../../../../scene/battle-scene/battle-scene-subject";
 import { letSubscription } from "../../../../util/rxjs/subscription/subscriptions";
 import { BattleEffect } from "./battle-effect";
 import { getFriendPositionX, getFriendPositionY } from "../battle-friend/battle-friend-layer";
+import { type BattleSceneState } from "../../../../scene/battle-scene/types/battle-scene-state/battle-scene-state";
 
 export class BattleEffectLayer extends Container {
   private readonly battleEffect: BattleEffect;

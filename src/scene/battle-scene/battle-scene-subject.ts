@@ -1,11 +1,6 @@
 import { BehaviorSubject } from "rxjs";
-import { type EnemyListState } from "./types/battle-character-state/enemy-list-state";
-import { type FriendListState } from "./types/battle-character-state/friend-list-state";
-import { type PhaseState } from "./types/battle-phase-state/battle-phase-state";
-import { type BattleSettingState } from "./types/battle-setting-state/battle-setting-state";
 import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
-import { createPreparePhaseState } from "./types/battle-phase-state/prepare-phase-state/prepare-phase-state";
 import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
@@ -15,22 +10,7 @@ import {
   updateExecuteActionsState,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
 import { personalStateApplyCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
-
-export type BattleSceneState = {
-  phaseState: PhaseState;
-  friendListState: FriendListState;
-  enemyListState: EnemyListState;
-  settingState: BattleSettingState;
-};
-
-const defaultBattleSceneState: BattleSceneState = {
-  phaseState: createPreparePhaseState(),
-  friendListState: { list: [] },
-  enemyListState: { list: [] },
-  settingState: {
-    commandAutoProgressionDuration: 30,
-  },
-};
+import { type BattleSceneState, defaultBattleSceneState } from "./types/battle-scene-state/battle-scene-state";
 
 export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   constructor() {

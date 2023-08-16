@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
 import { BattleFriend } from "./battle-friend";
 import { gameConfig } from "../../../../common/game-config";
-import { type BattleSceneState } from "../../../../scene/battle-scene/battle-scene-subject";
 import { type Observable, type Subscription } from "rxjs";
 import { letSubscription } from "../../../../util/rxjs/subscription/subscriptions";
 import { type FriendCharacterState } from "../../../../scene/battle-scene/types/battle-character-state/friend-list-state";
+import { type BattleSceneState } from "../../../../scene/battle-scene/types/battle-scene-state/battle-scene-state";
 
 const spriteSize = 100;
 const widthForOneFriend = gameConfig.width / 6;

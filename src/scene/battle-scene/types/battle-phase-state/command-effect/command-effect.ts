@@ -1,10 +1,10 @@
-import { type BattleSceneState } from "../../../battle-scene-subject";
 import { type PersonalState } from "../../battle-character-state/personal-state";
 import { type CommandDetail } from "../command-detail/command-detail";
 import { type FriendListState } from "../../battle-character-state/friend-list-state";
 import { type EnemyListState } from "../../battle-character-state/enemy-list-state";
 import { produce } from "immer";
 import { attack } from "../attack-command-result/attack-command-result";
+import { type BattleSceneState } from "../../battle-scene-state/battle-scene-state";
 
 const commandEffectTypes = ["damage"];
 type CommandEffectType = (typeof commandEffectTypes)[number];

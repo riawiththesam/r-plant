@@ -1,4 +1,4 @@
-import { type BattleSceneState } from "../../../battle-scene-subject";
+import { type BattleSceneState } from "../../battle-scene-state/battle-scene-state";
 import { type CommandEffect } from "../command-effect/command-effect";
 
 export type BattleLog = {
