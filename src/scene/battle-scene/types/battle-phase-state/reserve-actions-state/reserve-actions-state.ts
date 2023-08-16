@@ -2,6 +2,7 @@ import { produce } from "immer";
 import { type BattleSceneState } from "../../battle-scene-state/battle-scene-state";
 import { type BasePhaseState } from "../battle-phase-state";
 import { type CommandDetail } from "../command-detail/command-detail";
+import { type SelectTargetState } from "../select-target-state/select-target-state";
 
 export type ReserveActionsState = BasePhaseState & {
   type: "reserveActions";
@@ -34,4 +35,15 @@ export function updateReserveActionsState(
   });
 
   return nextPhase;
+}
+
+export function createInitialSelectTargetState(current: ReserveActionsState): SelectTargetState {
+  return {
+    type: "selectTarget",
+    characterIndex: current.characterIndex,
+    selectedCommandIndex: current.selectedCommandIndex,
+    // TODO コマンドの種類に合わせて、列選択や、選択可能ターゲットなしなど
+    selectedEnemyTargetIndexes: [0],
+    reservedCommandList: current.reservedCommandList,
+  };
 }

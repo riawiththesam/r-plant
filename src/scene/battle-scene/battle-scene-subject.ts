@@ -2,10 +2,10 @@ import { BehaviorSubject } from "rxjs";
 import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import {
+  createInitialSelectTargetState,
   createReserveActionsState,
   updateReserveActionsState,
 } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
-import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
 import {
   createInitialExecuteActionsState,
@@ -36,16 +36,9 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   applyReserveActionsDecide(): void {
     const phase = this.value.phaseState;
     if (phase.type !== "reserveActions") return undefined;
-    const nextPhase = createSelectTargetState({
-      type: "selectTarget",
-      characterIndex: phase.characterIndex,
-      selectedCommandIndex: phase.selectedCommandIndex,
-      selectedEnemyTargetIndexes: [0],
-      reservedCommandList: [...phase.reservedCommandList],
-    });
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState = nextPhase;
+        draft.phaseState = castDraft(createInitialSelectTargetState(phase));
       }),
     );
   }
