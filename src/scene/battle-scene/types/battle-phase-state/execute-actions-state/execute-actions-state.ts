@@ -13,6 +13,7 @@ export type ExecuteActionsState = BasePhaseState & {
   executingIndex: number;
   commandEffectCurrentFrame: number;
   commandAutoProgressionDuration: number;
+  // TODO 名前調整
   commandResult: ReadonlyArray<CommandEffect>;
   battleLog: BattleLog;
 };

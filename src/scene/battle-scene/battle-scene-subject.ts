@@ -6,11 +6,13 @@ import {
 } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 import {
   createInitialExecuteActionsState,
-  executeActionsStateCreateNextPhase,
   updateExecuteActionsState,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
-import { personalStateApplyCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
-import { type BattleSceneState, defaultBattleSceneState } from "./types/battle-scene-state/battle-scene-state";
+import {
+  type BattleSceneState,
+  defaultBattleSceneState,
+  applyCommandEffectListOfToBattleSceneState,
+} from "./types/battle-scene-state/battle-scene-state";
 import { createNextStateOfSelectTarget } from "./types/battle-phase-state/select-target-state/select-target-state";
 
 export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
@@ -74,6 +76,7 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     const phase = this.value.phaseState;
     if (phase.type !== "executeActions") return;
 
+    // 行動時のエフェクト等表示中の場合はフレーム更新のみ
     if (phase.commandEffectCurrentFrame < phase.commandAutoProgressionDuration) {
       this.next(
         produce(this.value, (draft) => {
@@ -82,17 +85,8 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
       );
       return;
     }
-    const nextCharacterState = personalStateApplyCommandEffectList(
-      this.value.friendListState,
-      this.value.enemyListState,
-      phase.commandResult,
-    );
-    this.next(
-      produce(this.value, (draft) => {
-        draft.phaseState = castDraft(executeActionsStateCreateNextPhase(phase, this.value));
-        draft.enemyListState = castDraft(nextCharacterState.enemy);
-        draft.friendListState = castDraft(nextCharacterState.friend);
-      }),
-    );
+
+    // 行動結果を適用
+    this.next(applyCommandEffectListOfToBattleSceneState(this.value, phase));
   }
 }

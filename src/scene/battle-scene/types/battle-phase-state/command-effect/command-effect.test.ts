@@ -1,6 +1,6 @@
 import { getHitRateBonus, getNumberOfAttacks } from "../../battle-character-state/job-state";
 import { type PersonalState } from "../../battle-character-state/personal-state";
-import { attack } from "./command-effect";
+import { attack } from "../attack-command-result/attack-command-result";
 
 describe("describe", () => {
   test("test", () => {
