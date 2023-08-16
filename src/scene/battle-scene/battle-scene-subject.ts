@@ -1,7 +1,10 @@
 import { BehaviorSubject } from "rxjs";
 import { produce, castDraft } from "immer";
 import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
-import { createReserveActionsState } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
+import {
+  createReserveActionsState,
+  updateReserveActionsState,
+} from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
 import {
@@ -22,18 +25,10 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     const phaseState = this.value.phaseState;
     if (phaseState.type !== "reserveActions") return;
 
-    const friendState = this.value.friendListState.list[phaseState.characterIndex];
-    if (friendState == null) return;
-
-    const nextPhase = produce(phaseState, (draft) => {
-      const indexDiff = input === "down" ? 1 : -1 + friendState.command.commandList.length;
-      const nextIndex = (draft.selectedCommandIndex + indexDiff) % friendState.command.commandList.length;
-      draft.selectedCommandIndex = nextIndex;
-    });
-
     this.next(
       produce(this.value, (draft) => {
-        draft.phaseState = nextPhase;
+        const nextState = updateReserveActionsState(phaseState, draft, input);
+        draft.phaseState = nextState != null ? nextState : draft.phaseState;
       }),
     );
   }
