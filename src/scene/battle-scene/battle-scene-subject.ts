@@ -1,12 +1,9 @@
 import { BehaviorSubject } from "rxjs";
 import { produce, castDraft } from "immer";
-import { type CommandDetail } from "./types/battle-phase-state/command-detail/command-detail";
 import {
   createInitialSelectTargetState,
-  createReserveActionsState,
   updateReserveActionsState,
 } from "./types/battle-phase-state/reserve-actions-state/reserve-actions-state";
-import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
 import {
   createInitialExecuteActionsState,
   executeActionsStateCreateNextPhase,
@@ -14,6 +11,7 @@ import {
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
 import { personalStateApplyCommandEffectList } from "./types/battle-phase-state/command-effect/command-effect";
 import { type BattleSceneState, defaultBattleSceneState } from "./types/battle-scene-state/battle-scene-state";
+import { createNextStateOfSelectTarget } from "./types/battle-phase-state/select-target-state/select-target-state";
 
 export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
   constructor() {
@@ -24,11 +22,12 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     // 行動選択中
     const phaseState = this.value.phaseState;
     if (phaseState.type !== "reserveActions") return;
+    const nextState = updateReserveActionsState(phaseState, this.value, input);
+    if (nextState == null) return;
 
     this.next(
       produce(this.value, (draft) => {
-        const nextState = updateReserveActionsState(phaseState, draft, input);
-        draft.phaseState = nextState != null ? nextState : draft.phaseState;
+        draft.phaseState = castDraft(nextState);
       }),
     );
   }
@@ -47,29 +46,13 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     // selectTarget以外のフェーズ、対象のキャラクターがいない、コマンドが選択できていない場合は何もしない
     const phase = this.value.phaseState;
     if (phase.type !== "selectTarget") return;
-    const friend = this.value.friendListState.list[phase.characterIndex];
-    if (friend === null) return;
-    const [commandType] = friend?.command.commandList[phase.selectedCommandIndex] ?? [];
-    if (commandType == null) return;
-    const targetList = [...phase.selectedEnemyTargetIndexes];
 
-    // コマンドを保存
-    const command: CommandDetail = { actorType: "friend", actorIndex: phase.characterIndex, commandType, targetList };
-    const reservedCommand = [...phase.reservedCommandList, command];
+    const nextPhase = createNextStateOfSelectTarget(phase, this.value);
+    if (nextPhase == null) return;
 
-    // 次のPhaseに変更 パーティ全員分の行動を予約したらPreExecuteActions、まだであれば次のキャラクターの行動予約
     this.next(
       produce(this.value, (draft) => {
-        const nextPhase =
-          reservedCommand.length === draft.friendListState.list.length
-            ? createPreExecuteActionsState({
-                reservedCommandList: reservedCommand,
-              })
-            : createReserveActionsState({
-                characterIndex: phase.characterIndex + 1,
-                reservedCommandList: reservedCommand,
-              });
-        draft.phaseState = nextPhase;
+        draft.phaseState = castDraft(nextPhase);
       }),
     );
   }

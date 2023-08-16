@@ -8,7 +8,7 @@ export type ReserveActionsState = BasePhaseState & {
   type: "reserveActions";
   characterIndex: number;
   selectedCommandIndex: number;
-  reservedCommandList: Array<CommandDetail>;
+  reservedCommandList: ReadonlyArray<CommandDetail>;
 };
 
 export function createReserveActionsState(value?: Partial<ReserveActionsState>): ReserveActionsState {

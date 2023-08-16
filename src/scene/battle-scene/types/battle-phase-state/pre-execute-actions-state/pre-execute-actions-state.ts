@@ -3,7 +3,7 @@ import { type CommandDetail } from "../command-detail/command-detail";
 
 export type PreExecuteActionsState = BasePhaseState & {
   type: "preExecuteActions";
-  reservedCommandList: Array<CommandDetail>;
+  reservedCommandList: ReadonlyArray<CommandDetail>;
 };
 
 export function createPreExecuteActionsState(value?: Partial<PreExecuteActionsState>): PreExecuteActionsState {
