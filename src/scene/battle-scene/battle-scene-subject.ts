@@ -10,7 +10,7 @@ import { createReserveActionsState } from "./types/battle-phase-state/reserve-ac
 import { createSelectTargetState } from "./types/battle-phase-state/select-target-state/select-target-state";
 import { createPreExecuteActionsState } from "./types/battle-phase-state/pre-execute-actions-state/pre-execute-actions-state";
 import {
-  createExecuteActionsState,
+  createInitialExecuteActionsState,
   executeActionsStateCreateNextPhase,
   updateExecuteActionsState,
 } from "./types/battle-phase-state/execute-actions-state/execute-actions-state";
@@ -110,28 +110,10 @@ export class BattleSceneSubject extends BehaviorSubject<BattleSceneState> {
     const phase = this.value.phaseState;
     if (phase.type !== "preExecuteActions") return;
 
-    const enemyCommandList: Array<CommandDetail> = this.value.enemyListState.list.map((_, index) => {
-      return {
-        actorType: "enemy",
-        actorIndex: index,
-        commandType: "attack",
-        targetList: [0],
-      };
-    });
-
-    const allCharacterCommandList = phase.reservedCommandList.concat(enemyCommandList);
-
     // お互いのすべての行動を設定
     const nextValue = produce(this.value, (draft) => {
-      const nextPhase = createExecuteActionsState(
-        draft,
-        allCharacterCommandList,
-        0,
-        0,
-        draft.settingState.commandAutoProgressionDuration,
-      );
+      const nextPhase = createInitialExecuteActionsState(draft, phase);
       if (nextPhase == null) return;
-
       draft.phaseState = castDraft(nextPhase);
     });
     this.next(nextValue);

@@ -5,6 +5,7 @@ import { createReserveActionsState } from "../reserve-actions-state/reserve-acti
 import { type BattleSceneState } from "../../../battle-scene-subject";
 import { createCommandEffectList, type CommandEffect } from "../command-effect/command-effect";
 import { createBattleLog, type BattleLog } from "../battle-log/battle-log";
+import { type PreExecuteActionsState } from "../pre-execute-actions-state/pre-execute-actions-state";
 
 export type ExecuteActionsState = BasePhaseState & {
   type: "executeActions";
@@ -16,24 +17,33 @@ export type ExecuteActionsState = BasePhaseState & {
   battleLog: BattleLog;
 };
 
-export function createExecuteActionsState(
-  state: BattleSceneState,
-  allCharacterCommandList: ReadonlyArray<CommandDetail>,
-  executingIndex: number,
-  commandEffectCurrentFrame: number,
-  commandAutoProgressionDuration: number,
+export function createInitialExecuteActionsState(
+  currentState: BattleSceneState,
+  phase: PreExecuteActionsState,
 ): ExecuteActionsState | undefined {
-  const command = allCharacterCommandList[executingIndex];
+  const enemyCommandList: Array<CommandDetail> = currentState.enemyListState.list.map((_, index) => {
+    return {
+      actorType: "enemy",
+      actorIndex: index,
+      commandType: "attack",
+      targetList: [0],
+    };
+  });
+
+  const allCharacterCommandList = phase.reservedCommandList.concat(enemyCommandList);
+
+  const command = allCharacterCommandList[0];
   if (command == null) return;
 
-  const commandEffectList = createCommandEffectList(state, command);
-  const log = createBattleLog(state, command.actorType, commandEffectList);
+  const commandEffectList = createCommandEffectList(currentState, command);
+  const log = createBattleLog(currentState, command.actorType, commandEffectList);
+
   return {
     type: "executeActions",
     allCharacterCommandList,
-    executingIndex,
-    commandEffectCurrentFrame,
-    commandAutoProgressionDuration,
+    executingIndex: 0,
+    commandEffectCurrentFrame: 0,
+    commandAutoProgressionDuration: currentState.settingState.commandAutoProgressionDuration,
     commandResult: commandEffectList,
     battleLog: log,
   };
