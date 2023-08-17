@@ -78,3 +78,8 @@ export function updateExecuteActionsState(current: ExecuteActionsState, delta: n
     draft.commandEffectCurrentFrame = Math.round(draft.commandEffectCurrentFrame + delta);
   });
 }
+
+export function getDamageMotionFrame(phase: ExecuteActionsState): number {
+  const diff = phase.commandEffectCurrentFrame - phase.commandDamageEffectStartFrame;
+  return diff > 0 ? diff : 0;
+}
