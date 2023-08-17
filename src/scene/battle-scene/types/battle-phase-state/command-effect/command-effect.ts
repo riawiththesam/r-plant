@@ -72,3 +72,17 @@ export function getCharacter(
     return state.enemyListState.list[targetIndex]?.personal;
   }
 }
+
+export function isTargetOfCommandEffect(
+  effectList: ReadonlyArray<CommandEffect>,
+  target: "friend" | "enemy",
+  targetIndex: number,
+): boolean {
+  return effectList.some((effect) => {
+    if (target === "friend") {
+      return effect.target === "friend" && effect.targetIndex === targetIndex;
+    } else {
+      return effect.target === "enemy" && effect.targetIndex === targetIndex;
+    }
+  });
+}
