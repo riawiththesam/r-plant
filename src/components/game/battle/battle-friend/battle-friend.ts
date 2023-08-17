@@ -1,6 +1,10 @@
 import { Container, Sprite } from "pixi.js";
 import { type FriendCharacterState } from "../../../../scene/battle-scene/types/battle-character-state/friend-list-state";
 import { HitPointBar } from "./hit-point-bar";
+import { calcDamageMotion } from "../common/common";
+
+const damageMotionMax = 30;
+const damageMotionDuration = 20;
 
 export type BattleFriendProps = {
   x: number;
@@ -8,26 +12,30 @@ export type BattleFriendProps = {
   width: number;
   height: number;
   friend: FriendCharacterState;
+  damageMotionFrame: number;
 };
 
 export class BattleFriend extends Container {
   constructor(props: BattleFriendProps) {
     super();
+    const { x, y, width, height, friend, damageMotionFrame } = props;
 
-    const sprite = Sprite.from(props.friend.graphics.image);
-    sprite.x = props.x - props.width / 2;
-    sprite.y = props.y - props.height / 2;
-    sprite.width = props.width;
-    sprite.height = props.height;
+    const damageMotion = calcDamageMotion(damageMotionFrame, damageMotionDuration, damageMotionMax);
+
+    const sprite = Sprite.from(friend.graphics.image);
+    sprite.x = x - width / 2 + damageMotion.x;
+    sprite.y = y - height / 2 + damageMotion.y;
+    sprite.width = width;
+    sprite.height = height;
     this.addChild(sprite);
 
-    const barY = props.y + props.height / 2 - 12;
+    const barY = y + height / 2 - 12;
     const hpBar = new HitPointBar({
-      x: props.x - props.width / 2,
+      x: x - width / 2,
       y: barY,
-      width: props.width,
-      max: props.friend.parsonal.maxHitPoint,
-      current: props.friend.parsonal.currentHitPoint,
+      width,
+      max: friend.parsonal.maxHitPoint,
+      current: friend.parsonal.currentHitPoint,
     });
     this.addChild(hpBar);
   }
