@@ -21,7 +21,7 @@ export const defaultBattleSceneState: BattleSceneState = {
   friendListState: { list: [] },
   enemyListState: { list: [] },
   settingState: {
-    commandAutoProgressionDuration: 30,
+    commandAutoProgressionDuration: 40,
   },
 };
 

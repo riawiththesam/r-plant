@@ -12,6 +12,7 @@ export type ExecuteActionsState = BasePhaseState & {
   allCharacterCommandList: ReadonlyArray<CommandDetail>;
   executingIndex: number;
   commandEffectCurrentFrame: number;
+  commandDamageEffectStartFrame: number;
   commandAutoProgressionDuration: number;
   // TODO 名前調整
   commandResult: ReadonlyArray<CommandEffect>;
@@ -44,6 +45,7 @@ export function createInitialExecuteActionsState(
     allCharacterCommandList,
     executingIndex: 0,
     commandEffectCurrentFrame: 0,
+    commandDamageEffectStartFrame: 10,
     commandAutoProgressionDuration: currentState.settingState.commandAutoProgressionDuration,
     commandResult: commandEffectList,
     battleLog: log,
@@ -73,6 +75,6 @@ export function executeActionsStateCreateNextPhase(current: ExecuteActionsState,
 
 export function updateExecuteActionsState(current: ExecuteActionsState, delta: number): ExecuteActionsState {
   return produce(current, (draft) => {
-    draft.commandEffectCurrentFrame = draft.commandEffectCurrentFrame + delta;
+    draft.commandEffectCurrentFrame = Math.round(draft.commandEffectCurrentFrame + delta);
   });
 }
